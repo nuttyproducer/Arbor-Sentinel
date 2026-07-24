@@ -21,12 +21,13 @@ export default function LegalTrackerPage() {
         description="Follow court proceedings, investigations, warrants, UN findings, and procedural milestones. Uses consistent legal status labels. Currently a static preview with limited representative entries."
       />
 
-      <PageStatusNotice title="Static preview" variant="info">
+      <PageStatusNotice title="Static preview — review pending" variant="info">
         <p>
-          The legal tracker contains a limited number of representative case
-          entries for structural demonstration. Legal status labels are based on
-          publicly reported proceedings. This is not a comprehensive or
-          real-time legal database.
+          The legal tracker contains source-linked case entries with procedural
+          timelines verified against current ICJ, ICC, and UN COI primary
+          records as of July 2026. All entries have content status{" "}
+          <strong>review_pending</strong>. No content has completed editorial or
+          legal review. This is not a comprehensive or real-time legal database.
         </p>
       </PageStatusNotice>
 
@@ -159,15 +160,16 @@ export default function LegalTrackerPage() {
         </ul>
       </PolicySection>
 
-      <PreviewNotice title="This tracker is a static preview">
-        The legal tracker contains representative structural entries only.
-        Source documents are linked where publicly available. All entries
-        require legal wording review before they can be treated as reviewed
-        content.
+      <PreviewNotice title="This tracker is a static preview — all content is review_pending">
+        The legal tracker contains source-linked case entries verified against
+        current ICJ, ICC, and UN COI primary records as of July 2026. Procedural
+        timelines include 2025–2026 developments. All entries attribute legal
+        conclusions to the body that made them. All entries require editorial
+        and legal wording review before they can be treated as reviewed content.
       </PreviewNotice>
 
       <CorrectionLink />
-      <LastUpdated date="2026-07-10" />
+      <LastUpdated date="2026-07-24" />
     </Container>
   );
 }

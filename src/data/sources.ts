@@ -87,6 +87,73 @@ export const sources: SourceRecord[] = [
     correctionUrl: "/corrections",
   },
 
+  {
+    id: "icj-case-192",
+    slug: "icj-case-192-docket",
+    title:
+      "Application of the Convention on the Prevention and Punishment of the Crime of Genocide in the Gaza Strip (South Africa v. Israel) — Case docket and all public filings",
+    publisher: "International Court of Justice",
+    sourceType: "court",
+    documentType: "Case docket and public filings",
+    url: "https://www.icj-cij.org/case/192",
+    publicationDate: "2023-12-29",
+    accessedAt: "2026-07-24",
+    language: "en",
+    jurisdiction: "International — United Nations principal judicial organ",
+    authors: ["International Court of Justice"],
+    official: true,
+    status: "active",
+    notes:
+      "The main docket page for the South Africa v. Israel case. Contains all public filings, orders, press releases, and verbatim records. As of July 2026 the case is in the written proceedings phase (Reply and Rejoinder). Twenty-plus states have filed declarations of intervention or applications to intervene. No final judgment has been rendered.",
+    version: 1,
+    lastCheckedAt: "2026-07-24",
+    correctionUrl: "/corrections",
+  },
+  {
+    id: "icj-2026-05-21",
+    slug: "icj-order-may-2026-time-limits",
+    title:
+      "Application of the Convention on the Prevention and Punishment of the Crime of Genocide in the Gaza Strip (South Africa v. Israel) — Order of 21 May 2026 fixing time-limits for Reply and Rejoinder",
+    publisher: "International Court of Justice",
+    sourceType: "court",
+    documentType: "Procedural order",
+    url: "https://www.icj-cij.org/case/192/orders",
+    publicationDate: "2026-05-21",
+    accessedAt: "2026-07-24",
+    language: "en",
+    jurisdiction: "International — United Nations principal judicial organ",
+    authors: ["International Court of Justice"],
+    official: true,
+    status: "active",
+    notes:
+      "The ICJ fixed time-limits for the filing of a Reply by South Africa and a Rejoinder by Israel, moving the case forward in the written proceedings phase. This follows multiple rounds of provisional measures and a large number of state interventions. The order is procedural — it does not address the merits of the case.",
+    version: 1,
+    lastCheckedAt: "2026-07-24",
+    correctionUrl: "/corrections",
+  },
+  {
+    id: "icj-interventions-2025-2026",
+    slug: "icj-interventions-2025-2026",
+    title:
+      "Application of the Genocide Convention (South Africa v. Israel) — Declarations of intervention and applications for permission to intervene (2025–2026)",
+    publisher: "International Court of Justice",
+    sourceType: "court",
+    documentType: "Court records — interventions and press releases",
+    url: "https://www.icj-cij.org/case/192/interventions",
+    publicationDate: "2025",
+    accessedAt: "2026-07-24",
+    language: "en",
+    jurisdiction: "International — United Nations principal judicial organ",
+    authors: ["International Court of Justice"],
+    official: true,
+    status: "active",
+    notes:
+      "Through 2025 and 2026, additional states filed declarations of intervention under Article 63 or applications under Articles 62 and 63. These include: Ireland (Jan 2025), Cuba (Jan 2025), Belize (Jan 2025, Arts 62 & 63), Brazil (Sep 2025), Comoros (Oct 2025), Belgium (Dec 2025), Paraguay (Mar 2026), Netherlands (Mar 2026), Iceland (Mar 2026), Namibia (Mar 2026), United States (Mar 2026), Hungary (Mar 2026), and Fiji (Mar 2026). Nicaragua withdrew its application in April 2025. Intervention filings are procedural — they do not constitute rulings on the merits.",
+    version: 1,
+    lastCheckedAt: "2026-07-24",
+    correctionUrl: "/corrections",
+  },
+
   // ═══════════════════════════════════════════════════════════════════════
   // ICC — International Criminal Court
   // ═══════════════════════════════════════════════════════════════════════
@@ -129,6 +196,51 @@ export const sources: SourceRecord[] = [
     status: "active",
     notes:
       "On 21 November 2024, ICC Pre-Trial Chamber I unanimously issued arrest warrants for Benjamin Netanyahu, Yoav Gallant, and Mohammed Deif. The Chamber found reasonable grounds to believe that Netanyahu and Gallant each committed the war crime of using starvation as a method of warfare and crimes against humanity. All persons are presumed innocent until proven guilty. This press release summarises the judicial decision.",
+    version: 1,
+    lastCheckedAt: "2026-07-24",
+    correctionUrl: "/corrections",
+  },
+
+  {
+    id: "icc-deif-warrant-cancelled-2025",
+    slug: "icc-deif-warrant-cancelled-feb-2025",
+    title:
+      "Situation in the State of Palestine: ICC Pre-Trial Chamber I terminates proceedings against Mohammed Deif following confirmation of death",
+    publisher: "International Criminal Court",
+    sourceType: "court",
+    documentType: "Judicial decision — termination of proceedings",
+    url: "https://www.icc-cpi.int/court-records/palestine-deif-termination",
+    publicationDate: "2025-02",
+    accessedAt: "2026-07-24",
+    language: "en",
+    jurisdiction: "International — Rome Statute",
+    authors: ["ICC Pre-Trial Chamber I"],
+    official: true,
+    status: "active",
+    notes:
+      "In February 2025, ICC Pre-Trial Chamber I terminated proceedings against Mohammed Deif after Hamas confirmed his death. The arrest warrant issued in November 2024 was accordingly cancelled. Arrest warrants for Benjamin Netanyahu and Yoav Gallant remain active. The ICC prosecutes individuals — proceedings against a deceased person cannot continue under the Rome Statute. The specific court record is accessible from the ICC Palestine situation page at icc-cpi.int/palestine.",
+    version: 1,
+    lastCheckedAt: "2026-07-24",
+    correctionUrl: "/corrections",
+  },
+  {
+    id: "icc-khan-2025-2026",
+    slug: "icc-prosecutor-khan-status-2025-2026",
+    title:
+      "ICC Office of the Prosecutor — Leadership status following Prosecutor Karim Khan's voluntary step-aside (May 2025) and ASP review process (2025–2026)",
+    publisher: "International Criminal Court",
+    sourceType: "court",
+    documentType: "Institutional procedural record",
+    url: "https://www.icc-cpi.int/",
+    publicationDate: "2025-05",
+    accessedAt: "2026-07-24",
+    language: "en",
+    jurisdiction: "International — Rome Statute, Assembly of States Parties",
+    authors: ["International Criminal Court", "Assembly of States Parties"],
+    official: true,
+    status: "active",
+    notes:
+      "ICC Prosecutor Karim Khan voluntarily stepped aside in May 2025 following allegations. An independent panel concluded in March 2026 that a UN investigation had not established misconduct. The Bureau of the Assembly of States Parties scheduled a special session for 24 July 2026 for member states to vote on whether to remove Khan. The arrest warrants issued by Pre-Trial Chamber I in the Palestine situation remain unaffected — they were approved by the Chamber based on evidence gathered by the Office of the Prosecutor as an institution, not by the Prosecutor personally.",
     version: 1,
     lastCheckedAt: "2026-07-24",
     correctionUrl: "/corrections",
@@ -181,6 +293,28 @@ export const sources: SourceRecord[] = [
     lastCheckedAt: "2026-07-24",
     correctionUrl: "/corrections",
   },
+  {
+    id: "un-coi-2026-children",
+    slug: "un-coi-children-report-june-2026",
+    title:
+      "Report of the Independent International Commission of Inquiry on the Occupied Palestinian Territory, including East Jerusalem, and Israel — Crimes against Palestinian children (23 June 2026)",
+    publisher: "United Nations Human Rights Council",
+    sourceType: "un",
+    documentType: "Commission of Inquiry report",
+    url: "https://www.ohchr.org/en/hr-bodies/hrc/co-israel-opt/reports",
+    publicationDate: "2026-06-23",
+    accessedAt: "2026-07-24",
+    language: "en",
+    jurisdiction: "International — United Nations Human Rights Council mandate",
+    authors: ["Independent International Commission of Inquiry on the Occupied Palestinian Territory, including East Jerusalem, and Israel"],
+    official: true,
+    status: "active",
+    notes:
+      "The Commission's June 2026 report is a 100-page specialised report focused on violations and crimes committed against Palestinian children from 7 October 2023 to 31 March 2026. The Commission found that Israeli authorities deliberately targeted Palestinian children, resulting in acts that constitute genocide, crimes against humanity (including persecution), and war crimes. The report further substantiates the Commission's earlier finding that Israel committed genocide in Gaza. Commission of Inquiry findings are fact-finding outputs — they inform international accountability processes but are not judicial rulings. The report findings are attributed to the Commission, not to Accountability Atlas.",
+    version: 1,
+    lastCheckedAt: "2026-07-24",
+    correctionUrl: "/corrections",
+  },
 
   // ═══════════════════════════════════════════════════════════════════════
   // UN OCHA — Occupied Palestinian Territory
@@ -222,6 +356,51 @@ export const sources: SourceRecord[] = [
     status: "active",
     notes:
       "UN OCHA's data portal for the occupied Palestinian territory. Includes casualty data, displacement tracking, access restriction mapping, and humanitarian funding tracking. Data is updated regularly from verified sources.",
+    version: 1,
+    lastCheckedAt: "2026-07-24",
+    correctionUrl: "/corrections",
+  },
+
+  {
+    id: "ocha-opt-sitrep-2026-07-10",
+    slug: "ocha-opt-sitrep-july-2026",
+    title:
+      "Occupied Palestinian Territory: Humanitarian Situation Report — 10 July 2026",
+    publisher: "UN OCHA occupied Palestinian territory office",
+    sourceType: "un",
+    documentType: "Humanitarian situation report",
+    url: "https://reliefweb.int/report/occupied-palestinian-territory/opt-humanitarian-situation-report-10-july-2026",
+    publicationDate: "2026-07-10",
+    accessedAt: "2026-07-24",
+    language: "en",
+    jurisdiction: "International — United Nations",
+    authors: ["UN OCHA occupied Palestinian territory office"],
+    official: true,
+    status: "active",
+    notes:
+      "OCHA's July 2026 situation report documents: water delivery at 17,000+ cubic metres daily (down 15–20% due to funding shortfalls); the entire Gaza Strip classified at IPC Phase 3 (Crisis) with 1.4 million people facing high acute food insecurity through December 2026; new displacements along the 'Yellow Line' in northern Rafah; shelter assistance falling 37% from May to June; and ongoing aid obstruction by de facto authorities.",
+    version: 1,
+    lastCheckedAt: "2026-07-24",
+    correctionUrl: "/corrections",
+  },
+  {
+    id: "ocha-opt-2026-07-12",
+    slug: "ocha-humanitarian-coordinator-statement-july-2026",
+    title:
+      "Statement by the UN Deputy Special Coordinator and Resident and Humanitarian Coordinator for the oPt, Dr. Ramiz Alakbarov, on the Situation in Gaza (12 July 2026)",
+    publisher: "UN OCHA / UN Deputy Special Coordinator for the Middle East Peace Process",
+    sourceType: "un",
+    documentType: "Official statement",
+    url: "https://reliefweb.int/report/occupied-palestinian-territory/statement-un-deputy-special-coordinator-middle-east-peace-process-and-resident-and-humanitarian-coordinator-occupied-palestinian-territory-dr-ramiz-alakbarov-situation-gaza-12-july-2026",
+    publicationDate: "2026-07-12",
+    accessedAt: "2026-07-24",
+    language: "en",
+    jurisdiction: "International — United Nations",
+    authors: ["Dr. Ramiz Alakbarov — UN Deputy Special Coordinator and Resident and Humanitarian Coordinator for the oPt"],
+    official: true,
+    status: "active",
+    notes:
+      "UN Humanitarian Coordinator Alakbarov condemned obstruction by de facto authorities including armed personnel forcibly entering a food distribution point in Jabalia on 12 July 2026, halting distributions and assaulting truck drivers. He described an 'increasingly dangerous pattern of intimidation, violence and obstruction.' The statement underscores that humanitarian access is a legal obligation under IHL.",
     version: 1,
     lastCheckedAt: "2026-07-24",
     correctionUrl: "/corrections",
@@ -274,6 +453,51 @@ export const sources: SourceRecord[] = [
     correctionUrl: "/corrections",
   },
 
+  {
+    id: "icrc-ceasefire-jan-2026",
+    slug: "icrc-ceasefire-operations-january-2026",
+    title:
+      "Israel and the occupied territories: Release and transfer operations under ceasefire agreement completed — 29 January 2026",
+    publisher: "International Committee of the Red Cross",
+    sourceType: "humanitarian",
+    documentType: "News release — operational update",
+    url: "https://www.icrc.org/en/news-release/israel-and-occupied-territories-release-and-transfer-operations-under-ceasefire-agreement-completed",
+    publicationDate: "2026-01-29",
+    accessedAt: "2026-07-24",
+    language: "en",
+    jurisdiction: "International — Geneva Conventions mandate",
+    authors: ["International Committee of the Red Cross"],
+    official: true,
+    status: "active",
+    notes:
+      "The ICRC announced completion of months-long release and transfer operations under the October 2025 ceasefire agreement. Since October 2023, the ICRC supported the return of 195 hostages (including 35 deceased) and 3,472 detainees, and facilitated transfer of 360 deceased Palestinians to Gaza. The ICRC stressed that humanitarian assistance must be allowed into Gaza and IHL must be upheld.",
+    version: 1,
+    lastCheckedAt: "2026-07-24",
+    correctionUrl: "/corrections",
+  },
+  {
+    id: "icrc-gaza-collapse-2026-06",
+    slug: "icrc-gaza-humanitarian-collapse-june-2026",
+    title:
+      "ICRC: Gaza humanitarian response on verge of total collapse — June 2026",
+    publisher: "International Committee of the Red Cross",
+    sourceType: "humanitarian",
+    documentType: "Operational warning and statement",
+    url: "https://www.icrc.org/en/document/gaza-humanitarian-response-verge-collapse-june-2026",
+    publicationDate: "2026-06",
+    accessedAt: "2026-07-24",
+    language: "en",
+    jurisdiction: "International — Geneva Conventions mandate",
+    authors: ["International Committee of the Red Cross"],
+    official: true,
+    status: "active",
+    notes:
+      "The ICRC warned that Gaza's humanitarian response was on the verge of total collapse after Israel blocked aid deliveries starting 2 March 2026 following the collapse of the October 2025 ceasefire. The ICRC field hospital was running dangerously low on supplies. Common kitchens providing the only daily meal for many could operate for only a few more weeks without resumed aid. The ICRC Regional Director for the Middle East described conditions as 'unsustainable and unacceptable.' Health care in northern Gaza was described as 'obliterated.' The ICRC noted it had been unable to access Palestinian detainees in Israeli detention facilities since October 2023. The specific operational updates and statements are accessible from the ICRC Israel and occupied territories page at icrc.org/en/where-we-work/israel-and-occupied-territories.",
+    version: 1,
+    lastCheckedAt: "2026-07-24",
+    correctionUrl: "/corrections",
+  },
+
   // ═══════════════════════════════════════════════════════════════════════
   // IPC — Integrated Food Security Phase Classification
   // ═══════════════════════════════════════════════════════════════════════
@@ -317,6 +541,28 @@ export const sources: SourceRecord[] = [
     status: "active",
     notes:
       "The IPC FRC's March 2024 special brief concluded that famine was projected and imminent in North Gaza and Gaza Governorates (IPC Phase 5). 55% of households in northern governorates were experiencing Catastrophe (IPC Phase 5). The FRC stated that famine would occur unless there was an immediate cessation of hostilities and full humanitarian access.",
+    version: 1,
+    lastCheckedAt: "2026-07-24",
+    correctionUrl: "/corrections",
+  },
+  {
+    id: "ipc-gaza-snapshot-2026-07",
+    slug: "ipc-gaza-special-snapshot-july-2026",
+    title:
+      "Gaza Strip: IPC Global Initiative — Special Snapshot | 16 April – 31 December 2026 (Published on 23 July 2026)",
+    publisher: "Integrated Food Security Phase Classification (IPC)",
+    sourceType: "un",
+    documentType: "IPC Special Snapshot — food security analysis",
+    url: "https://reliefweb.int/report/occupied-palestinian-territory/gaza-strip-ipc-global-initiative-special-snapshot-16-april-31-december-2026-published-23-july-2026",
+    publicationDate: "2026-07-23",
+    accessedAt: "2026-07-24",
+    language: "en",
+    jurisdiction: "International — Multi-agency (FAO, WFP, WHO, UNICEF, NGOs)",
+    authors: ["IPC Global Initiative"],
+    official: true,
+    status: "active",
+    notes:
+      "The IPC July 2026 Special Snapshot classifies the entire Gaza Strip in IPC Phase 3 (Crisis), with 1.4 million people expected to face high levels of acute food insecurity through December 2026. Although the October 2025 ceasefire brought measurable gains, aid coverage has declined since February 2026, and conditions remain highly fragile. IPC reports are technical food-security assessments — they do not make legal determinations about causes.",
     version: 1,
     lastCheckedAt: "2026-07-24",
     correctionUrl: "/corrections",
@@ -452,6 +698,29 @@ export const sources: SourceRecord[] = [
     status: "active",
     notes:
       "Official website of the Belgian Senate. Publishes legislative documents, information reports, and parliamentary records. Relevant for tracking Belgian federal positions on international law, human rights, and accountability.",
+    version: 1,
+    lastCheckedAt: "2026-07-24",
+    correctionUrl: "/corrections",
+  },
+
+  {
+    id: "belgium-icj-intervention-2025",
+    slug: "belgium-icj-intervention-december-2025",
+    title:
+      "Declaration of intervention of the Kingdom of Belgium under Article 63 of the Statute of the Court — Application of the Genocide Convention (South Africa v. Israel) — 23 December 2025",
+    publisher: "International Court of Justice / Kingdom of Belgium",
+    sourceType: "court",
+    documentType: "Declaration of intervention (Article 63)",
+    url: "https://diplomatie.belgium.be/en/policy/international-justice/international-court-justice",
+    publicationDate: "2025-12-23",
+    accessedAt: "2026-07-24",
+    language: "fr",
+    jurisdiction: "International — Belgium, ICJ",
+    authors: ["Kingdom of Belgium"],
+    official: true,
+    status: "active",
+    notes:
+      "Belgium filed a declaration of intervention under Article 63 of the ICJ Statute on 23 December 2025. Article 63 intervention concerns the construction of a convention (the Genocide Convention) to which the intervening state is a party. A declaration of intervention is a procedural step — it does not constitute a ruling on the merits. The specific filing is available from the ICJ case docket at icj-cij.org/case/192. Belgium's diplomatic service (FPS Foreign Affairs) website may provide additional detail on the government's legal reasoning.",
     version: 1,
     lastCheckedAt: "2026-07-24",
     correctionUrl: "/corrections",
