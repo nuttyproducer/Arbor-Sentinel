@@ -103,6 +103,30 @@ export const sourceTypeSchema = z.enum([
   "osint",
 ]);
 
+export const trustLevelSchema = z
+  .number()
+  .int()
+  .min(0)
+  .max(5)
+  .default(0);
+
+export const verificationMethodSchema = z
+  .enum(["official", "ngo", "journalism", "academic", "osint"])
+  .optional();
+
+export const healthStatusSchema = z
+  .enum(["unknown", "active", "degraded", "failed"])
+  .default("unknown");
+
+export const automationStatusSchema = z
+  .enum(["manual", "scheduled", "real-time"])
+  .default("manual");
+
+export const feedConfigSchema = z.object({
+  pollingIntervalMinutes: z.number().int().min(1),
+  lastFetched: validDate.optional(),
+}).optional();
+
 // ── SourceRecord ──────────────────────────────────────────────────────────
 
 export const sourceStatusSchema = z.enum([
@@ -113,6 +137,7 @@ export const sourceStatusSchema = z.enum([
 ]);
 
 export const sourceRecordSchema = z.object({
+  // ── Existing fields ──
   id: nonEmptyString,
   slug: slugString,
   title: nonEmptyString,
@@ -132,6 +157,31 @@ export const sourceRecordSchema = z.object({
   version: z.number().int().min(1),
   lastCheckedAt: validDate.optional(),
   correctionUrl: nonEmptyString,
+
+  // ── Trust & Verification (new) ──
+  trustLevel: trustLevelSchema,
+  verificationMethod: verificationMethodSchema,
+
+  // ── API / RSS Automation Config (new) ──
+  apiEndpoint: validUrl.optional(),
+  apiKeyRef: z.string().min(1).optional(),
+  rssFeedUrl: validUrl.optional(),
+  feedConfig: feedConfigSchema,
+
+  // ── Licensing & Classification (new) ──
+  license: z.string().optional(),
+  licenseUrl: validUrl.optional(),
+  region: z.string().optional(),
+  category: z.string().optional(),
+  reliabilityNotes: z.string().optional(),
+
+  // ── Health & Monitoring (new) ──
+  healthStatus: healthStatusSchema,
+  automationStatus: automationStatusSchema,
+  lastSuccessfulFetch: validDate.optional(),
+  lastFailedFetch: validDate.optional(),
+  failureCount: z.number().int().min(0).default(0),
+  monitoringEnabled: z.boolean().default(false),
 });
 
 // ── ReviewMetadata (shared review fields) ─────────────────────────────────

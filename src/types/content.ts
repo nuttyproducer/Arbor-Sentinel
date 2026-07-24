@@ -82,36 +82,124 @@ export const SOURCE_STATUS_LABELS: Record<SourceStatus, string> = {
   superseded: "Superseded",
 };
 
+/** Trust level assigned by human review — never auto-assigned from source type. */
+export type TrustLevel = 0 | 1 | 2 | 3 | 4 | 5;
+
+export const TRUST_LEVEL_LABELS: Record<TrustLevel, string> = {
+  0: "Unreviewed",
+  1: "Low confidence",
+  2: "Moderate confidence",
+  3: "High confidence",
+  4: "Trusted source",
+  5: "Authoritative",
+};
+
+/** Method by which this source's content is verified. */
+export type VerificationMethod =
+  | "official"
+  | "ngo"
+  | "journalism"
+  | "academic"
+  | "osint";
+
+export const VERIFICATION_METHOD_LABELS: Record<VerificationMethod, string> = {
+  official: "Official institutional record",
+  ngo: "NGO / humanitarian report",
+  journalism: "Investigative journalism",
+  academic: "Academic research",
+  osint: "OSINT / open-source documentation",
+};
+
+/** Automation integration health status — separate from URL currency status. */
+export type HealthStatus = "unknown" | "active" | "degraded" | "failed";
+
+export const HEALTH_STATUS_LABELS: Record<HealthStatus, string> = {
+  unknown: "Unknown",
+  active: "Active",
+  degraded: "Degraded",
+  failed: "Failed",
+};
+
+/** Automation status for source data ingestion. */
+export type AutomationStatus = "manual" | "scheduled" | "real-time";
+
+export const AUTOMATION_STATUS_LABELS: Record<AutomationStatus, string> = {
+  manual: "Manual",
+  scheduled: "Scheduled polling",
+  "real-time": "Real-time feed",
+};
+
+/** Configuration for RSS/API feed polling. */
+export interface FeedConfig {
+  /** Polling interval in minutes. */
+  pollingIntervalMinutes: number;
+  /** ISO date of the last successful fetch from this feed. */
+  lastFetched?: string;
+}
+
 export interface SourceRecord {
+  // ── Existing fields (unchanged) ──
   id: string;
-  /** URL-safe slug for routing. */
   slug: string;
   title: string;
   publisher: string;
   sourceType: SourceType;
-  /** The document type, e.g. "court order", "report", "resolution", "filing". */
   documentType?: string;
   url: string;
   publicationDate?: string;
   accessedAt: string;
   archiveUrl?: string;
   language?: string;
-  /** Legal or institutional jurisdiction, e.g. "International", "Belgium". */
   jurisdiction?: string;
-  /** Authors or issuing body, if distinct from publisher. */
   authors?: string[];
-  /** Whether this is an official institutional record. */
   official?: boolean;
-  /** Source currency status. */
   status: SourceStatus;
-  /** Notes safe for public display — no private/internal review notes. */
   notes?: string;
-  /** Schema version of this record. */
   version: number;
-  /** When the URL was last verified as resolving correctly. */
   lastCheckedAt?: string;
-  /** Route to the corrections process. */
   correctionUrl: string;
+
+  // ── Trust & Verification (new) ──
+  /** Human-assigned trust level 0–5. Default 0 — never auto-assigned. */
+  trustLevel: TrustLevel;
+  /** Method used to verify this source's content. */
+  verificationMethod?: VerificationMethod;
+
+  // ── API / RSS Automation Config (new, all optional) ──
+  /** API endpoint URL for programmatic access. */
+  apiEndpoint?: string;
+  /** Reference to a stored API key name — never the actual key value. */
+  apiKeyRef?: string;
+  /** RSS feed URL for automated polling. */
+  rssFeedUrl?: string;
+  /** Feed polling configuration. */
+  feedConfig?: FeedConfig;
+
+  // ── Licensing & Classification (new) ──
+  /** License name for the source content (e.g. "CC BY 4.0"). */
+  license?: string;
+  /** URL to the license text. */
+  licenseUrl?: string;
+  /** Geographic region for filtering (e.g. "Middle East", "Europe"). */
+  region?: string;
+  /** Topical category for filtering. */
+  category?: string;
+  /** Public notes on source reliability. */
+  reliabilityNotes?: string;
+
+  // ── Health & Monitoring (new) ──
+  /** Automation health status. Defaults to "unknown". */
+  healthStatus: HealthStatus;
+  /** How this source is updated. */
+  automationStatus: AutomationStatus;
+  /** ISO date of last successful automated fetch. */
+  lastSuccessfulFetch?: string;
+  /** ISO date of last failed fetch attempt. */
+  lastFailedFetch?: string;
+  /** Consecutive failure count since last success. */
+  failureCount: number;
+  /** Whether automated health monitoring is enabled for this source. */
+  monitoringEnabled: boolean;
 }
 
 export interface ReviewMetadata {
