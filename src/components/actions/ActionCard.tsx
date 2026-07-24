@@ -2,8 +2,12 @@ import { Link } from "react-router-dom";
 import { Reveal } from "../ui/Reveal";
 import { Card } from "../ui/Card";
 import { Badge } from "../ui/Badge";
-import { ACTION_TYPE_LABELS, type ActionTemplate } from "../../data/actionTemplates";
-import { CONTENT_STATUS_LABELS } from "../../types/content";
+import {
+  ACTION_TYPE_LABELS,
+  LANGUAGE_LABELS,
+  type ActionTemplate,
+} from "../../data/actionTemplates";
+import { CONTENT_STATUS_LABELS, TRANSLATION_STATUS_LABELS } from "../../types/content";
 import { CopyTemplateButton } from "./CopyTemplateButton";
 
 interface ActionCardProps {
@@ -13,6 +17,8 @@ interface ActionCardProps {
 
 export function ActionCard({ template, index }: ActionCardProps) {
   const hasTemplate = !!template.templateBody;
+  const isTranslation = !!template.translationOf;
+  const langLabel = LANGUAGE_LABELS[template.language] || template.language;
 
   return (
     <Reveal delay={0.18 + index * 0.06}>
@@ -26,11 +32,17 @@ export function ActionCard({ template, index }: ActionCardProps) {
               : "clay"
         }
       >
-        {/* Type + jurisdiction */}
+        {/* Type + jurisdiction + language */}
         <div className="flex flex-wrap items-center gap-2 mb-3">
           <Badge variant="neutral">
             {ACTION_TYPE_LABELS[template.actionType]}
           </Badge>
+          <Badge variant="neutral">{langLabel}</Badge>
+          {isTranslation && (
+            <Badge variant="warning">
+              {TRANSLATION_STATUS_LABELS[template.translationStatus]}
+            </Badge>
+          )}
           <span className="font-mono text-[11px] text-charcoal/50">
             {template.jurisdiction}
           </span>
@@ -113,7 +125,7 @@ export function ActionCard({ template, index }: ActionCardProps) {
           </ul>
         </div>
 
-        {/* Status + related pages */}
+        {/* Status + review dimensions */}
         <div className="flex flex-wrap items-center gap-2 mb-3">
           <Badge
             variant={
@@ -127,13 +139,22 @@ export function ActionCard({ template, index }: ActionCardProps) {
             {CONTENT_STATUS_LABELS[template.contentStatus]}
           </Badge>
           {template.templateReviewStatus === "draft" && (
-            <span className="font-mono text-[11px] text-amber/70">
-              Template text not yet reviewed
-            </span>
+            <Badge variant="warning">Template: draft</Badge>
+          )}
+          {template.jurisdictionReviewStatus === "draft" && (
+            <Badge variant="warning">Jurisdiction: draft</Badge>
+          )}
+          {isTranslation && template.languageReviewStatus === "draft" && (
+            <Badge variant="warning">Language: draft</Badge>
           )}
           {template.lastReviewedAt && (
             <span className="font-mono text-[11px] text-charcoal/45">
               Last reviewed: {template.lastReviewedAt}
+            </span>
+          )}
+          {isTranslation && template.translationStatus !== "reviewed" && (
+            <span className="font-mono text-[11px] text-amber/70">
+              Translation: {TRANSLATION_STATUS_LABELS[template.translationStatus].toLowerCase()}
             </span>
           )}
         </div>

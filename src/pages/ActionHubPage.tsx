@@ -12,6 +12,44 @@ import { ActionCard } from "../components/actions/ActionCard";
 
 const activeTemplates = getActiveTemplates();
 
+/** Group templates by broad jurisdiction for organised layout. */
+function groupByJurisdiction(
+  templates: typeof activeTemplates,
+): Record<string, typeof activeTemplates> {
+  const groups: Record<string, typeof activeTemplates> = {
+    Belgium: [],
+    "European Union": [],
+    "Platform-wide / Other": [],
+  };
+
+  for (const t of templates) {
+    if (
+      t.jurisdiction.startsWith("Belgium") ||
+      t.jurisdiction.startsWith("België") ||
+      t.jurisdiction.startsWith("Belgique")
+    ) {
+      groups["Belgium"].push(t);
+    } else if (
+      t.jurisdiction.startsWith("European Union") ||
+      t.jurisdiction.startsWith("Europese Unie") ||
+      t.jurisdiction.startsWith("Union européenne")
+    ) {
+      groups["European Union"].push(t);
+    } else {
+      groups["Platform-wide / Other"].push(t);
+    }
+  }
+
+  // Remove empty groups
+  for (const key of Object.keys(groups)) {
+    if (groups[key].length === 0) delete groups[key];
+  }
+
+  return groups;
+}
+
+const jurisdictionGroups = groupByJurisdiction(activeTemplates);
+
 export default function ActionHubPage() {
   return (
     <Container className="py-16 lg:py-20">
@@ -83,7 +121,7 @@ export default function ActionHubPage() {
         </ul>
       </PolicySection>
 
-      {/* Action cards */}
+      {/* Action cards — grouped by jurisdiction */}
       <section aria-labelledby="action-cards-heading">
         <h2
           id="action-cards-heading"
@@ -91,10 +129,32 @@ export default function ActionHubPage() {
         >
           Available actions
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
-          {activeTemplates.map((template, i) => (
-            <ActionCard key={template.id} template={template} index={i} />
-          ))}
+
+        {Object.entries(jurisdictionGroups).map(([jurisdiction, templates]) => (
+          <div key={jurisdiction} className="mb-8">
+            <h3 className="font-serif text-lg font-semibold text-ink/80 mb-3 border-b border-border pb-2">
+              {jurisdiction}
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+              {templates.map((template, i) => (
+                <ActionCard key={template.id} template={template} index={i} />
+              ))}
+            </div>
+          </div>
+        ))}
+
+        {/* Language availability note */}
+        <div className="bg-bone border border-border rounded-md p-4 mb-4">
+          <p className="text-sm text-charcoal/70 leading-relaxed">
+            <strong>Language availability:</strong>{" "}
+            Belgium- and EU-specific templates are published in English, Dutch
+            (Nederlands), and French (Français) where translations have been
+            drafted. Dutch and French translations are marked{" "}
+            <span className="font-medium text-amber/80">draft</span>{" "}
+            and require human language review before they can be marked as
+            reviewed. English originals remain review_pending until legal,
+            jurisdiction, and editorial review are complete.
+          </p>
         </div>
       </section>
 
@@ -282,7 +342,7 @@ export default function ActionHubPage() {
       </PreviewNotice>
 
       <CorrectionLink />
-      <LastUpdated date="2026-07-12" />
+      <LastUpdated date="2026-07-24" />
     </Container>
   );
 }

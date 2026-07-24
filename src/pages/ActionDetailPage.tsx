@@ -10,7 +10,9 @@ import {
   getTemplateBySlug,
   ACTION_TYPE_LABELS,
   REVIEW_STATUS_LABELS,
+  LANGUAGE_LABELS,
 } from "../data/actionTemplates";
+import { TRANSLATION_STATUS_LABELS } from "../types/content";
 import { sources } from "../data/sources";
 
 export default function ActionDetailPage() {
@@ -280,24 +282,69 @@ export default function ActionDetailPage() {
         </div>
       </div>
 
-      {/* ── 11. Language ──────────────────────────────────────────────────── */}
+      {/* ── 11. Language and translation status ────────────────────────────── */}
       <div className="mb-8">
         <h2 className="font-serif text-xl font-semibold text-ink mb-3">
-          Language
+          Language and translation
         </h2>
-        <div className="bg-bone border border-border rounded-lg p-4">
-          <p className="text-sm text-charcoal/80">
-            Template language:{" "}
-            <span className="font-medium">
-              {template.language === "en" ? "English" : template.language}
-            </span>
-          </p>
-          <p className="text-xs text-charcoal/50 mt-1">
-            Action templates are drafted in English during the static beta.
-            Translation into Dutch, French, Arabic, and additional languages
-            requires human review before publication.
-          </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div className="bg-bone border border-border rounded-lg p-4">
+            <p className="font-mono text-[11px] font-medium uppercase tracking-[0.1em] text-charcoal/45 mb-1">
+              Template language
+            </p>
+            <p className="text-sm text-charcoal/80 font-medium">
+              {LANGUAGE_LABELS[template.language] || template.language}
+            </p>
+          </div>
+          <div className="bg-bone border border-border rounded-lg p-4">
+            <p className="font-mono text-[11px] font-medium uppercase tracking-[0.1em] text-charcoal/45 mb-1">
+              Translation status
+            </p>
+            <Badge
+              variant={
+                template.translationStatus === "reviewed"
+                  ? "info"
+                  : template.translationStatus === "draft"
+                    ? "warning"
+                    : "neutral"
+              }
+            >
+              {TRANSLATION_STATUS_LABELS[template.translationStatus]}
+            </Badge>
+          </div>
         </div>
+        {template.translationOf && (
+          <div className="mt-3 bg-bone border border-border rounded-lg p-4">
+            <p className="font-mono text-[11px] font-medium uppercase tracking-[0.1em] text-charcoal/45 mb-1">
+              Translation of
+            </p>
+            <Link
+              to={`/take-action/${template.translationOf}`}
+              className="text-sm text-trust hover:text-trust/80 underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-trust/50 focus-visible:ring-offset-2 rounded-sm"
+            >
+              View the primary (English) version of this template
+            </Link>
+          </div>
+        )}
+        {template.language !== "en" && (
+          <div className="mt-3 p-3 bg-amber/5 border border-amber/20 rounded-md">
+            <p className="text-xs text-charcoal/70 leading-relaxed">
+              <strong>Translation note:</strong> This template is a translation
+              of the English original. The translation has not been reviewed by
+              a competent speaker of{" "}
+              {LANGUAGE_LABELS[template.language] || template.language}. It is
+              published as a draft to support accessibility across Belgium&rsquo;s
+              official languages, but should not be treated as reviewed content.
+              If you find errors in the translation, please submit a correction.
+            </p>
+          </div>
+        )}
+        <p className="text-xs text-charcoal/50 mt-3">
+          Action templates are drafted in English during the static beta.
+          Dutch and French translations require human language review before
+          being marked as reviewed. English originals remain review_pending
+          until legal, jurisdiction, and editorial review are complete.
+        </p>
       </div>
 
       {/* ── 12. Warnings ──────────────────────────────────────────────────── */}
@@ -526,7 +573,7 @@ export default function ActionDetailPage() {
       </p>
 
       <CorrectionLink />
-      <LastUpdated date="2026-07-14" />
+      <LastUpdated date="2026-07-24" />
     </Container>
   );
 }

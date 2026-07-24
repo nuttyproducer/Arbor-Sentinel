@@ -103,8 +103,8 @@ describe("ActionDetailPage", () => {
 
   it("displays language information", () => {
     renderActionDetail("contact-representative");
-    expect(screen.getByText("Language")).toBeInTheDocument();
-    // "English" may appear in multiple places (template language label + review status text)
+    expect(screen.getByText("Language and translation")).toBeInTheDocument();
+    // "English" may appear in the language label
     const englishMatches = screen.getAllByText(/English/);
     expect(englishMatches.length).toBeGreaterThan(0);
   });
