@@ -22,6 +22,13 @@ import {
   checkContentStatuses,
   checkVersions,
   checkInvalidSourceTypes,
+  checkOrganizationDonationDomain,
+  checkOrganizationLinkCheckDates,
+  checkEvidenceEmptySources,
+  checkOrganizationEmptySources,
+  checkOrganizationDescriptionLength,
+  checkEvidenceContentStatusSourceQualityConsistency,
+  checkOrganizationSourceStatus,
   validateAll,
 } from "../validation";
 import { sources } from "../sources";
@@ -796,5 +803,446 @@ describe("Warnings are non-blocking", () => {
   it("report has zero errors (warnings are OK)", () => {
     const report = validateAll();
     expect(report.errors).toHaveLength(0);
+  });
+});
+
+// ── Rule 19: Organization donation domain ──────────────────────────────────
+
+describe("Rule 19: Organization donation domain", () => {
+  it("passes when donation URL is on same domain", () => {
+    const orgs = [
+      {
+        id: "test",
+        slug: "test",
+        name: "Test Org",
+        category: "medical" as const,
+        regions: ["Global"],
+        shortDescription: "A test organisation for validating donation domain checks.",
+        officialWebsite: "https://www.example.org/",
+        officialDonationUrl: "https://www.example.org/donate",
+        relationshipStatus: "public_resource" as const,
+        contentStatus: "review_pending" as const,
+        sourceIds: ["org-test"],
+        version: 1,
+        correctionUrl: "/corrections",
+      },
+    ];
+    expect(checkOrganizationDonationDomain(orgs)).toHaveLength(0);
+  });
+
+  it("passes when donation URL is on donate.example.org subdomain", () => {
+    const orgs = [
+      {
+        id: "test",
+        slug: "test",
+        name: "Test Org",
+        category: "medical" as const,
+        regions: ["Global"],
+        shortDescription: "A test organisation for validating donation domain checks with subdomains.",
+        officialWebsite: "https://www.example.org/",
+        officialDonationUrl: "https://donate.example.org/",
+        relationshipStatus: "public_resource" as const,
+        contentStatus: "review_pending" as const,
+        sourceIds: ["org-test"],
+        version: 1,
+        correctionUrl: "/corrections",
+      },
+    ];
+    expect(checkOrganizationDonationDomain(orgs)).toHaveLength(0);
+  });
+
+  it("warns when donation URL is on unrelated domain", () => {
+    const orgs = [
+      {
+        id: "test",
+        slug: "test",
+        name: "Test Org",
+        category: "medical" as const,
+        regions: ["Global"],
+        shortDescription: "A test organisation for validating donation domain mismatch detection.",
+        officialWebsite: "https://www.example.org/",
+        officialDonationUrl: "https://unrelated-payment.com/donate",
+        relationshipStatus: "public_resource" as const,
+        contentStatus: "review_pending" as const,
+        sourceIds: ["org-test"],
+        version: 1,
+        correctionUrl: "/corrections",
+      },
+    ];
+    const issues = checkOrganizationDonationDomain(orgs);
+    expect(issues.length).toBeGreaterThan(0);
+    expect(issues.every((i: { severity: string }) => i.severity === "warning")).toBe(true);
+  });
+
+  it("passes on real organizations", () => {
+    const issues = checkOrganizationDonationDomain(organizationRecords);
+    // All donation URLs should be on the same domain as the official website
+    const errors = issues.filter((i: { severity: string }) => i.severity === "error");
+    expect(errors).toHaveLength(0);
+  });
+});
+
+// ── Rule 20: Organization link-check dates ─────────────────────────────────
+
+describe("Rule 20: Organization link-check dates", () => {
+  it("passes when all link-check dates are present", () => {
+    const orgs = [
+      {
+        id: "test",
+        slug: "test",
+        name: "Test Org",
+        category: "medical" as const,
+        regions: ["Global"],
+        shortDescription: "A test organisation with complete link-check dates.",
+        officialWebsite: "https://www.example.org/",
+        officialWebsiteCheckedAt: "2026-07-24",
+        officialDonationUrl: "https://www.example.org/donate",
+        officialDonationUrlCheckedAt: "2026-07-24",
+        relationshipStatus: "public_resource" as const,
+        contentStatus: "review_pending" as const,
+        sourceIds: ["org-test"],
+        version: 1,
+        correctionUrl: "/corrections",
+      },
+    ];
+    expect(checkOrganizationLinkCheckDates(orgs)).toHaveLength(0);
+  });
+
+  it("detects missing website check date", () => {
+    const orgs = [
+      {
+        id: "test",
+        slug: "test",
+        name: "Test Org",
+        category: "medical" as const,
+        regions: ["Global"],
+        shortDescription: "A test organisation missing its website link-check date.",
+        officialWebsite: "https://www.example.org/",
+        officialWebsiteCheckedAt: undefined,
+        relationshipStatus: "public_resource" as const,
+        contentStatus: "review_pending" as const,
+        sourceIds: ["org-test"],
+        version: 1,
+        correctionUrl: "/corrections",
+      },
+    ];
+    const issues = checkOrganizationLinkCheckDates(orgs);
+    expect(issues).toHaveLength(1);
+    expect(issues[0].field).toBe("officialWebsiteCheckedAt");
+  });
+
+  it("detects missing donation-link check date", () => {
+    const orgs = [
+      {
+        id: "test",
+        slug: "test",
+        name: "Test Org",
+        category: "medical" as const,
+        regions: ["Global"],
+        shortDescription: "A test organisation missing its donation-link check date.",
+        officialWebsite: "https://www.example.org/",
+        officialWebsiteCheckedAt: "2026-07-24",
+        officialDonationUrl: "https://www.example.org/donate",
+        officialDonationUrlCheckedAt: undefined,
+        relationshipStatus: "public_resource" as const,
+        contentStatus: "review_pending" as const,
+        sourceIds: ["org-test"],
+        version: 1,
+        correctionUrl: "/corrections",
+      },
+    ];
+    const issues = checkOrganizationLinkCheckDates(orgs);
+    expect(issues).toHaveLength(1);
+    expect(issues[0].field).toBe("officialDonationUrlCheckedAt");
+  });
+
+  it("passes on real organizations", () => {
+    expect(checkOrganizationLinkCheckDates(organizationRecords)).toHaveLength(0);
+  });
+});
+
+// ── Rule 21: Evidence empty sources ─────────────────────────────────────────
+
+describe("Rule 21: Evidence empty sources", () => {
+  it("passes when publishable evidence has sources", () => {
+    const items = [
+      {
+        id: "test",
+        slug: "test",
+        title: "Test",
+        summary: "Test summary with adequate description for validation.",
+        category: "court record" as const,
+        sourceIds: ["src-1"],
+        primarySourceType: "court" as const,
+        sourceQuality: 5 as const,
+        contentStatus: "review_pending" as const,
+        version: 1,
+        correctionUrl: "/corrections",
+        tags: [],
+        relatedRoutes: [],
+      },
+    ];
+    expect(checkEvidenceEmptySources(items)).toHaveLength(0);
+  });
+
+  it("detects publishable evidence without sources", () => {
+    const items = [
+      {
+        id: "test",
+        slug: "test",
+        title: "Test",
+        summary: "An evidence item without any source references.",
+        category: "court record" as const,
+        sourceIds: [] as string[],
+        primarySourceType: "court" as const,
+        sourceQuality: 5 as const,
+        contentStatus: "review_pending" as const,
+        version: 1,
+        correctionUrl: "/corrections",
+        tags: [],
+        relatedRoutes: [],
+      },
+    ];
+    const issues = checkEvidenceEmptySources(items);
+    expect(issues.length).toBeGreaterThan(0);
+  });
+
+  it("passes on real evidence items", () => {
+    expect(checkEvidenceEmptySources(evidenceItems)).toHaveLength(0);
+  });
+});
+
+// ── Rule 22: Organization empty sources ─────────────────────────────────────
+
+describe("Rule 22: Organization empty sources", () => {
+  it("passes when org has sources or valid website", () => {
+    const orgs = [
+      {
+        id: "test",
+        slug: "test",
+        name: "Test Org",
+        category: "medical" as const,
+        regions: ["Global"],
+        shortDescription: "A test organisation with source IDs and a valid website.",
+        officialWebsite: "https://www.example.org/",
+        relationshipStatus: "public_resource" as const,
+        contentStatus: "review_pending" as const,
+        sourceIds: ["org-test"],
+        version: 1,
+        correctionUrl: "/corrections",
+      },
+    ];
+    expect(checkOrganizationEmptySources(orgs)).toHaveLength(0);
+  });
+
+  it("detects publishable org without sources or valid website", () => {
+    const orgs = [
+      {
+        id: "test",
+        slug: "test",
+        name: "Test Org",
+        category: "medical" as const,
+        regions: ["Global"],
+        shortDescription: "A test organisation with no source basis whatsoever.",
+        officialWebsite: "",
+        relationshipStatus: "public_resource" as const,
+        contentStatus: "review_pending" as const,
+        sourceIds: [] as string[],
+        version: 1,
+        correctionUrl: "/corrections",
+      },
+    ];
+    const issues = checkOrganizationEmptySources(orgs);
+    expect(issues.length).toBeGreaterThan(0);
+  });
+
+  it("passes on real organizations", () => {
+    expect(checkOrganizationEmptySources(organizationRecords)).toHaveLength(0);
+  });
+});
+
+// ── Rule 23: Organization description length ────────────────────────────────
+
+describe("Rule 23: Organization description length", () => {
+  it("passes with adequate description", () => {
+    const orgs = [
+      {
+        id: "test",
+        slug: "test",
+        name: "Test Org",
+        category: "medical" as const,
+        regions: ["Global"],
+        shortDescription: "A well-described organisation with a description that is sufficiently detailed to meet the minimum length requirement.",
+        officialWebsite: "https://www.example.org/",
+        relationshipStatus: "public_resource" as const,
+        contentStatus: "review_pending" as const,
+        sourceIds: ["org-test"],
+        version: 1,
+        correctionUrl: "/corrections",
+      },
+    ];
+    expect(checkOrganizationDescriptionLength(orgs)).toHaveLength(0);
+  });
+
+  it("detects empty description", () => {
+    const orgs = [
+      {
+        id: "test",
+        slug: "test",
+        name: "Test Org",
+        category: "medical" as const,
+        regions: ["Global"],
+        shortDescription: "",
+        officialWebsite: "https://www.example.org/",
+        relationshipStatus: "public_resource" as const,
+        contentStatus: "review_pending" as const,
+        sourceIds: ["org-test"],
+        version: 1,
+        correctionUrl: "/corrections",
+      },
+    ];
+    const issues = checkOrganizationDescriptionLength(orgs);
+    expect(issues.length).toBeGreaterThan(0);
+  });
+
+  it("detects too-short description", () => {
+    const orgs = [
+      {
+        id: "test",
+        slug: "test",
+        name: "Test Org",
+        category: "medical" as const,
+        regions: ["Global"],
+        shortDescription: "Too short.",
+        officialWebsite: "https://www.example.org/",
+        relationshipStatus: "public_resource" as const,
+        contentStatus: "review_pending" as const,
+        sourceIds: ["org-test"],
+        version: 1,
+        correctionUrl: "/corrections",
+      },
+    ];
+    const issues = checkOrganizationDescriptionLength(orgs);
+    expect(issues.length).toBeGreaterThan(0);
+  });
+
+  it("passes on real organizations", () => {
+    // All real orgs should have adequate descriptions
+    const issues = checkOrganizationDescriptionLength(organizationRecords);
+    const errors = issues.filter((i: { severity: string }) => i.severity === "error");
+    expect(errors).toHaveLength(0);
+  });
+});
+
+// ── Rule 24: Evidence content-status vs source-quality consistency ──────────
+
+describe("Rule 24: Evidence content-status / source-quality consistency", () => {
+  it("passes when reviewed evidence has sourceQuality ≥ 2", () => {
+    const items = [
+      {
+        id: "test",
+        slug: "test",
+        title: "Test",
+        summary: "A properly reviewed evidence item with sufficient source quality.",
+        category: "court record" as const,
+        sourceIds: ["src-1"],
+        primarySourceType: "court" as const,
+        sourceQuality: 5 as const,
+        contentStatus: "reviewed" as const,
+        version: 1,
+        correctionUrl: "/corrections",
+        tags: [],
+        relatedRoutes: [],
+        lastReviewedAt: "2026-07-24",
+        reviewedByRole: "Contributor",
+      },
+    ];
+    expect(checkEvidenceContentStatusSourceQualityConsistency(items)).toHaveLength(0);
+  });
+
+  it("detects reviewed evidence with sourceQuality < 2", () => {
+    const items = [
+      {
+        id: "test",
+        slug: "test",
+        title: "Test",
+        summary: "An evidence item claiming review but relying on an unreviewed lead.",
+        category: "court record" as const,
+        sourceIds: ["src-1"],
+        primarySourceType: "court" as const,
+        sourceQuality: 0 as const,
+        contentStatus: "reviewed" as const,
+        version: 1,
+        correctionUrl: "/corrections",
+        tags: [],
+        relatedRoutes: [],
+        lastReviewedAt: "2026-07-24",
+        reviewedByRole: "Contributor",
+      },
+    ];
+    const issues = checkEvidenceContentStatusSourceQualityConsistency(items);
+    expect(issues.length).toBeGreaterThan(0);
+  });
+
+  it("passes on real evidence items", () => {
+    expect(checkEvidenceContentStatusSourceQualityConsistency(evidenceItems)).toHaveLength(0);
+  });
+});
+
+// ── Rule 25: Organization source status ─────────────────────────────────────
+
+describe("Rule 25: Organization source status", () => {
+  it("passes when all referenced sources are active", () => {
+    const orgs = [
+      {
+        id: "test",
+        slug: "test",
+        name: "Test Org",
+        category: "medical" as const,
+        regions: ["Global"],
+        shortDescription: "A test organisation for source status validation.",
+        officialWebsite: "https://www.example.org/",
+        relationshipStatus: "public_resource" as const,
+        contentStatus: "review_pending" as const,
+        sourceIds: ["active-source"],
+        version: 1,
+        correctionUrl: "/corrections",
+      },
+    ];
+    const sourceRecords = [
+      { id: "active-source", status: "active" },
+    ];
+    expect(checkOrganizationSourceStatus(orgs, sourceRecords)).toHaveLength(0);
+  });
+
+  it("warns when referenced source is broken", () => {
+    const orgs = [
+      {
+        id: "test",
+        slug: "test",
+        name: "Test Org",
+        category: "medical" as const,
+        regions: ["Global"],
+        shortDescription: "A test organisation referencing a broken source record.",
+        officialWebsite: "https://www.example.org/",
+        relationshipStatus: "public_resource" as const,
+        contentStatus: "review_pending" as const,
+        sourceIds: ["broken-source"],
+        version: 1,
+        correctionUrl: "/corrections",
+      },
+    ];
+    const sourceRecords = [
+      { id: "broken-source", status: "broken", notes: "Link 404s" },
+    ];
+    const issues = checkOrganizationSourceStatus(orgs, sourceRecords);
+    expect(issues.length).toBeGreaterThan(0);
+    expect(issues.every((i: { severity: string }) => i.severity === "warning")).toBe(true);
+  });
+
+  it("passes on real organizations", () => {
+    const issues = checkOrganizationSourceStatus(organizationRecords, sources);
+    const errors = issues.filter((i: { severity: string }) => i.severity === "error");
+    expect(errors).toHaveLength(0);
   });
 });

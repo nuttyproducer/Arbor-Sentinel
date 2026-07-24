@@ -207,7 +207,7 @@ export default function OrganizationsPage() {
       </PreviewNotice>
 
       <CorrectionLink />
-      <LastUpdated date="2026-07-12" />
+      <LastUpdated date="2026-07-24" />
     </Container>
   );
 }

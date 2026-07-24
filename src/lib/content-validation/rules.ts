@@ -562,3 +562,228 @@ export function checkInvalidSourceTypes(
   }
   return issues;
 }
+
+// ── Rule 19: Organization donation URL domain check ─────────────────────
+
+/**
+ * Verify that any officialDonationUrl is on the same domain as the
+ * officialWebsite, or on a known/official subdomain. This prevents
+ * listing donation links that redirect to third-party payment
+ * processors or unofficial mirrors.
+ */
+export function checkOrganizationDonationDomain(
+  records: OrganizationRecord[],
+): ValidationIssue[] {
+  const issues: ValidationIssue[] = [];
+  for (const org of records) {
+    if (!org.officialDonationUrl) continue;
+
+    try {
+      const siteHost = new URL(org.officialWebsite).hostname.toLowerCase();
+      const donationHost = new URL(org.officialDonationUrl).hostname.toLowerCase();
+
+      // Same domain always OK
+      if (siteHost === donationHost) continue;
+
+      // Subdomain of same parent domain is OK
+      const siteParts = siteHost.split(".");
+      const donationParts = donationHost.split(".");
+      if (siteParts.length >= 2 && donationParts.length >= 2) {
+        const siteRoot = siteParts.slice(-2).join(".");
+        const donationRoot = donationParts.slice(-2).join(".");
+        if (siteRoot === donationRoot) continue;
+      }
+
+      // Special case: known official donation domains / platforms
+      // Many organizations use donate.<domain> as a subdomain
+      if (donationHost.startsWith("donate.") || donationHost.startsWith("donation.")) {
+        const donationRoot = donationHost.replace(/^(donate|donation)\./, "");
+        if (siteHost === donationRoot || siteHost.endsWith("." + donationRoot)) continue;
+      }
+
+      issues.push(
+        issue("organizations", org.id, "officialDonationUrl",
+          `Donation URL domain "${donationHost}" does not match official website domain "${siteHost}". Verify the donation link is official.`,
+          "warning"),
+      );
+    } catch {
+      // URL parse failure — covered by checkInvalidUrls
+    }
+  }
+  return issues;
+}
+
+// ── Rule 20: Organization link-check date presence ──────────────────────
+
+/**
+ * Verify that every organization with a website has an
+ * officialWebsiteCheckedAt date, and that every organization with a
+ * donation URL has an officialDonationUrlCheckedAt date.
+ */
+export function checkOrganizationLinkCheckDates(
+  records: OrganizationRecord[],
+): ValidationIssue[] {
+  const issues: ValidationIssue[] = [];
+  for (const org of records) {
+    if (org.officialWebsite && !org.officialWebsiteCheckedAt) {
+      issues.push(
+        issue("organizations", org.id, "officialWebsiteCheckedAt",
+          "Organization has an official website but no link-check date."),
+      );
+    }
+    if (org.officialDonationUrl && !org.officialDonationUrlCheckedAt) {
+      issues.push(
+        issue("organizations", org.id, "officialDonationUrlCheckedAt",
+          "Organization has a donation URL but no donation-link-check date."),
+      );
+    }
+  }
+  return issues;
+}
+
+// ── Rule 21: Evidence item empty sourceIds ──────────────────────────────
+
+/**
+ * Every evidence item that is publicly visible (not draft) must have
+ * at least one sourceId. A record with empty sourceIds cannot be
+ * reviewed, source-checked, corroborated, or trusted-organization
+ * verified in the public editorial sense.
+ */
+export function checkEvidenceEmptySources(
+  records: EvidenceItem[],
+): ValidationIssue[] {
+  const issues: ValidationIssue[] = [];
+  for (const item of records) {
+    if (
+      item.contentStatus !== "draft" &&
+      item.sourceIds.length === 0
+    ) {
+      issues.push(
+        issue("evidenceItems", item.id, "sourceIds",
+          `Evidence item is ${item.contentStatus} but has empty sourceIds. Records without sources cannot be reviewed or verified.`),
+      );
+    }
+  }
+  return issues;
+}
+
+// ── Rule 22: Organization empty sourceIds ──────────────────────────────
+
+/**
+ * Every organization that is publicly visible (not draft) must have
+ * at least one sourceId or a valid officialWebsite. The organization's
+ * own website may serve as the primary source for directory listings.
+ */
+export function checkOrganizationEmptySources(
+  records: OrganizationRecord[],
+): ValidationIssue[] {
+  const issues: ValidationIssue[] = [];
+  for (const org of records) {
+    if (
+      org.contentStatus !== "draft" &&
+      org.sourceIds.length === 0 &&
+      !isValidUrl(org.officialWebsite)
+    ) {
+      issues.push(
+        issue("organizations", org.id, "sourceIds",
+          `Organization is ${org.contentStatus} but has empty sourceIds and no valid official website.`),
+      );
+    }
+  }
+  return issues;
+}
+
+// ── Rule 23: Organization description length ───────────────────────────
+
+const MIN_DESCRIPTION_LENGTH = 60;
+const MAX_DESCRIPTION_LENGTH = 500;
+
+/**
+ * Organizations must have a descriptive shortDescription of reasonable
+ * length. Too-short descriptions suggest insufficient research; overly
+ * long descriptions suggest editorial copy that may need splitting.
+ */
+export function checkOrganizationDescriptionLength(
+  records: OrganizationRecord[],
+): ValidationIssue[] {
+  const issues: ValidationIssue[] = [];
+  for (const org of records) {
+    const len = (org.shortDescription || "").length;
+    if (len === 0) {
+      issues.push(
+        issue("organizations", org.id, "shortDescription",
+          "Organization has an empty description."),
+      );
+    } else if (len < MIN_DESCRIPTION_LENGTH) {
+      issues.push(
+        issue("organizations", org.id, "shortDescription",
+          `Description is too short (${len} chars, minimum ${MIN_DESCRIPTION_LENGTH}). Broaden the summary using the organization's own public materials.`),
+      );
+    } else if (len > MAX_DESCRIPTION_LENGTH) {
+      issues.push(
+        issue("organizations", org.id, "shortDescription",
+          `Description is too long (${len} chars, maximum ${MAX_DESCRIPTION_LENGTH}). Split editorial content into a separate detail section.`,
+          "warning"),
+      );
+    }
+  }
+  return issues;
+}
+
+// ── Rule 24: Evidence item content-status vs source-quality consistency ─
+
+/**
+ * Evidence items marked as "reviewed" must have sourceQuality ≥ 2
+ * (source-checked minimum). This prevents items that claim to be
+ * reviewed but rely on unreviewed or preserved-only leads.
+ */
+export function checkEvidenceContentStatusSourceQualityConsistency(
+  records: EvidenceItem[],
+): ValidationIssue[] {
+  const issues: ValidationIssue[] = [];
+  for (const item of records) {
+    if (item.contentStatus === "reviewed" && item.sourceQuality < 2) {
+      issues.push(
+        issue("evidenceItems", item.id, "sourceQuality",
+          `Evidence item is "reviewed" but sourceQuality is ${item.sourceQuality} (${item.sourceQuality === 0 ? "Unreviewed lead" : "Preserved lead"}). Reviewed items must be at least source-checked (level 2).`),
+      );
+    }
+  }
+  return issues;
+}
+
+// ── Rule 25: Source status consistency with organization references ─────
+
+/**
+ * If an organization references a source record that has status "broken"
+ * or "archived", that is a warning — the source may need updating or
+ * the organization's information may be out of date.
+ */
+export function checkOrganizationSourceStatus(
+  organizationRecords: OrganizationRecord[],
+  sourceRecords: { id: string; status: string; notes?: string }[],
+): ValidationIssue[] {
+  const issues: ValidationIssue[] = [];
+  const sourceStatusMap = new Map(sourceRecords.map((s) => [s.id, s.status]));
+
+  for (const org of organizationRecords) {
+    for (const sid of org.sourceIds) {
+      const status = sourceStatusMap.get(sid);
+      if (status === "broken") {
+        issues.push(
+          issue("organizations", org.id, "sourceIds",
+            `Organization references source "${sid}" which is marked "broken". The organization's information may be out of date.`,
+            "warning"),
+        );
+      }
+      if (status === "archived") {
+        issues.push(
+          issue("organizations", org.id, "sourceIds",
+            `Organization references source "${sid}" which is marked "archived". Consider updating to a current source.`,
+            "warning"),
+        );
+      }
+    }
+  }
+  return issues;
+}

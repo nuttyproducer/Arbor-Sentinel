@@ -41,6 +41,13 @@ import {
   checkContentStatuses,
   checkVersions,
   checkInvalidSourceTypes,
+  checkOrganizationDonationDomain,
+  checkOrganizationLinkCheckDates,
+  checkEvidenceEmptySources,
+  checkOrganizationEmptySources,
+  checkOrganizationDescriptionLength,
+  checkEvidenceContentStatusSourceQualityConsistency,
+  checkOrganizationSourceStatus,
 } from "./rules";
 
 // ── Build route set ───────────────────────────────────────────────────────
@@ -75,6 +82,8 @@ export function validateAll(): ValidationReport {
     ...checkInvalidVerificationLevels("evidenceItems", evidenceItems),
     ...checkInvalidSourceTypes("evidenceItems", evidenceItems),
     ...checkEvidenceReviewedSourceSupport(evidenceItems),
+    ...checkEvidenceEmptySources(evidenceItems),
+    ...checkEvidenceContentStatusSourceQualityConsistency(evidenceItems),
     ...checkMissingCorrectionRoute("evidenceItems", evidenceItems),
     ...checkRelatedRoutes("evidenceItems", evidenceItems, VALID_ROUTES),
     ...checkStaleReviews("evidenceItems", evidenceItems, "court record"),
@@ -113,7 +122,7 @@ export function validateAll(): ValidationReport {
     ...checkDuplicateIds("organizations", organizationRecords),
     ...checkDuplicateSlugs("organizations", organizationRecords),
     ...checkInvalidUrls("organizations", organizationRecords, ["officialWebsite", "officialDonationUrl"]),
-    ...checkInvalidDates("organizations", organizationRecords, ["lastReviewedAt"]),
+    ...checkInvalidDates("organizations", organizationRecords, ["lastReviewedAt", "officialWebsiteCheckedAt", "officialDonationUrlCheckedAt"]),
     ...checkMissingSourceRefs("organizations", organizationRecords, SOURCE_IDS),
     ...checkEmptySourcesOnReviewed("organizations", organizationRecords),
     ...checkReviewedWithoutLastReviewedAt("organizations", organizationRecords),
@@ -123,6 +132,11 @@ export function validateAll(): ValidationReport {
     ...checkMissingCorrectionRoute("organizations", organizationRecords),
     ...checkStaleReviews("organizations", organizationRecords, "organization"),
     ...checkOrganizationReviewedSourceBasis(organizationRecords),
+    ...checkOrganizationDonationDomain(organizationRecords),
+    ...checkOrganizationLinkCheckDates(organizationRecords),
+    ...checkOrganizationEmptySources(organizationRecords),
+    ...checkOrganizationDescriptionLength(organizationRecords),
+    ...checkOrganizationSourceStatus(organizationRecords, sources),
     ...checkContentStatuses("organizations", organizationRecords),
     ...checkVersions("organizations", organizationRecords),
 
