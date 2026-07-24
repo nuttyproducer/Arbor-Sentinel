@@ -1,0 +1,228 @@
+name: Accessibility review
+description: Request or submit an accessibility review for pages or components
+labels: [accessibility-review, needs-triage]
+title: "[ACCESSIBILITY REVIEW] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Accessibility review
+
+        Use this template to request an accessibility review or to submit
+        accessibility findings for Accountability Atlas pages or components.
+
+        **This is not a partnership programme.** Submitting an accessibility
+        review does not create a partnership, endorsement, affiliation,
+        employment, or official representation relationship.
+
+        **Do not submit sensitive, confidential, or private information through
+        this public form.**
+
+  - type: dropdown
+    id: request_type
+    attributes:
+      label: Request type
+      description: Are you requesting a review or submitting findings?
+      options:
+        - Requesting an accessibility review
+        - Submitting accessibility review findings
+    validations:
+      required: true
+
+  - type: input
+    id: pages
+    attributes:
+      label: Pages or components
+      description: Which pages, routes, or components need accessibility review?
+      placeholder: /methodology, /countries/belgium, SearchPage
+    validations:
+      required: true
+
+  - type: dropdown
+    id: standard
+    attributes:
+      label: Accessibility standard
+      description: Which standard should this review target?
+      options:
+        - WCAG 2.2 AA
+        - WCAG 2.1 AA
+        - WCAG 2.2 AAA
+        - Other (specify in scope)
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Review scope
+      description: What aspects of accessibility should be checked? Select all that apply and add notes.
+      placeholder: |
+        - [ ] Keyboard navigation (tab order, focus visibility, skip-link)
+        - [ ] Screen reader (heading hierarchy, landmarks, alt text, ARIA)
+        - [ ] Colour and contrast (WCAG AA minimums)
+        - [ ] Zoom and viewport (200%, 400%, 375px, responsive breakpoints)
+        - [ ] Motion (prefers-reduced-motion)
+        - [ ] Touch targets (≥ 44×44px)
+        - [ ] Print layout
+        - [ ] Low-graphic mode
+        - [ ] Other:
+    validations:
+      required: true
+
+  - type: textarea
+    id: findings
+    attributes:
+      label: Findings (if submitting a review)
+      description: Report findings for each accessibility criterion checked. Use severity: critical / high / medium / low.
+      placeholder: |
+        ### Keyboard navigation
+        - [ ] Tab order is logical — [Pass / Fail — describe issue]
+        - [ ] Focus rings are visible — [Pass / Fail — describe issue]
+        - [ ] Skip-to-content link works — [Pass / Fail — describe issue]
+        - [ ] No keyboard traps — [Pass / Fail — describe issue]
+
+        ### Screen reader
+        - [ ] Page has unique `<title>` — [Pass / Fail]
+        - [ ] Heading hierarchy (h1→h2→h3, no skips) — [Pass / Fail — note any skips]
+        - [ ] Landmarks present (banner, main, contentinfo, nav) — [Pass / Fail]
+        - [ ] Images have alt text or aria-hidden — [Pass / Fail — list images without]
+
+        ### Colour and contrast
+        - [ ] Text meets 4.5:1 minimum — [Pass / Fail — note specific elements]
+        - [ ] Focus rings have sufficient contrast — [Pass / Fail]
+        - [ ] Info not conveyed by colour alone — [Pass / Fail]
+
+        ### Zoom and viewport
+        - [ ] 200% zoom — all content readable — [Pass / Fail]
+        - [ ] 400% zoom — critical content visible — [Pass / Fail]
+        - [ ] 375px viewport — no horizontal overflow — [Pass / Fail]
+
+        ### Motion
+        - [ ] prefers-reduced-motion respected — [Pass / Fail]
+    validations:
+      required: false
+
+  - type: textarea
+    id: issues
+    attributes:
+      label: Detailed issues
+      description: For each accessibility issue, provide a detailed description with severity and suggested fix.
+      placeholder: |
+        ### Issue 1 (severity: critical)
+        **Page/component:** [name]
+        **WCAG criterion:** [e.g., 2.4.7 Focus Visible]
+        **Issue:** Focus ring is not visible on the main navigation links.
+        **Suggested fix:** Add a visible outline or box-shadow to focused nav links. Ensure contrast ≥ 3:1 against adjacent colours.
+
+        ### Issue 2 (severity: high)
+        ...
+    validations:
+      required: false
+
+  - type: textarea
+    id: tested_with
+    attributes:
+      label: Tested with
+      description: What tools, browsers, and assistive technologies did you use?
+      placeholder: |
+        - Browser: Chrome 128, Firefox 130
+        - Screen reader: NVDA 2024.1 (Windows), VoiceOver (macOS)
+        - Tools: axe-core, Lighthouse, WAVE, manual keyboard testing
+        - Viewports: 375px, 768px, 1024px, 1920px
+    validations:
+      required: false
+
+  - type: dropdown
+    id: outcome
+    attributes:
+      label: Outcome (if submitting findings)
+      description: What is the overall outcome of this review?
+      options:
+        - Not applicable (requesting a review)
+        - Approved — no accessibility issues found
+        - Changes requested — see findings above
+        - Blocked — critical accessibility barriers prevent publication
+    validations:
+      required: true
+
+  - type: textarea
+    id: unresolved_risk
+    attributes:
+      label: Unresolved accessibility risk
+      description: Are there any accessibility concerns that remain unresolved?
+      placeholder: |
+        - Screen reader testing was done with NVDA only. VoiceOver and JAWS testing recommended.
+        - Complex data visualisation on EvidenceDetailPage needs additional review for screen-reader accessibility.
+    validations:
+      required: false
+
+  - type: input
+    id: reviewer_role
+    attributes:
+      label: Reviewer role (for public metadata)
+      description: How should your role be described publicly? (e.g., "accessibility reviewer"). Leave blank if you prefer not to be credited.
+      placeholder: accessibility reviewer
+    validations:
+      required: false
+
+  - type: dropdown
+    id: name_permission
+    attributes:
+      label: Name credit permission
+      description: Do you permit your name to appear in public metadata for this review?
+      options:
+        - No — use role description only
+        - Yes — I will provide my name separately to the maintainer
+    validations:
+      required: true
+
+  - type: dropdown
+    id: visibility
+    attributes:
+      label: Visibility preference
+      description: How much of this review should be publicly visible?
+      options:
+        - Public metadata only (review type, date, outcome, role — no detailed findings)
+        - Full report public (all findings public; name still requires separate permission)
+        - Private (nothing publicly attributed)
+    validations:
+      required: true
+
+  - type: input
+    id: commit_version
+    attributes:
+      label: Commit or version reviewed
+      description: Which version was reviewed?
+      placeholder: abc123def456 or version 1.2.0
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: declarations
+    attributes:
+      label: Reviewer declarations
+      description: Please confirm the following before submitting.
+      options:
+        - label: I have tested the pages/components listed in the scope
+          required: true
+        - label: I have disclosed any conflicts of interest to the maintainer (see reviewer-conflict-of-interest.md)
+          required: true
+        - label: I understand that this review does not create a partnership, endorsement, affiliation, employment, or official representation relationship with Accountability Atlas
+          required: true
+        - label: I understand that I may describe my contribution but may not speak for the project without written authorisation
+          required: true
+        - label: I have not submitted, collected, or stored any private personal data, confidential institutional material, or sensitive evidence as part of this review
+          required: true
+        - label: This submission does not contain private personal information, sensitive evidence, private testimony, or confidential institutional material
+          required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+
+        **Review evidence:** If this review leads to changes, a review evidence
+        record will be created following the [Review Evidence Format](../blob/main/docs/review-evidence-format.md).
+
+        **Questions?** See the [Reviewer Guide](../blob/main/docs/reviewer-guide.md)
+        and [Accessibility and Performance Gate](../blob/main/docs/accessibility-and-performance-gate.md).

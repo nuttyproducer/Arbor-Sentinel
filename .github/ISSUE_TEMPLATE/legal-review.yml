@@ -1,0 +1,198 @@
+name: Legal review
+description: Request or submit a legal review of content, terminology, or procedural descriptions
+labels: [legal-review, needs-triage]
+title: "[LEGAL REVIEW] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Legal review
+
+        Use this template to request a legal review or to submit legal review
+        findings for Accountability Atlas content.
+
+        **This is not a partnership programme.** Submitting a legal review does
+        not create a partnership, endorsement, affiliation, employment, or
+        official representation relationship.
+
+        **Do not submit sensitive, confidential, or private information through
+        this public form.** This includes private testimony, personal data,
+        confidential institutional material, or unreviewed third-party data.
+
+  - type: dropdown
+    id: request_type
+    attributes:
+      label: Request type
+      description: Are you requesting a review or submitting findings?
+      options:
+        - Requesting a legal review
+        - Submitting legal review findings
+    validations:
+      required: true
+
+  - type: input
+    id: content_ids
+    attributes:
+      label: Content record IDs
+      description: Which content records need review? (e.g., evidence-0001, belgium)
+      placeholder: evidence-0001, legal-case-icj-01
+    validations:
+      required: true
+
+  - type: dropdown
+    id: legal_area
+    attributes:
+      label: Legal area
+      description: What area of law does this content involve?
+      multiple: true
+      options:
+        - International Humanitarian Law (IHL)
+        - International Criminal Law (ICL)
+        - International Human Rights Law (IHRL)
+        - Genocide Convention
+        - Rome Statute / ICC
+        - ICJ proceedings
+        - National law (specify in description)
+        - EU law
+        - Arms transfer / export control law
+        - Refugee / asylum law
+        - Sanctions law
+        - Other (specify in description)
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Review scope
+      description: What specifically needs legal review? Describe the content, claims, or terminology.
+      placeholder: |
+        - The summary uses "the court found" for a provisional measures order
+        - The legalStatuses labels for this record need verification
+        - The procedural posture description may be outdated
+    validations:
+      required: true
+
+  - type: textarea
+    id: findings
+    attributes:
+      label: Findings (if submitting a review)
+      description: If you are submitting legal review findings, describe each issue with severity and suggested fixes.
+      placeholder: |
+        ### Issue 1 (severity: high)
+        **Current text:** "..."
+        **Issue:** The text states a legal conclusion before a final judgment.
+        **Suggested fix:** Attribute the conclusion to the specific court and clarify procedural posture.
+        **Reference:** [source URL or legal reference]
+
+        ### Issue 2 (severity: medium)
+        ...
+    validations:
+      required: false
+
+  - type: textarea
+    id: sources
+    attributes:
+      label: Legal sources referenced
+      description: List the primary legal sources that should be checked (court documents, treaties, statutes).
+      placeholder: |
+        - ICJ Order on Provisional Measures, [date], [URL]
+        - Rome Statute, Article [X]
+        - [National law reference]
+    validations:
+      required: false
+
+  - type: dropdown
+    id: outcome
+    attributes:
+      label: Outcome (if submitting findings)
+      description: What is the overall outcome of this review?
+      options:
+        - Not applicable (requesting a review)
+        - Approved — no changes needed
+        - Changes requested — see findings above
+        - Blocked — content must not be published until issues are resolved
+    validations:
+      required: true
+
+  - type: textarea
+    id: unresolved_risk
+    attributes:
+      label: Unresolved legal risk
+      description: Are there any legal risks or concerns that remain unresolved after this review?
+      placeholder: |
+        - The proceedings are ongoing; procedural posture may change. Recommend re-review in [X] months.
+        - [Other unresolved concern]
+    validations:
+      required: false
+
+  - type: input
+    id: reviewer_role
+    attributes:
+      label: Reviewer role (for public metadata)
+      description: How should your role be described publicly? (e.g., "legal reviewer", "IHL reviewer"). Leave blank if you prefer not to be credited.
+      placeholder: legal reviewer
+    validations:
+      required: false
+
+  - type: dropdown
+    id: name_permission
+    attributes:
+      label: Name credit permission
+      description: Do you permit your name to appear in public metadata for this review?
+      options:
+        - No — use role description only
+        - Yes — I will provide my name separately to the maintainer
+    validations:
+      required: true
+
+  - type: dropdown
+    id: visibility
+    attributes:
+      label: Visibility preference
+      description: How much of this review should be publicly visible?
+      options:
+        - Public metadata only (review type, date, outcome, role — no detailed findings)
+        - Full report public (all findings public; name still requires separate permission)
+        - Private (nothing publicly attributed)
+    validations:
+      required: true
+
+  - type: input
+    id: commit_version
+    attributes:
+      label: Commit or version reviewed
+      description: Which version of the content was reviewed?
+      placeholder: abc123def456 or version 1.2.0
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: declarations
+    attributes:
+      label: Reviewer declarations
+      description: Please confirm the following before submitting.
+      options:
+        - label: I have reviewed only the content records listed in the scope
+          required: true
+        - label: I have disclosed any conflicts of interest to the maintainer (see reviewer-conflict-of-interest.md)
+          required: true
+        - label: I understand that this review does not create a partnership, endorsement, affiliation, employment, or official representation relationship with Accountability Atlas
+          required: true
+        - label: I understand that I may describe my contribution but may not speak for the project without written authorisation
+          required: true
+        - label: I have not submitted, collected, or stored any private personal data, confidential institutional material, or sensitive evidence as part of this review
+          required: true
+        - label: This submission does not contain private personal information, sensitive evidence, private testimony, or confidential institutional material
+          required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+
+        **Review evidence:** If this review leads to content changes, a review
+        evidence record will be created following the [Review Evidence Format](../blob/main/docs/review-evidence-format.md).
+
+        **Questions?** See the [Reviewer Guide](../blob/main/docs/reviewer-guide.md)
+        and [Legal Language Policy](../blob/main/docs/legal-language-policy.md).

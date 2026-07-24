@@ -1,0 +1,185 @@
+name: Content correction
+description: Report a factual, legal, source, wording, safety, accessibility, or translation error in published content
+labels: [correction, needs-triage]
+title: "[CORRECTION] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Content correction
+
+        Use this template to report an error in published Accountability Atlas
+        content. This form replaces the previous source correction template and
+        covers all correction types.
+
+        **This is not a partnership programme.** Submitting a correction does
+        not create a partnership, endorsement, affiliation, employment, or
+        official representation relationship.
+
+        **Do not submit sensitive, confidential, or private information through
+        this public form.** This includes private testimony, personal data,
+        confidential institutional material, or unreviewed third-party data.
+
+  - type: input
+    id: page_url
+    attributes:
+      label: Page or content URL
+      description: Link to the page or content record where the error appears.
+      placeholder: https://accountability-atlas.org/evidence/evidence-0001
+    validations:
+      required: true
+
+  - type: input
+    id: record_id
+    attributes:
+      label: Content record ID (if known)
+      description: The record ID from the content metadata (e.g., evidence-0001, belgium).
+      placeholder: evidence-0001
+    validations:
+      required: false
+
+  - type: dropdown
+    id: correction_type
+    attributes:
+      label: Correction type
+      description: What kind of error is this?
+      multiple: true
+      options:
+        - Factual error
+        - Wrong date
+        - Wrong location / name
+        - Outdated legal status
+        - Broken source link
+        - Mistranslation
+        - Misleading summary
+        - Incorrect verification label / source quality
+        - Legal terminology error
+        - False partnership implication
+        - Safety / privacy concern (private data exposed, doxing risk)
+        - Accessibility issue
+        - Copyright / licence issue
+        - Duplicated content
+        - Disputed source
+        - Typo / formatting / minor wording
+        - Other (describe below)
+    validations:
+      required: true
+
+  - type: textarea
+    id: what_is_wrong
+    attributes:
+      label: What is wrong?
+      description: Describe the error clearly. Include the current text if applicable.
+      placeholder: |
+        Current text: "The court found that the respondent committed genocide."
+        Issue: The court has not made a final finding on the merits. This was a provisional measures order.
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggested_correction
+    attributes:
+      label: Suggested correction
+      description: What should it say instead? Be specific.
+      placeholder: |
+        Suggested text: "The court ordered provisional measures requiring the respondent to [specific measures], pending a final determination on the merits."
+    validations:
+      required: true
+
+  - type: textarea
+    id: supporting_source
+    attributes:
+      label: Supporting source
+      description: Provide a link or reference to a source that supports the correction.
+      placeholder: |
+        - Primary source: [URL to court document, official record, or authoritative source]
+        - Publication date: [YYYY-MM-DD]
+        - Relevant excerpt: "[quote]"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: urgency
+    attributes:
+      label: Urgency
+      description: How urgent is this correction?
+      options:
+        - "Urgent: privacy/doxing, legal danger, serious factual error, false allegation"
+        - "High: material factual/source/legal issue, wrong casualty figure, misleading legal wording"
+        - "Normal: typo, formatting, outdated link, minor wording improvement"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: safety_concern
+    attributes:
+      label: Safety or privacy concern?
+      description: Does this correction involve private personal data, vulnerable people, or sensitive locations?
+      options:
+        - "No — this is a routine correction"
+        - "Yes — this involves private data, vulnerable people, or sensitive locations"
+        - "Unsure — please review"
+    validations:
+      required: true
+
+  - type: textarea
+    id: safety_details
+    attributes:
+      label: Safety / privacy details (if applicable)
+      description: >
+        If this involves safety or privacy, describe the concern in general terms.
+        Do NOT include the actual private data, exact locations, or identifying
+        details in this public form. Say "the page contains [type of information]
+        that should not be public" rather than repeating the information.
+      placeholder: |
+        The page contains a personal name / address / location that should not be public because [general reason].
+        Please contact me privately if more detail is needed.
+    validations:
+      required: false
+
+  - type: input
+    id: contact
+    attributes:
+      label: Contact (optional)
+      description: If you are willing to be contacted for clarification, provide a way to reach you. This is not published.
+      placeholder: email@example.com or GitHub handle
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: declarations
+    attributes:
+      label: Submitter declarations
+      description: Please confirm the following before submitting.
+      options:
+        - label: I have provided a clear description of what is wrong and what the correction should be
+          required: true
+        - label: I have provided a supporting source where available
+          required: false
+        - label: I understand that submitting a correction does not create a partnership, endorsement, or affiliation with Accountability Atlas
+          required: true
+        - label: This submission does not contain private personal information, sensitive evidence, private testimony, or confidential institutional material (I have described safety/privacy concerns in general terms only)
+          required: true
+        - label: If this is a security vulnerability, I have followed SECURITY.md instead of using this public form
+          required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+
+        ## What happens next
+
+        1. The correction will be triaged based on urgency.
+        2. A maintainer will review the issue against the sources.
+        3. If confirmed, the content will be updated and a correction note added
+           (for material corrections).
+        4. The correction will be recorded in the content's correction history.
+
+        **Urgent corrections** (privacy, doxing, legal danger) are reviewed
+        immediately. **High-priority corrections** (material factual, source,
+        or legal errors) are reviewed promptly. **Normal corrections** follow
+        the standard review cycle.
+
+        See the [Correction Policy](../blob/main/docs/correction-policy.md) for
+        full details on correction priorities and workflow.

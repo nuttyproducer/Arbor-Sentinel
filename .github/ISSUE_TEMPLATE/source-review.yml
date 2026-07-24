@@ -1,0 +1,204 @@
+name: Source review
+description: Request or submit a source verification review for content records
+labels: [source-review, needs-triage]
+title: "[SOURCE REVIEW] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Source review
+
+        Use this template to request a source verification review or to submit
+        source review findings for Accountability Atlas content.
+
+        **This is not a partnership programme.** Submitting a source review does
+        not create a partnership, endorsement, affiliation, employment, or
+        official representation relationship.
+
+        **Do not submit sensitive, confidential, or private information through
+        this public form.** This includes private testimony, personal data,
+        confidential institutional material, or unreviewed third-party data.
+
+  - type: dropdown
+    id: request_type
+    attributes:
+      label: Request type
+      description: Are you requesting a review or submitting findings?
+      options:
+        - Requesting a source review
+        - Submitting source review findings
+    validations:
+      required: true
+
+  - type: input
+    id: content_ids
+    attributes:
+      label: Content record IDs
+      description: Which content records need source verification? (e.g., evidence-0001, belgium)
+      placeholder: evidence-0001, evidence-0002
+    validations:
+      required: true
+
+  - type: textarea
+    id: source_ids
+    attributes:
+      label: Source IDs to verify
+      description: List the source IDs referenced by the content records that need verification.
+      placeholder: |
+        - src-icj-001
+        - src-un-045
+        - src-ngo-122
+    validations:
+      required: false
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Review scope
+      description: What specifically needs verification? Describe any concerns or focus areas.
+      placeholder: |
+        - Verify that each source URL resolves to the correct document
+        - Confirm publisher, publication date, and access date are correct
+        - Check that the source supports the claims made in the platform summary
+        - Verify source type assignments are correct
+    validations:
+      required: true
+
+  - type: textarea
+    id: findings
+    attributes:
+      label: Findings (if submitting a review)
+      description: For each source, report whether the URL resolves, publisher/date are correct, and the source supports the summary.
+      placeholder: |
+        | Source ID | URL resolves? | Publisher correct? | Date correct? | Supports summary? | Notes |
+        |---|---|---|---|---|---|
+        | src-icj-001 | Yes | Yes | Yes | Yes | |
+        | src-un-045 | Yes | Yes | No — should be 2025-11-15 | Yes | Access date also needs update |
+        | src-ngo-122 | No — 404 | — | — | — | URL may have changed. Archive URL needed. |
+    validations:
+      required: false
+
+  - type: textarea
+    id: issues
+    attributes:
+      label: Issues found
+      description: Describe each issue with severity and suggested fixes.
+      placeholder: |
+        ### Issue 1 (severity: high)
+        **Source:** src-ngo-122
+        **Issue:** URL returns 404. Source is inaccessible.
+        **Suggested fix:** Find current URL or add archive URL. If source is permanently unavailable, find alternative source.
+
+        ### Issue 2 (severity: medium)
+        **Source:** src-un-045
+        **Issue:** Publication date recorded as 2025-10-01 but the document is dated 2025-11-15.
+        **Suggested fix:** Correct publication date to 2025-11-15 and update access date.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: outcome
+    attributes:
+      label: Outcome (if submitting findings)
+      description: What is the overall outcome of this review?
+      options:
+        - Not applicable (requesting a review)
+        - Approved — all sources verified, no changes needed
+        - Changes requested — see findings above
+        - Blocked — critical source issues prevent publication
+    validations:
+      required: true
+
+  - type: textarea
+    id: unresolved_risk
+    attributes:
+      label: Unresolved source risk
+      description: Are there any source-related risks that remain unresolved?
+      placeholder: |
+        - Source src-xyz-099 is behind a paywall. Access method needs documentation.
+        - Several sources may disappear (news articles). Archive URLs recommended.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: source_quality_confirm
+    attributes:
+      label: Source quality confirmation
+      description: Do the assigned source quality levels (0–5) appear correct based on your verification?
+      options:
+        - Yes — all source quality levels appear correct
+        - No — some levels need adjustment (described in findings)
+        - Not applicable — quality levels not yet assigned
+    validations:
+      required: true
+
+  - type: input
+    id: reviewer_role
+    attributes:
+      label: Reviewer role (for public metadata)
+      description: How should your role be described publicly? (e.g., "source verifier"). Leave blank if you prefer not to be credited.
+      placeholder: source verifier
+    validations:
+      required: false
+
+  - type: dropdown
+    id: name_permission
+    attributes:
+      label: Name credit permission
+      description: Do you permit your name to appear in public metadata for this review?
+      options:
+        - No — use role description only
+        - Yes — I will provide my name separately to the maintainer
+    validations:
+      required: true
+
+  - type: dropdown
+    id: visibility
+    attributes:
+      label: Visibility preference
+      description: How much of this review should be publicly visible?
+      options:
+        - Public metadata only (review type, date, outcome, role — no detailed findings)
+        - Full report public (all findings public; name still requires separate permission)
+        - Private (nothing publicly attributed)
+    validations:
+      required: true
+
+  - type: input
+    id: commit_version
+    attributes:
+      label: Commit or version reviewed
+      description: Which version of the content was reviewed?
+      placeholder: abc123def456 or version 1.2.0
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: declarations
+    attributes:
+      label: Reviewer declarations
+      description: Please confirm the following before submitting.
+      options:
+        - label: I have verified each source URL by opening it in a browser
+          required: true
+        - label: I have disclosed any conflicts of interest to the maintainer (see reviewer-conflict-of-interest.md)
+          required: true
+        - label: I understand that this review does not create a partnership, endorsement, affiliation, employment, or official representation relationship with Accountability Atlas
+          required: true
+        - label: I understand that I may describe my contribution but may not speak for the project without written authorisation
+          required: true
+        - label: I have not submitted, collected, or stored any private personal data, confidential institutional material, or sensitive evidence as part of this review
+          required: true
+        - label: This submission does not contain private personal information, sensitive evidence, private testimony, or confidential institutional material
+          required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+
+        **Review evidence:** If this review leads to content changes, a review
+        evidence record will be created following the [Review Evidence Format](../blob/main/docs/review-evidence-format.md).
+
+        **Questions?** See the [Reviewer Guide](../blob/main/docs/reviewer-guide.md)
+        and [Source Review Checklist](../blob/main/docs/source-review-checklist.md).
