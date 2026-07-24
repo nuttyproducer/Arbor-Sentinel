@@ -333,6 +333,114 @@ export const LEGAL_TIMELINE_EVENT_LABELS: Record<LegalTimelineEventType, string>
   official_report_update: "Official report / update",
 };
 
+// ── Country & Institution Accountability ─────────────────────────────────────
+
+/** Record of a government position on a specific issue at a specific date. */
+export interface CountryPositionRecord {
+  id: string;
+  area: string;
+  position: string;
+  attribution: string;
+  date: string;
+  sourceIds: string[];
+  contentStatus: ContentStatus;
+  version: number;
+  correctionUrl: string;
+}
+
+/** Record of an EU institution's position or action. */
+export interface InstitutionPositionRecord {
+  id: string;
+  institution: string;
+  area: string;
+  position: string;
+  attribution: string;
+  date: string;
+  sourceIds: string[];
+  contentStatus: ContentStatus;
+  version: number;
+  correctionUrl: string;
+}
+
+/** Describes a division of legal or political competence. */
+export interface CompetencyRecord {
+  id: string;
+  level: "federal" | "regional" | "eu" | "international" | "shared";
+  area: string;
+  description: string;
+  belongsTo: string;
+  doesNotBelongTo: string;
+  sourceIds: string[];
+  contentStatus: ContentStatus;
+  version: number;
+  correctionUrl: string;
+}
+
+/** Record of a vote at a multilateral body. */
+export interface VoteRecord {
+  id: string;
+  body: string;
+  resolution: string;
+  date: string;
+  vote: "yes" | "no" | "abstain" | "absent";
+  sourceIds: string[];
+  contentStatus: ContentStatus;
+  version: number;
+  correctionUrl: string;
+}
+
+/** Record of a public official statement. */
+export interface OfficialStatementRecord {
+  id: string;
+  speaker: string;
+  office: string;
+  date: string;
+  summary: string;
+  sourceIds: string[];
+  contentStatus: ContentStatus;
+  version: number;
+  correctionUrl: string;
+}
+
+/** Record of an arms-transfer policy, decision, or legal action. */
+export interface ArmsTransferPolicyRecord {
+  id: string;
+  level: "federal" | "regional" | "eu";
+  authority: string;
+  date: string;
+  policy: string;
+  sourceIds: string[];
+  contentStatus: ContentStatus;
+  version: number;
+  correctionUrl: string;
+}
+
+/** Record of a humanitarian aid contribution or commitment. */
+export interface HumanitarianAidRecord {
+  id: string;
+  recipient: string;
+  amount: string;
+  period: string;
+  channel: string;
+  sourceIds: string[];
+  contentStatus: ContentStatus;
+  version: number;
+  correctionUrl: string;
+}
+
+/** Record of an official contact route for civic engagement. */
+export interface ContactRouteRecord {
+  id: string;
+  entity: string;
+  route: string;
+  url?: string;
+  notes: string;
+  sourceIds: string[];
+  contentStatus: ContentStatus;
+  version: number;
+  correctionUrl: string;
+}
+
 /** A single procedural event in a legal case timeline. */
 export interface LegalTimelineEvent {
   /** Unique identifier for this timeline event. */

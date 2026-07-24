@@ -10,33 +10,46 @@ import { LastUpdated } from "../components/pages/LastUpdated";
 import { PreviewNotice } from "../components/pages/PreviewNotice";
 import { CorrectionLink } from "../components/pages/CorrectionLink";
 import { PrintHeader, PrintFooter } from "../components/pages/PrintOnly";
-import { belgiumSections } from "../data/countries";
-import { CONTENT_STATUS_LABELS } from "../types/content";
+import {
+  belgiumFederalPositions,
+  belgiumCompetencies,
+  belgiumOfficialStatements,
+  belgiumArmsTransferPolicies,
+  belgiumHumanitarianAid,
+  belgiumContactRoutes,
+} from "../data/belgiumData";
+
+const COMPETENCY_BADGES: Record<string, { variant: "neutral" | "info" | "warning" | "alert"; label: string }> = {
+  federal: { variant: "neutral", label: "Federal" },
+  regional: { variant: "warning", label: "Regional" },
+  shared: { variant: "info", label: "Shared" },
+  eu: { variant: "info", label: "EU" },
+  international: { variant: "neutral", label: "International" },
+};
 
 export default function BelgiumPage() {
   return (
     <Container className="py-16 lg:py-20 country-print">
-      {/* ── Print header (visible only when printing) ────────────────── */}
       <PrintHeader
         title="Belgium — Country Accountability"
         version={1}
-        status="Content under review"
-        dates="Last updated: 2026-07-10"
-        extraLines={["Country accountability page tracking government positions, voting records, and policy summaries."]}
+        status="Content under review — review_pending"
+        dates="Last updated: 2026-07-24"
+        extraLines={["Country accountability page tracking government positions, competencies, aid contributions, and contact routes. All content is source-linked and awaits expert review."]}
       />
 
       <PageIntro
         eyebrow="Country Accountability"
         title="Belgium"
-        description="A structural preview of the country accountability page for Belgium. Explains what this page will track, why Belgium matters as the first country page, and the competency framework. Content is under review; no scores or final policy conclusions are published."
+        description="Source-linked records of Belgian federal positions, competency boundaries, arms-transfer policy, humanitarian aid contributions, official statements, and lawful contact routes. All content is review_pending. No scores or rankings are published."
       />
 
-      <PageStatusNotice title="Content under review" variant="warning">
+      <PageStatusNotice title="All content review_pending" variant="warning">
         <p>
-          This page structure describes the accountability areas the platform
-          will track for Belgium. Government positions, voting records, and
-          policy summaries will be added after expert review. No accountability
-          scores are published.
+          Every position, competency statement, aid figure, and contact route on
+          this page is linked to official sources. No content has completed
+          editorial or competency review. Federal/regional/EU competencies are
+          visibly distinguished. No accountability scores appear.
         </p>
       </PageStatusNotice>
 
@@ -65,119 +78,258 @@ export default function BelgiumPage() {
         </div>
       </Reveal>
 
-      {/* 1. Why Belgium */}
-      <PolicySection title="Why Belgium" id="why-belgium" delay={0.15}>
+      {/* 1. Federal & Regional Competencies */}
+      <PolicySection title="Federal & Regional Competencies" id="competencies" delay={0.15}>
         <p>
-          Belgium is the first country accountability page because of its
-          distinctive role in international accountability infrastructure.
-          Brussels hosts the EU institutions and NATO headquarters. Belgium is a
-          State Party to the Rome Statute of the ICC and the Genocide
-          Convention. Its federal structure — with foreign policy at the federal
-          level and arms-export licensing involving regional governments —
-          creates specific accountability pathways worth tracking.
-        </p>
-        <p>
-          This page is a structural skeleton. It explains what information the
-          platform intends to track and why each area matters for
-          accountability. Content is added only after sourcing and review.
+          Belgium is a federal state. Foreign policy, defence, and international
+          treaty obligations are federal competencies. Arms-export licensing is a
+          regional competency. Humanitarian aid is primarily federal with regional
+          programmes. Understanding these divisions is essential for effective
+          accountability engagement.
         </p>
       </PolicySection>
 
-      {/* 2. What This Page Will Track */}
-      <PolicySection
-        title="What This Page Will Track"
-        id="tracking-areas"
-        delay={0.18}
-      >
-        <p>
-          Each card below represents a future tracking area. Cards labelled
-          &ldquo;Content under review&rdquo; or &ldquo;Source pending&rdquo;
-          describe areas where the platform needs expert input before publishing
-          substantive content.
-        </p>
-      </PolicySection>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-        {belgiumSections.map((section, i) => (
-          <Reveal key={section.id} delay={0.2 + i * 0.05}>
-            <Card
-              title={section.title}
-              accent={
-                section.status === "static_preview"
-                  ? "blue"
-                  : section.status === "review_pending"
-                    ? "amber"
-                    : "clay"
-              }
-            >
-              <p className="text-charcoal/80 leading-relaxed mb-3">
-                {section.description}
+      <div className="space-y-5 mb-10">
+        {belgiumCompetencies.map((comp, i) => (
+          <Reveal key={comp.id} delay={0.17 + i * 0.05}>
+            <div className="border border-border/50 rounded-lg p-5 bg-white">
+              <div className="flex flex-wrap items-center gap-2 mb-2">
+                <h3 className="text-base font-semibold text-charcoal">
+                  {comp.area}
+                </h3>
+                <Badge variant={COMPETENCY_BADGES[comp.level]?.variant ?? "neutral"}>
+                  {COMPETENCY_BADGES[comp.level]?.label ?? comp.level}
+                </Badge>
+              </div>
+              <p className="text-sm text-charcoal/80 leading-relaxed mb-2">
+                {comp.description}
               </p>
-              <Badge
-                variant={
-                  section.status === "static_preview"
-                    ? "info"
-                    : section.status === "review_pending"
-                      ? "warning"
-                      : "neutral"
-                }
-              >
-                {section.statusLabel || CONTENT_STATUS_LABELS[section.status]}
-              </Badge>
+              <p className="text-xs text-charcoal/60 leading-relaxed">
+                <span className="font-semibold">Belongs to:</span> {comp.belongsTo}
+              </p>
+              <p className="text-xs text-charcoal/60 leading-relaxed">
+                <span className="font-semibold">Does not belong to:</span>{" "}
+                {comp.doesNotBelongTo}
+              </p>
+              <p className="text-xs text-charcoal/50 mt-2">
+                Sources: {comp.sourceIds.length} source record{comp.sourceIds.length !== 1 ? "s" : ""} linked.
+              </p>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+
+      {/* 2. Federal Positions */}
+      <PolicySection title="Federal Positions" id="federal-positions" delay={0.22}>
+        <p>
+          Belgium's current federal positions on accountability-related issues.
+          Each entry is dated and attributed to the specific government body.
+          Distinguish federal government positions from regional government
+          actions and from EU-level decisions.
+        </p>
+      </PolicySection>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+        {belgiumFederalPositions.map((pos, i) => (
+          <Reveal key={pos.id} delay={0.24 + i * 0.05}>
+            <Card title={pos.area} accent="clay">
+              <p className="text-sm text-charcoal/80 leading-relaxed mb-2">
+                {pos.position}
+              </p>
+              <p className="text-xs text-charcoal/50">
+                {pos.attribution} — {pos.date}
+              </p>
+              <p className="text-xs text-charcoal/50 mt-1">
+                Sources: {pos.sourceIds.length} record{pos.sourceIds.length !== 1 ? "s" : ""} linked.
+              </p>
             </Card>
           </Reveal>
         ))}
       </div>
 
-      {/* 3. Sources and Corrections */}
-      <PolicySection
-        title="Sources and Corrections"
-        id="sources"
-        delay={0.35}
-      >
+      {/* 3. Arms-Transfer Policy */}
+      <PolicySection title="Arms-Transfer Policy" id="arms-transfer" delay={0.30}>
         <p>
-          When substantive content is added to this page, every claim will be
-          linked to a specific source record with a publication date, publisher,
-          and access date. Sources will be categorized by type (court, UN,
-          government, humanitarian, NGO, academic, journalism, OSINT) and
-          assigned a verification level.
-        </p>
-        <p>
-          Belgium-specific content will require review by contributors familiar
-          with Belgian federal and regional governance, EU institutional
-          processes, and international humanitarian law. If you have relevant
-          expertise, see{" "}
-          <Link
-            to="/contribute"
-            className="text-trust hover:text-trust/80 underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-trust/50 focus-visible:ring-offset-2 rounded-sm"
-          >
-            how to contribute
-          </Link>
-          .
-        </p>
-        <p>
-          Corrections to this page structure or to future substantive content
-          are welcome through the{" "}
-          <Link
-            to="/corrections"
-            className="text-trust hover:text-trust/80 underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-trust/50 focus-visible:ring-offset-2 rounded-sm"
-          >
-            corrections process
-          </Link>
-          .
+          Belgium's arms-export and arms-transit policy involves federal,
+          regional, and judicial actions. Regional governments license arms
+          exports independently. Federal authorities enforce airspace
+          restrictions and customs controls. Courts have imposed additional
+          requirements through litigation.
         </p>
       </PolicySection>
 
-      <PreviewNotice title="This page is a structural skeleton">
-        Belgium page content is under development. Section descriptions explain
-        what the platform intends to track. Government positions, voting
-        records, and policy summaries are not yet published.
+      <div className="space-y-5 mb-10">
+        {belgiumArmsTransferPolicies.map((policy, i) => (
+          <Reveal key={policy.id} delay={0.32 + i * 0.05}>
+            <div className="border border-border/50 rounded-lg p-5 bg-white">
+              <div className="flex flex-wrap items-center gap-2 mb-2">
+                <h3 className="text-base font-semibold text-charcoal">
+                  {policy.authority}
+                </h3>
+                <Badge variant={COMPETENCY_BADGES[policy.level]?.variant ?? "neutral"}>
+                  {COMPETENCY_BADGES[policy.level]?.label ?? policy.level}
+                </Badge>
+              </div>
+              <p className="text-sm text-charcoal/80 leading-relaxed mb-2">
+                {policy.policy}
+              </p>
+              <p className="text-xs text-charcoal/50">
+                {policy.date} — Sources: {policy.sourceIds.length} record{policy.sourceIds.length !== 1 ? "s" : ""} linked.
+              </p>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+
+      {/* 4. Humanitarian Aid */}
+      <PolicySection title="Humanitarian Aid Contributions" id="humanitarian-aid" delay={0.38}>
+        <p>
+          Belgium's documented humanitarian aid contributions and commitments
+          relevant to Gaza and the occupied Palestinian territory. Amounts are
+          drawn from official sources (FPS Foreign Affairs, Open Aid platform).
+          Disbursement status may differ from announced commitments.
+        </p>
+      </PolicySection>
+
+      <div className="space-y-4 mb-10">
+        {belgiumHumanitarianAid.map((aid, i) => (
+          <Reveal key={aid.id} delay={0.40 + i * 0.04}>
+            <div className="border border-border/40 rounded p-4 bg-white">
+              <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-1">
+                <h3 className="text-sm font-semibold text-charcoal">
+                  {aid.recipient}
+                </h3>
+                <span className="text-sm font-medium text-charcoal/70">
+                  {aid.amount}
+                </span>
+              </div>
+              <p className="text-xs text-charcoal/60 leading-relaxed">
+                {aid.period} — via {aid.channel}
+              </p>
+              <p className="text-xs text-charcoal/50 mt-1">
+                Sources: {aid.sourceIds.length} record{aid.sourceIds.length !== 1 ? "s" : ""} linked.
+              </p>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+
+      {/* 5. Official Statements */}
+      <PolicySection title="Official Statements" id="official-statements" delay={0.46}>
+        <p>
+          Key public statements by Belgian officials on accountability-related
+          matters. Statements are dated, attributed, and sourced. This is a
+          representative selection — it is not a comprehensive archive.
+        </p>
+      </PolicySection>
+
+      <div className="space-y-4 mb-10">
+        {belgiumOfficialStatements.map((stmt, i) => (
+          <Reveal key={stmt.id} delay={0.48 + i * 0.05}>
+            <div className="border border-border/40 rounded p-4 bg-white">
+              <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-1">
+                <h3 className="text-sm font-semibold text-charcoal">
+                  {stmt.speaker}, {stmt.office}
+                </h3>
+                <span className="text-xs text-charcoal/50">{stmt.date}</span>
+              </div>
+              <p className="text-sm text-charcoal/80 leading-relaxed">
+                {stmt.summary}
+              </p>
+              <p className="text-xs text-charcoal/50 mt-1">
+                Sources: {stmt.sourceIds.length} record{stmt.sourceIds.length !== 1 ? "s" : ""} linked.
+              </p>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+
+      {/* 6. Contact Routes */}
+      <PolicySection title="Representatives & Contact Routes" id="contact-routes" delay={0.54}>
+        <p>
+          Official contact routes for lawful civic engagement with Belgian
+          federal and regional representatives. All contact information is
+          public. No private personal data is published. All engagement should be
+          polite, lawful, and non-harassing.
+        </p>
+      </PolicySection>
+
+      <div className="space-y-4 mb-10">
+        {belgiumContactRoutes.map((route, i) => (
+          <Reveal key={route.id} delay={0.56 + i * 0.05}>
+            <div className="border border-border/50 rounded-lg p-5 bg-white">
+              <h3 className="text-base font-semibold text-charcoal mb-1">
+                {route.entity}
+              </h3>
+              <p className="text-sm text-charcoal/80 leading-relaxed mb-1">
+                {route.route}
+              </p>
+              {route.url && (
+                <p className="text-xs text-charcoal/50 mb-1">
+                  Official page:{" "}
+                  <a
+                    href={route.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-trust hover:text-trust/80 underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-trust/50 rounded-sm"
+                  >
+                    {route.url}
+                  </a>
+                </p>
+              )}
+              <p className="text-xs text-charcoal/60 leading-relaxed mt-2 border-t border-border/30 pt-2">
+                {route.notes}
+              </p>
+              <p className="text-xs text-charcoal/50 mt-1">
+                Sources: {route.sourceIds.length} record{route.sourceIds.length !== 1 ? "s" : ""} linked.
+              </p>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+
+      {/* 7. Transparency & Data Gaps */}
+      <PolicySection title="Transparency & Data Gaps" id="transparency-gaps" delay={0.60}>
+        <p>
+          <strong>Arms-export reporting:</strong> Belgium's regional licensing
+          structure creates coordination gaps. Regional export reports are
+          published separately (Flanders, Wallonia, Brussels-Capital). Federal
+          customs data is not always aligned with regional licensing data. This
+          makes comprehensive arms-transfer tracking difficult.
+        </p>
+        <p>
+          <strong>UN voting records:</strong> Belgium's UN voting records are
+          available through the UN Digital Library, but data entry for specific
+          resolutions relevant to civilian protection, humanitarian access, and
+          accountability requires dedicated retrieval and verification. This
+          section will be populated as records are verified.
+        </p>
+        <p>
+          <strong>Aid disbursement vs. commitment:</strong> Announced
+          humanitarian aid commitments may differ from actual disbursements.
+          Verification of disbursement status requires access to implementation
+          reports not always publicly available in real time.
+        </p>
+        <p>
+          <strong>EU Council positions:</strong> Belgium's positions in EU
+          Council deliberations on CFSP matters (sanctions, Association Agreement
+          suspension) are generally not public. This is a structural
+          transparency limitation on tracking member-state influence within EU
+          decision-making.
+        </p>
+      </PolicySection>
+
+      <PreviewNotice title="This page contains review_pending content only">
+        All positions, competency statements, aid figures, and contact routes
+        are source-linked but have not completed editorial, competency, or
+        legal review. No accountability scores appear. Belgium does not control
+        EU or NATO institutions hosted in Brussels. Corrections are welcome
+        through the corrections process.
       </PreviewNotice>
 
       <CorrectionLink />
-      <LastUpdated date="2026-07-10" />
+      <LastUpdated date="2026-07-24" />
 
-      {/* ── Print footer (visible only when printing) ────────────────── */}
       <PrintFooter
         canonicalPath="/countries/belgium"
         extraLines={[
