@@ -381,6 +381,72 @@ if (isRetryableError(error)) {
 4. Optionally override `validate()`, `createFingerprint()`, `store()`
 5. Register with `CollectorRegistry`
 
+### Court collectors (ICJ / ICC)
+
+Two court collectors are implemented for the highest-weight legal sources:
+
+#### ICJCollector
+
+Fetches and normalizes documents from icj-cij.org:
+- Press releases, orders, judgments, advisory opinions
+- Case docket updates, intervention filings
+- URL support: direct document URLs (`/node/XXXXXX`), listing pages, case pages
+
+```typescript
+import { ICJCollector } from "./courts/ICJCollector";
+
+registry.register(ICJCollector, ["court"], "ICJ court records collector");
+
+const source = sources.find((s) => s.id === "icj-2024-01-26")!;
+const collector = registry.createInstance(source, {
+  sourceId: source.id,
+  label: "ICJCollector",
+  sourceType: source.sourceType,
+  enabled: true,
+  trigger: { type: "interval", intervalMinutes: 1440 }, // Daily
+  rateLimit: DEFAULT_RATE_LIMIT,
+  retry: DEFAULT_RETRY_CONFIG,
+  fetchTimeoutMs: 30000,
+  maxContentAgeMs: 24 * 60 * 60 * 1000,
+  storeRawResponse: false,
+});
+
+const result = await collector.collect();
+```
+
+#### ICCCollector
+
+Fetches and normalizes documents from icc-cpi.int:
+- Press releases, arrest warrants, proceeding updates
+- Situation page updates, Prosecutor statements
+- Detects: warrants, judgments, confirmation proceedings, prosecutor statements
+
+#### LegalNormalizer
+
+Shared normalizer used by both court collectors:
+
+- **Extracts:** case number, parties, court, document type, date
+- **Maps** document types to `LegalStatus` controlled vocabulary
+- **Maps** document types to `LegalTimelineEventType` vocabulary
+- **Preserves** verbatim body text, key rulings, legal basis, and next steps
+- **Never** adds legal analysis or commentary
+
+| Court Document Type | Legal Status | Timeline Event |
+|---|---|---|
+| order | court_proceeding_active, provisional_measures_issued | order |
+| judgment | court_proceeding_active | judgment |
+| warrant | arrest_warrant_issued, court_proceeding_active | arrest_warrant_issued |
+| press_release | court_proceeding_active | official_report_update |
+| prosecutor_statement | allegation_under_investigation | official_report_update |
+| filing | allegation_under_investigation, court_proceeding_active | filing |
+
+**Guardrails for court documents:**
+- Do not modify or delete original source text — preserve verbatim quotes
+- Do not add legal analysis or commentary in the normalizer
+- Procedural status must use the `LegalStatus` controlled vocabulary
+- Distinguish between: filing, order, judgment, warrant, proceeding update
+- Never claim a ruling says something it does not explicitly state
+
 ### Adding a new storage backend
 
 Implement `StorageInterface`:
