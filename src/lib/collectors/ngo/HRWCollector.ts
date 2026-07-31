@@ -162,7 +162,8 @@ export class HRWCollector extends BaseCollector {
     const knownRegions = ["Gaza", "West Bank", "Israel", "Palestine", "Lebanon", "Syria",
       "Yemen", "Ukraine", "Sudan", "Myanmar"];
     const found = knownRegions.filter((r) =>
-      html.toLowerCase().includes(r.toLowerCase()),
+      html.toLowerCase().includes(r.toLowerCase()) ||
+      url.toLowerCase().includes(r.toLowerCase()),
     );
     return found.length > 0 ? found : undefined;
   }
