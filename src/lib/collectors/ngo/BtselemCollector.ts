@@ -151,7 +151,6 @@ export class BtselemCollector extends BaseCollector {
   private extractFindings(html: string): string[] {
     // B'Tselem typically doesn't structure findings as lists
     // Extract key quotes from testimony or report summary
-    const findings: string[] = [];
     const body = this.extractBody(html);
     // Take first 2-3 sentences as summary findings
     const sentences = body.split(/\.(?:\s+|$)/).filter((s) => s.trim().length > 20);
