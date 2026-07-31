@@ -199,7 +199,7 @@ const meta: Record<string, RouteMeta> = {
   "/sources": {
     title: fullTitle("Source Registry"),
     description:
-      "Public source registry — every source referenced on Accountability Atlas, with publisher, type, access dates, status, and links to original documents.",
+      "Public source registry — every source referenced on Accountability Atlas, with publisher, type, trust level, health status, automation config, access dates, URL status, and links to original documents.",
     canonicalPath: "/sources",
     ogType: "website",
   },

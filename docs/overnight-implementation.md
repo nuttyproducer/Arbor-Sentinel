@@ -30,7 +30,7 @@ The current stage is **Public Static Beta in progress**, not finished MVP.
 
 Read and follow the repository documents before changing code:
 
-- `PRD.md`
+- `PRD-v2.md`
 - `README.md`
 - `CONTRIBUTING.md`
 - `SECURITY.md`

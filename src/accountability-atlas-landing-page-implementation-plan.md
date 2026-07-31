@@ -158,9 +158,9 @@ accountability-atlas/
 ├── GOVERNANCE.md
 ├── LICENSE.md
 ├── NOTICE.md
-├── PRD.md
+├── PRD-v2.md
 ├── README.md
-├── ROADMAP.md
+├── ROADMAP-v2.md
 ├── SECURITY.md
 │
 ├── index.html

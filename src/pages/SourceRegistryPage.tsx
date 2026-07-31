@@ -6,48 +6,45 @@ import { PageStatusNotice } from "../components/pages/PageStatusNotice";
 import { PolicySection } from "../components/pages/PolicySection";
 import { LastUpdated } from "../components/pages/LastUpdated";
 import { CorrectionLink } from "../components/pages/CorrectionLink";
-import { ExternalLink } from "../components/ui/ExternalLink";
-import { Badge } from "../components/ui/Badge";
-import { FilterChipGroup } from "../components/evidence/EvidenceFilters";
+import { SourceFilterControls } from "../components/sources/SourceFilterControls";
+import { SourceRegistryTable } from "../components/sources/SourceRegistryTable";
+import { SourceDetailPanel } from "../components/sources/SourceDetailPanel";
 import {
   sources,
-  getAvailableSourceTypes,
 } from "../data/sources";
-import {
-  SOURCE_TYPE_LABELS,
-  SOURCE_STATUS_LABELS,
-  type SourceType,
-  type SourceStatus,
-} from "../types/content";
+import type { SourceRecord } from "../types/content";
+import type { SourceFilters } from "../components/sources/SourceFilterControls";
+import { DEFAULT_SOURCE_FILTERS } from "../components/sources/SourceFilterControls";
 
-const allSources = sources;
-const availableSourceTypes = getAvailableSourceTypes();
+const allSources: SourceRecord[] = sources;
 
-const sourceStatuses: SourceStatus[] = ["active", "broken", "archived", "superseded"];
+const availableRegions = [...new Set(
+  allSources.map((s) => s.region).filter(Boolean) as string[],
+)].sort();
 
-interface SourceFilters {
-  sourceType: SourceType | null;
-  status: SourceStatus | null;
-}
-
-const defaultFilters: SourceFilters = {
-  sourceType: null,
-  status: null,
-};
+const availableLanguages = [...new Set(
+  allSources.map((s) => s.language).filter(Boolean) as string[],
+)].sort();
 
 function filterSources(
-  items: typeof allSources,
+  items: SourceRecord[],
   filters: SourceFilters,
-): typeof allSources {
+): SourceRecord[] {
   return items.filter((s) => {
     if (filters.sourceType && s.sourceType !== filters.sourceType) return false;
     if (filters.status && s.status !== filters.status) return false;
+    if (filters.healthStatus && s.healthStatus !== filters.healthStatus) return false;
+    if (filters.region && s.region !== filters.region) return false;
+    if (filters.language && s.language !== filters.language) return false;
+    if (filters.trustLevel !== null && s.trustLevel !== filters.trustLevel) return false;
     return true;
   });
 }
 
 export default function SourceRegistryPage() {
-  const [filters, setFilters] = useState<SourceFilters>(defaultFilters);
+  const [filters, setFilters] = useState<SourceFilters>(DEFAULT_SOURCE_FILTERS);
+  const [selectedSource, setSelectedSource] = useState<SourceRecord | null>(null);
+  const [panelOpen, setPanelOpen] = useState(false);
 
   const setFilter = useCallback(
     <K extends keyof SourceFilters>(key: K, value: SourceFilters[K]) => {
@@ -61,7 +58,18 @@ export default function SourceRegistryPage() {
   }, []);
 
   const clearAllFilters = useCallback(() => {
-    setFilters(defaultFilters);
+    setFilters(DEFAULT_SOURCE_FILTERS);
+  }, []);
+
+  const handleSelect = useCallback((source: SourceRecord) => {
+    setSelectedSource(source);
+    setPanelOpen(true);
+  }, []);
+
+  const handleClosePanel = useCallback(() => {
+    setPanelOpen(false);
+    // Allow exit animation before clearing
+    setTimeout(() => setSelectedSource(null), 300);
   }, []);
 
   const filteredSources = useMemo(
@@ -69,24 +77,22 @@ export default function SourceRegistryPage() {
     [filters],
   );
 
-  const hasActive = filters.sourceType !== null || filters.status !== null;
-
   return (
     <Container className="py-16 lg:py-20">
       <PageIntro
         eyebrow="Source Registry"
         title="Public Source Registry"
-        description="Every source referenced on this platform is listed here with its publisher, type, publication date, access date, and current status. A source record establishes what an institution published or stated — it does not automatically establish every underlying factual claim."
+        description="Every source referenced on this platform is listed here with its publisher, type, trust level, health status, and current URL status. A source record establishes what an institution published or stated — it does not automatically establish every underlying factual claim."
       />
 
       <PageStatusNotice title="Static preview" variant="info">
         <p>
-          The source registry contains a limited set of representative source
-          records for structural demonstration during the static beta. Sources
-          are factual references — they do not carry a content review status.
-          Every source links to its original URL. If a link is broken, the
-          source status is updated and an archive URL is provided where
-          available.
+          The source registry contains a representative set of source records for
+          structural demonstration during the static beta. Sources are factual
+          references — they do not carry a content review status. Trust levels
+          default to 0 (unreviewed) and must be assigned through human review.
+          Every source links to its original URL. If a link is broken, the source
+          status is updated and an archive URL is provided where available.
         </p>
       </PageStatusNotice>
 
@@ -136,150 +142,30 @@ export default function SourceRegistryPage() {
       </PolicySection>
 
       {/* Filters */}
-      <section aria-labelledby="filters-heading" className="mb-10">
-        <div className="flex items-center justify-between mb-4">
-          <h2
-            id="filters-heading"
-            className="font-serif text-2xl font-semibold text-ink"
-          >
-            Source filters
-          </h2>
-          {hasActive && (
-            <button
-              type="button"
-              onClick={clearAllFilters}
-              className="text-sm text-trust hover:text-trust/80 underline underline-offset-2 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-trust/50 focus-visible:ring-offset-2 rounded-sm min-h-[44px] flex items-center"
-            >
-              Clear all filters
-            </button>
-          )}
-        </div>
+      <SourceFilterControls
+        filters={filters}
+        setFilter={setFilter}
+        clearFilter={clearFilter}
+        clearAllFilters={clearAllFilters}
+        availableRegions={availableRegions}
+        availableLanguages={availableLanguages}
+        filteredCount={filteredSources.length}
+        totalCount={allSources.length}
+      />
 
-        <FilterChipGroup<SourceType>
-          label="Source type"
-          options={availableSourceTypes as SourceType[]}
-          selected={filters.sourceType}
-          onSelect={(v) => setFilter("sourceType", v)}
-          onClear={() => clearFilter("sourceType")}
-          formatLabel={(v) => SOURCE_TYPE_LABELS[v]}
-        />
+      {/* Source Registry Table */}
+      <SourceRegistryTable
+        sources={filteredSources}
+        selectedId={selectedSource?.id}
+        onSelect={handleSelect}
+      />
 
-        <FilterChipGroup<SourceStatus>
-          label="Source status"
-          options={sourceStatuses}
-          selected={filters.status}
-          onSelect={(v) => setFilter("status", v)}
-          onClear={() => clearFilter("status")}
-          formatLabel={(v) => SOURCE_STATUS_LABELS[v]}
-        />
-
-        <p className="font-mono text-xs text-charcoal/50 mt-2">
-          {filteredSources.length} of {allSources.length} sources
-          {hasActive ? " match the current filters" : " displayed"}
-        </p>
-      </section>
-
-      {/* Source list */}
-      {filteredSources.length === 0 ? (
-        <div className="bg-bone border border-border rounded-lg p-10 text-center mb-10">
-          <p className="font-serif text-xl font-semibold text-ink mb-3">
-            No sources match these filters.
-          </p>
-          <p className="text-charcoal/70 leading-relaxed mb-4">
-            Try adjusting or clearing the filter selections above.
-          </p>
-          <button
-            type="button"
-            onClick={clearAllFilters}
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-trust hover:text-trust/80 underline underline-offset-2 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-trust/50 focus-visible:ring-offset-2 rounded-sm min-h-[44px]"
-          >
-            Clear all filters
-          </button>
-        </div>
-      ) : (
-        <div className="space-y-4 mb-10">
-          {filteredSources.map((source) => (
-            <div
-              key={source.id}
-              className="border border-border/60 rounded-lg p-5 bg-paper"
-            >
-              <div className="flex flex-wrap items-center gap-2 mb-2">
-                <Badge variant="neutral">
-                  {SOURCE_TYPE_LABELS[source.sourceType]}
-                </Badge>
-                {source.documentType && (
-                  <span className="font-mono text-[11px] text-charcoal/50">
-                    {source.documentType}
-                  </span>
-                )}
-                <Badge
-                  variant={
-                    source.status === "active"
-                      ? "info"
-                      : source.status === "broken"
-                        ? "alert"
-                        : source.status === "superseded"
-                          ? "warning"
-                          : "neutral"
-                  }
-                >
-                  {SOURCE_STATUS_LABELS[source.status]}
-                </Badge>
-                {source.official && (
-                  <span className="font-mono text-[10px] text-charcoal/40 uppercase">
-                    Official record
-                  </span>
-                )}
-              </div>
-
-              <h3 className="font-serif text-lg font-semibold text-ink mb-1.5">
-                <Link
-                  to={`/sources/${source.slug}`}
-                  className="text-ink hover:text-trust/80 underline underline-offset-2 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-trust/50 focus-visible:ring-offset-2 rounded-sm"
-                >
-                  {source.title}
-                </Link>
-              </h3>
-
-              <p className="text-sm text-charcoal/70 mb-2">
-                {source.publisher}
-                {source.jurisdiction && (
-                  <span className="text-charcoal/50">
-                    {" — "}{source.jurisdiction}
-                  </span>
-                )}
-              </p>
-
-              <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-charcoal/50 mb-2">
-                {source.publicationDate && (
-                  <span>Published: {source.publicationDate}</span>
-                )}
-                <span>Accessed: {source.accessedAt}</span>
-                {source.language && (
-                  <span className="uppercase">Lang: {source.language}</span>
-                )}
-              </div>
-
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">
-                <ExternalLink href={source.url} showIcon>
-                  Original source
-                </ExternalLink>
-                {source.archiveUrl && (
-                  <ExternalLink href={source.archiveUrl} showIcon>
-                    Archived version
-                  </ExternalLink>
-                )}
-                <Link
-                  to={`/sources/${source.slug}`}
-                  className="text-trust hover:text-trust/80 underline underline-offset-2 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-trust/50 focus-visible:ring-offset-2 rounded-sm"
-                >
-                  View details
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+      {/* Source Detail Panel */}
+      <SourceDetailPanel
+        source={selectedSource}
+        open={panelOpen}
+        onClose={handleClosePanel}
+      />
 
       {/* Broken/archived/superseded explanation */}
       <PolicySection title="Source statuses" id="source-statuses" delay={0.50}>
@@ -321,6 +207,76 @@ export default function SourceRegistryPage() {
         </ul>
       </PolicySection>
 
+      {/* Health status explanation */}
+      <PolicySection title="Health statuses" id="health-statuses" delay={0.52}>
+        <p>
+          Health status tracks the operational state of automated source
+          ingestion — separate from the URL currency status above.
+        </p>
+        <ul className="space-y-2 mt-3">
+          <li className="flex items-start gap-2">
+            <span className="text-green-600 mt-1.5" aria-hidden="true">•</span>
+            <span>
+              <strong>Active:</strong> Automated ingestion is functioning
+              normally. The last fetch succeeded.
+            </span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-amber mt-1.5" aria-hidden="true">•</span>
+            <span>
+              <strong>Degraded:</strong> Recent fetches have had intermittent
+              failures. Monitoring continues but data may be incomplete.
+            </span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-clay mt-1.5" aria-hidden="true">•</span>
+            <span>
+              <strong>Failed:</strong> Repeated fetch failures. Automated
+              ingestion is stopped until the issue is resolved.
+            </span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-charcoal/30 mt-1.5" aria-hidden="true">•</span>
+            <span>
+              <strong>Unknown:</strong> Health has not been assessed yet —
+              this is the default for all sources until monitoring is enabled.
+            </span>
+          </li>
+        </ul>
+      </PolicySection>
+
+      {/* Trust level explanation */}
+      <PolicySection title="Trust levels" id="trust-levels" delay={0.54}>
+        <p>
+          Trust levels are assigned through human review and must never be
+          auto-assigned from source type alone. All sources default to 0
+          (unreviewed).
+        </p>
+        <ul className="space-y-2 mt-3">
+          <li className="flex items-start gap-2">
+            <span className="text-charcoal/30 mt-1.5" aria-hidden="true">•</span>
+            <span>
+              <strong>0 — Unreviewed:</strong> No trust assessment has been
+              performed. All sources start here.
+            </span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-charcoal/50 mt-1.5" aria-hidden="true">•</span>
+            <span>
+              <strong>3 — High confidence:</strong> The source has been
+              reviewed and found reliable with corroborating evidence.
+            </span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-green-600 mt-1.5" aria-hidden="true">•</span>
+            <span>
+              <strong>5 — Authoritative:</strong> The source is a definitive
+              institutional record with a clear chain of provenance.
+            </span>
+          </li>
+        </ul>
+      </PolicySection>
+
       {/* Methodology and corrections links */}
       <PolicySection title="How sources are used" id="how-sources-are-used" delay={0.53}>
         <p>
@@ -354,7 +310,7 @@ export default function SourceRegistryPage() {
       </PolicySection>
 
       <CorrectionLink />
-      <LastUpdated date="2026-07-13" />
+      <LastUpdated date="2026-07-31" />
     </Container>
   );
 }

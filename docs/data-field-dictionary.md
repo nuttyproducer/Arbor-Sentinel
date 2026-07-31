@@ -217,18 +217,67 @@ design.
 
 ## Source record fields
 
+### Core identity
+
 | Field | Type | Required | Notes |
 |---|---|---|---|
 | `id` | `string` | ✅ | Unique; kebab-case |
+| `slug` | `string` | ✅ | URL-safe identifier for routing |
 | `title` | `string` | ✅ | Exact or summarised source title |
 | `publisher` | `string` | ✅ | Institution that published the source |
-| `sourceType` | `SourceType` | ✅ | One of 8 valid values |
-| `url` | `string` | ✅ | Must resolve |
-| `publicationDate` | `string?` | Recommended | Year minimum |
+| `sourceType` | `SourceType` | ✅ | One of 8 valid values: court, un, government, humanitarian, ngo, academic, journalism, osint |
+| `documentType` | `string?` | No | Free-text document type label |
+| `url` | `string` | ✅ | Must resolve via http/https |
+| `publicationDate` | `string?` | Recommended | Year minimum (YYYY-MM-DD, YYYY-MM, or YYYY) |
 | `accessedAt` | `string` | ✅ | Date the source was last checked |
 | `archiveUrl` | `string?` | No | For sources that may disappear |
 | `language` | `string?` | Recommended | ISO 639-1 code |
-| `notes` | `string?` | No | Free-text context |
+| `jurisdiction` | `string?` | No | Legal or geographic jurisdiction |
+| `authors` | `string[]?` | No | Named authors or bodies |
+| `official` | `boolean?` | No | Whether this is an official institutional record |
+| `status` | `SourceStatus` | ✅ | active, broken, archived, or superseded |
+| `notes` | `string?` | No | Free-text contextual notes — not internal review notes |
+| `version` | `number` | ✅ | Schema version (≥ 1) |
+| `lastCheckedAt` | `string?` | No | When the URL was last verified |
+| `correctionUrl` | `string` | ✅ | Route to corrections process |
+
+### Trust & Verification
+
+| Field | Type | Required | Notes |
+|---|---|---|---|
+| `trustLevel` | `TrustLevel` (0–5) | ✅ | Human-assigned trust level. Default 0 (unreviewed). NEVER auto-assigned from source type. |
+| `verificationMethod` | `VerificationMethod?` | No | How this source's content is verified: official, ngo, journalism, academic, osint |
+
+### API / RSS Automation Config
+
+| Field | Type | Required | Notes |
+|---|---|---|---|
+| `apiEndpoint` | `string?` | No | API endpoint URL for programmatic access |
+| `apiKeyRef` | `string?` | No | Reference to stored API key name — NEVER the actual key value |
+| `rssFeedUrl` | `string?` | No | RSS feed URL for automated polling |
+| `feedConfig.pollingIntervalMinutes` | `number?` | No | Polling interval in minutes (≥ 1) |
+| `feedConfig.lastFetched` | `string?` | No | ISO date of last successful feed fetch |
+
+### Licensing & Classification
+
+| Field | Type | Required | Notes |
+|---|---|---|---|
+| `license` | `string?` | No | License name (e.g. "CC BY 4.0") |
+| `licenseUrl` | `string?` | No | URL to license text |
+| `region` | `string?` | No | Geographic region for filtering (e.g. "Middle East", "Europe") |
+| `category` | `string?` | No | Topical category for filtering |
+| `reliabilityNotes` | `string?` | No | Public notes on source reliability |
+
+### Health & Monitoring
+
+| Field | Type | Required | Notes |
+|---|---|---|---|
+| `healthStatus` | `HealthStatus` | ✅ | unknown, active, degraded, or failed. Default unknown — never assume active. |
+| `automationStatus` | `AutomationStatus` | ✅ | manual, scheduled, or real-time. Default manual. |
+| `lastSuccessfulFetch` | `string?` | No | ISO date of last successful automated fetch |
+| `lastFailedFetch` | `string?` | No | ISO date of last failed fetch attempt |
+| `failureCount` | `number` | ✅ | Consecutive failure count since last success. Default 0. |
+| `monitoringEnabled` | `boolean` | ✅ | Whether automated health monitoring is enabled. Default false. |
 
 ---
 
