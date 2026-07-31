@@ -447,6 +447,91 @@ Shared normalizer used by both court collectors:
 - Distinguish between: filing, order, judgment, warrant, proceeding update
 - Never claim a ruling says something it does not explicitly state
 
+### UN collectors (OHCHR / OCHA)
+
+#### OHCHRCollector
+
+Fetches from ohchr.org:
+- Commission of Inquiry (COI) reports
+- Human Rights Council (HRC) resolutions
+- High Commissioner statements and press releases
+- Country-specific human rights pages
+
+#### OCHACollector
+
+Fetches from ochaopt.org and unocha.org:
+- Situation reports (sitreps)
+- Flash appeals and humanitarian needs overviews
+- Humanitarian updates and funding tracking data
+- **RSS feed support** for recurring OCHA updates
+
+#### UNNormalizer
+
+Shared normalizer for UN documents:
+
+- **Extracts:** UN document symbol (A/HRC/55/28, S/2024/123), issuing body (OHCHR, OCHA, HRC, COI), session/meeting, agenda item, report type, geographic scope
+- **Preserves** original document classification markings
+- **Does not** interpret, summarize, or editorialize UN findings
+
+| UN Document Type | Collector |
+|---|---|
+| coi_report | OHCHRCollector |
+| hrc_resolution | OHCHRCollector |
+| hc_statement | OHCHRCollector |
+| situation_report | OCHACollector |
+| flash_appeal | OCHACollector |
+| humanitarian_update | OCHACollector (incl. RSS) |
+| funding_update | OCHACollector |
+
+**Guardrails for UN documents:**
+- Do not interpret UN document language — extract metadata only
+- Preserve original document classification markings
+- Do not summarize or editorialize UN findings in the collector layer
+- Respect robots.txt and crawl delays for UN websites
+
+### EU & Belgium collectors
+
+#### EUCollector
+
+Fetches from EU institutions:
+- **Council** (consilium.europa.eu): Conclusions, decisions
+- **Commission** (ec.europa.eu): Statements, communications
+- **Parliament** (europarl.europa.eu): Resolutions, reports
+- **EEAS** (eeas.europa.eu): Press releases, statements
+- **EUR-Lex** (eur-lex.europa.eu): Legal documents (Association Agreement, Common Position tracking)
+
+#### BelgiumCollector
+
+Fetches from Belgium government sources:
+- **FPS Foreign Affairs** (diplomatie.belgium.be): Press releases, statements
+- **Chamber of Representatives** (lachambre.be): Written questions, debates, records
+- **Senate** (senate.be): Senate records
+- **Regional governments**: Flanders, Wallonia, Brussels-Capital
+
+Multi-language support: EU (EN/FR/DE), Belgium (NL/FR/EN).
+
+#### GovernmentNormalizer
+
+Shared normalizer for government documents:
+
+- **Extracts:** issuing institution, document reference/code (COM, JOIN, CELEX), legal basis citations, vote tallies (for/against/abstain), effective dates
+- **Distinguishes** EU institution types (Council vs Commission vs Parliament) — each has different legal weight
+- **Labels** Belgium documents with correct government level: federal, regional, community
+- **Marks** adopted vs proposed legislation
+
+| Government Level | Institution Examples |
+|---|---|
+| eu | Council, Commission, Parliament, EEAS, EUR-Lex |
+| federal | FPS Foreign Affairs, Chamber, Senate |
+| regional | Flemish Government, Walloon Government, Brussels-Capital |
+| community | French Community, German-speaking Community |
+
+**Guardrails for government documents:**
+- Distinguish between EU institution types — each has different legal weight
+- Do not conflate proposed legislation with adopted legislation
+- Belgium regional documents must be labeled with the correct government level
+- Respect parliamentary publication embargo periods
+
 ### Adding a new storage backend
 
 Implement `StorageInterface`:
