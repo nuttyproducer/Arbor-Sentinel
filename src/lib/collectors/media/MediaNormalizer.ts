@@ -5,6 +5,7 @@ import type { NormalizedContent } from "../types";
 
 // MediaContentType is defined in feedConfig.ts (Task 2) and re-exported
 // here for collector code that consumes this normalizer directly.
+export type { MediaContentType } from "../feeds/feedConfig";
 
 export interface RawMediaDocument {
   url: string;
