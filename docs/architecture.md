@@ -99,6 +99,70 @@ This allows review through pull requests.
 
 ---
 
+## Collector Framework
+
+The collector framework automates content ingestion from registered sources.
+It is designed for the transition from static data to automated collection.
+
+### Pipeline
+
+Every collector follows a five-stage pipeline:
+
+```
+fetch → validate → normalize → deduplicate → store
+```
+
+Pipeline order is enforced by `BaseCollector`. Each stage is measured and errors
+are typed with full source/URL/attempt context.
+
+### Components
+
+| Module | Purpose |
+|---|---|
+| `BaseCollector` | Abstract base class — subclasses implement `fetch()` |
+| `CollectorRegistry` | Registers collector classes by source type; creates cached instances |
+| `RateLimiter` | Per-source delays, per-domain request limits, burst handling, domain blocking |
+| `Retry` | Exponential backoff with jitter, retryable vs fatal error classification |
+| `Scheduler` | Interval-based and manual triggers; health-aware scheduling |
+| `DevMemoryStore` | In-memory storage for development — replaced by API-backed store in production |
+
+### Error types
+
+All errors extend `CollectorError` and carry context: `sourceId`, `url`, `attempt`, `stage`.
+
+| Error | Stage | Retryable |
+|---|---|---|
+| `FetchError` | fetch | Yes |
+| `TimeoutError` | fetch | Yes |
+| `RateLimitError` | fetch | Yes |
+| `ParseError` | normalize | No |
+| `ValidationError` | validate | No |
+| `AuthError` | fetch | No |
+
+### Usage pattern
+
+```typescript
+// 1. Register collectors
+registry.register(MyCourtCollector, ["court"], "Handles court records");
+
+// 2. Create instances from Source Registry records
+const collector = registry.createInstance(sourceRecord, config);
+
+// 3. Trigger collection
+const result = await collector.collect();
+// result: { itemsFetched, itemsValidated, ..., stageDurations, success }
+
+// 4. Or schedule recurring collection
+scheduler.schedule(sourceRecord, {
+  ...config,
+  trigger: { type: "interval", intervalMinutes: 60 },
+});
+```
+
+See `docs/collector-framework.md` for the detailed usage guide.
+
+---
+
 ## Future backend
 
 Only add a backend when needed for:
