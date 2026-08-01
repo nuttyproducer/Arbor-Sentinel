@@ -532,6 +532,137 @@ Shared normalizer for government documents:
 - Belgium regional documents must be labeled with the correct government level
 - Respect parliamentary publication embargo periods
 
+### NGO collectors (Amnesty / HRW / B'Tselem / MSF / ICRC)
+
+Five NGO collectors cover major human rights and humanitarian organizations:
+
+#### AmnestyCollector
+
+Fetches from amnesty.org:
+- Research reports, press releases, legal analyses, campaign pages
+- URL-based document type detection
+- Methodology section extraction
+
+#### HRWCollector
+
+Fetches from hrw.org:
+- Detailed reports, news releases, legal analysis, multimedia documentation
+- World Report annual publication detection
+- Video/audio reference extraction for multimedia docs
+
+#### BtselemCollector
+
+Fetches from btselem.org:
+- Reports, testimony summaries (already public), video documentation, data updates
+- Testimony body preserved verbatim in original language
+- Hebrew support (RTL detection)
+
+#### MSFCollector
+
+Fetches from msf.org and doctorswithoutborders.org:
+- Operational updates, press releases, field reports, medical access statements
+- Project location extraction, medical terminology preserved verbatim
+
+#### ICRCCollector
+
+Fetches from icrc.org:
+- Operational updates, IHL statements, news releases, field reports
+- Registers for `"humanitarian"` source type (not `"ngo"`)
+- ICRC's unique legal mandate under Geneva Conventions reflected in labeling
+
+#### NGONormalizer
+
+Shared normalizer for NGO documents:
+
+- **Extracts:** organization name, report type, publication date, methodology section, key findings (verbatim quotes), geographic scope, legal references
+- **Preserves** exact NGO language in key findings — never modified
+- **Never** combines or conflates findings from different NGOs
+- **Labels** all output with `isOfficialSource: false` and `sourceCategory: "ngo-research"`
+- **Disclaimer:** "NGO findings are not judicial determinations"
+
+| NGO Report Type | Example Collectors |
+|---|---|
+| research_report | Amnesty, HRW, B'Tselem |
+| press_release | Amnesty, MSF |
+| legal_analysis | Amnesty, HRW |
+| testimony_summary | B'Tselem |
+| field_report | MSF, ICRC |
+| ihl_statement | ICRC |
+| medical_access_statement | MSF |
+| multimedia_documentation | HRW, B'Tselem |
+
+**Guardrails for NGO documents:**
+- NGO findings are NOT judicial determinations — label outputs accordingly
+- Preserve exact NGO language in key findings quotes
+- Do not combine or conflate findings from different NGOs
+- Some NGOs have automated blocking — implement respectful crawl delays (2s minimum)
+- Note in output metadata whether the source is official institutional or NGO research
+
+### Journalism & Academic collectors
+
+#### JournalismCollector
+
+RSS/Atom-based collector consuming `feedConfig.ts`:
+- Parses feeds via shared `FeedParser` (RSS 2.0 + Atom 1.0)
+- Content type detection: news_report, opinion, editorial, investigative, feature
+- Cross-feed duplicate detection by GUID and URL
+- Never stores full article text — body is 280-char preview
+
+#### AcademicCollector
+
+Two-phase collector for scholarly sources:
+- **Phase 1:** RSS feeds (Google Scholar alerts, SSRN subject feeds) via FeedParser
+- **Phase 2:** DOI enrichment via CrossRef API (free, no auth) and Unpaywall API for OA URL
+- Labels all content as "analysis" not "evidence"
+- OA links provided when available; never bypasses paywalls
+
+#### MediaNormalizer
+
+Shared normalizer for journalism and academic content:
+
+- **Extracts:** headline, byline, publication name, date, access date, URL, body preview (≤280 chars), content type
+- **Distinguishes** news_report from opinion/editorial
+- **Labels** academic papers as "analysis" not "evidence"
+- **Flags** paywalled content as `isSubscriptionOnly: true`
+
+| Media Content Type | Collector |
+|---|---|
+| news_report | JournalismCollector |
+| opinion | JournalismCollector |
+| editorial | JournalismCollector |
+| investigative | JournalismCollector |
+| academic_paper | AcademicCollector |
+| working_paper | AcademicCollector |
+| preprint | AcademicCollector |
+
+**Guardrails for media content:**
+- Do not bypass paywalls — fetch only publicly available content
+- Do not archive full article text without permission — store metadata and excerpts
+- Respect RSS feed Terms of Service
+- Label content as "subscription required" when only metadata is available
+- Academic papers are not automatically evidence — they are analysis
+- Distinguish between news reporting and opinion/editorial content
+
+### Shared FeedParser
+
+RSS 2.0 and Atom 1.0 parser used by both journalism and NGO collectors:
+
+```typescript
+import { FeedParser, type ParsedFeedItem, type FeedMeta } from "./feeds/FeedParser";
+
+const parser = new FeedParser();
+const result = parser.parse(xmlString);
+// { meta: { title, description, link, language, itemCount }, items: ParsedFeedItem[] }
+```
+
+- Auto-detects RSS 2.0 vs Atom 1.0 format
+- Handles CDATA sections transparently
+- Strips HTML from titles and descriptions
+- Normalizes dates to ISO 8601
+- No external dependencies
+
+See `docs/feed-configuration.md` for feed setup guide.
+
 ### Adding a new storage backend
 
 Implement `StorageInterface`:
