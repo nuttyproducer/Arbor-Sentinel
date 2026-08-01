@@ -222,6 +222,16 @@ const meta: Record<string, RouteMeta> = {
     ogType: "website",
   },
 
+  // ── Admin ────────────────────────────────────────────────────────────
+  "/admin/monitoring": {
+    title: fullTitle("Monitoring Dashboard"),
+    description:
+      "Collector health monitoring dashboard — system metrics, alert history, and per-collector status. Admin access only. Not linked from public navigation.",
+    canonicalPath: "/admin/monitoring",
+    ogType: "website",
+    robots: "noindex,nofollow",
+  },
+
   // ── Meta ────────────────────────────────────────────────────────────
   "/changelog": {
     title: fullTitle("Changelog"),

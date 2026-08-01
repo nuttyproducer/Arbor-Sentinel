@@ -681,12 +681,159 @@ class ApiBackedStore implements StorageInterface {
 
 ---
 
+## Monitoring
+
+The monitoring system tracks collector health, triggers alerts, and
+aggregates metrics. It is an in-memory system (consistent with the static
+beta approach) that wraps the CollectorRegistry.
+
+### HealthMonitor
+
+Tracks per-collector health state:
+
+```typescript
+import { HealthMonitor } from "./monitoring/HealthMonitor";
+
+const monitor = new HealthMonitor();
+
+// Sync with the registry
+monitor.syncRegistrations(registry.listRegistrations());
+
+// Record results after each collection run
+const result = await collector.collect();
+monitor.recordRun("AmnestyCollector", "ngo", result);
+
+// Generate a full health report
+const report = monitor.generateReport();
+// {
+//   generatedAt: "2026-08-01T...",
+//   collectors: [CollectorHealthSnapshot, ...],
+//   summary: {
+//     totalCollectors: 13,
+//     activeCount: 10,
+//     degradedCount: 2,
+//     failedCount: 1,
+//     unknownCount: 0,
+//     staleCount: 3,
+//     overallErrorRate: 0.05,
+//     coverageGaps: ["osint"],
+//   },
+// }
+```
+
+**Tracked per collector:**
+- `lastFetchAt`, `lastSuccessAt` — timestamps
+- `totalFetches`, `successfulFetches`, `failedFetches` — counts
+- `consecutiveFailures` — resets on success
+- `avgResponseTimeMs` — rolling average over last 10 runs
+- `errorRate` — failed / total
+- `isStale` — no successful fetch in configured threshold (default 24h)
+- `status` — unknown → active → degraded → failed (based on consecutive failures)
+
+### AlertSystem
+
+Evaluates collector health against configurable rules:
+
+```typescript
+import { AlertSystem } from "./monitoring/AlertSystem";
+
+const alerts = new AlertSystem();
+
+// After recording runs, evaluate for new alerts
+const snapshots = monitor.getAllSnapshots();
+const newAlerts = alerts.evaluate(snapshots);
+
+// Alert lifecycle
+alerts.acknowledge(alertId);
+alerts.resolve(alertId);
+```
+
+**Default alert rules:**
+
+| Rule | Condition | Severity |
+|---|---|---|
+| `consecutive-failures` | 3+ consecutive failures | warning |
+| `consecutive-failures-critical` | 5+ consecutive failures | critical |
+| `stale-data` | No successful fetch in 24h | warning |
+| `high-error-rate` | Error rate > 50% | critical |
+| `rate-limit-spike` | Rate limit hits > 10 in window | warning |
+
+**Alert fatigue prevention:** Minimum cooldown between repeated alerts per
+collector (default: 30 minutes). Active alerts for the same rule/collector
+are not re-triggered until resolved.
+
+### MetricsCollector
+
+Aggregates metrics over time windows (1h, 24h, 7d):
+
+```typescript
+import { MetricsCollector } from "./monitoring/MetricsCollector";
+
+const metrics = new MetricsCollector();
+
+// Record each run
+metrics.recordRun(sourceId, collectorName, sourceType, result);
+
+// Get system-wide metrics
+const sysMetrics = metrics.getSystemMetrics("24h");
+// {
+//   window: "24h",
+//   sources: [SourceMetrics, ...],
+//   totals: { itemsFetched, itemsStored, errors, rateLimitHits, avgResponseTimeMs },
+//   activeCollectors: 10,
+//   failedCollectors: 1,
+// }
+```
+
+### React Integration
+
+A React context provider makes monitoring state available to UI components:
+
+```tsx
+import { MonitoringProvider, useMonitoring } from "./monitoring";
+
+function App() {
+  return (
+    <MonitoringProvider>
+      <MonitoringDashboard />
+    </MonitoringProvider>
+  );
+}
+
+function MonitoringDashboard() {
+  const { report, alerts, refresh } = useMonitoring();
+  return (/* ... */);
+}
+```
+
+### Admin Dashboard
+
+Route: `/admin/monitoring`
+
+Displays:
+- **System Health Panel** — operational %, active/failed/stale/degraded counts, error rate, coverage gaps
+- **Collector Status Table** — name, type, health status, last fetch, success rate, response time, error count
+- **Alert History** — timestamp, source, alert type, severity, status with ack/resolve actions
+
+**Guardrails:**
+- Admin page is NOT linked from public navigation
+- `robots: "noindex,nofollow"` on the route
+- No API keys or credentials in monitoring logs
+- Monitoring data is metadata only — never includes collected content
+- Alert thresholds are configurable per source type
+
+See `docs/monitoring-runbook.md` for operational procedures.
+
+---
+
 ## Future Milestones
 
 - **Cron parser:** Replace simple hourly default with full cron expression support
 - **Persistent store:** API-backed storage with database persistence
-- **Dashboard:** Collector health dashboard showing run history and failure trends
+- ~~**Dashboard:** Collector health dashboard showing run history and failure trends~~ ✅ Implemented (M4.1-08)
 - **Auto-start:** Daemon/service worker for background collection
 - **Webhook triggers:** Trigger collection from external events (new document published, etc.)
 - **Content diffing:** Compare collected content against previously stored versions
-- **Notification alerts:** Alert on consecutive failures or health degradation
+- ~~**Notification alerts:** Alert on consecutive failures or health degradation~~ ✅ Implemented (M4.1-08)
+- **Live wiring:** Connect collector runs to health monitoring in the app runtime
+- **Persistent metrics:** Replace in-memory metrics with stored history

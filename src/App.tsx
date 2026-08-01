@@ -44,6 +44,7 @@ const SourceDetailPage = lazy(() => import("./pages/SourceDetailPage"));
 const DossiersPage = lazy(() => import("./pages/DossiersPage"));
 const DossierDetailPage = lazy(() => import("./pages/DossierDetailPage"));
 const SearchPage = lazy(() => import("./pages/SearchPage"));
+const MonitoringDashboard = lazy(() => import("./pages/admin/MonitoringDashboard"));
 
 function RouteMeta() {
   const { pathname } = useLocation();
@@ -109,6 +110,7 @@ export default function App() {
           <Route path="/dossiers" element={<DossiersPage />} />
           <Route path="/dossiers/:slug" element={<DossierDetailPage />} />
           <Route path="/search" element={<SearchPage />} />
+          <Route path="/admin/monitoring" element={<MonitoringDashboard />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
         </Suspense>
