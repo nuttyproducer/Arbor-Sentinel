@@ -61,6 +61,10 @@ export class ICRCCollector extends BaseCollector {
     result.metadata.disclaimer =
       "ICRC has a unique legal mandate under the Geneva Conventions. Its findings are not judicial determinations.";
 
+    // The normalizer always tags content as "ngo-research"; relabel for ICRC
+    result.tags = result.tags.filter((tag) => tag !== "ngo-research");
+    result.tags.push("humanitarian-organization");
+
     return result;
   }
 

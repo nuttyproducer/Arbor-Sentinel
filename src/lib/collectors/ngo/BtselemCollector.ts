@@ -182,7 +182,7 @@ export class BtselemCollector extends BaseCollector {
     return dir ? "he" : lang.split("-")[0];
   }
 
-  private classifyDoc(html: string, url: string): NgoReportType {
+  private classifyDoc(_html: string, url: string): NgoReportType {
     if (this.isTestimony(url)) return "testimony_summary";
     if (this.isVideo(url)) return "video_documentation";
     if (this.isDataUpdate(url)) return "data_update";

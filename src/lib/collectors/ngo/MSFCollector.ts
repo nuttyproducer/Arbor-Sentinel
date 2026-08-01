@@ -66,7 +66,7 @@ export class MSFCollector extends BaseCollector {
     return /\/press-release\//i.test(url);
   }
 
-  private isMedicalAccess(url: string, html: string): boolean {
+  private isMedicalAccess(_url: string, html: string): boolean {
     // Medical access statements concern restricted/denied access to care.
     // Plain "medical supplies" is excluded — it appears incidentally in
     // routine field reports describing shortages.
