@@ -109,7 +109,7 @@ export abstract class BaseCollector {
       const dedupeStart = Date.now();
       deduplicatedItems = [];
       for (const item of collectedItems) {
-        if (!(await this.storage.exists(item.fingerprint))) {
+        if (!(await this.isDuplicate(item))) {
           deduplicatedItems.push(item);
         }
       }
