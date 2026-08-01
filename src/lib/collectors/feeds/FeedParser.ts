@@ -202,7 +202,9 @@ export class FeedParser {
   private extractText(parentXml: string, tagName: string): string {
     const el = this.extractElement(parentXml, tagName);
     if (!el) return "";
-    return this.stripHtml(this.unwrapCdata(el.replace(/<\/?[^>]+>/g, "")));
+    // Unwrap CDATA before stripping tags — CDATA markers (<![CDATA[...]]>)
+    // would otherwise be matched by the tag regex and stripped with their content.
+    return this.stripHtml(this.unwrapCdata(el).replace(/<\/?[^>]+>/g, ""));
   }
 
   /** Extract text content while preserving CDATA content. Used for RSS items where CDATA wraps the value. */
