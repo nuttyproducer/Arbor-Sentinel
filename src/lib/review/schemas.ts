@@ -149,7 +149,7 @@ export const correctionSubmissionSchema = z.object({
   sourceUrl: z.string().optional(),
   contactInfo: z.string().optional(), // never exposed publicly
   state: correctionStateSchema,
-  resolution: z.enum(["update", "downgrade", "dispute", "archive", "withdraw", "remove"]).optional(),
+  resolution: z.enum(["update", "downgrade", "dispute", "archive", "withdraw", "remove", "reject"]).optional(),
   resolutionNote: z.string().optional(),
   assignedReviewer: z.string().optional(),
   publicLogEntry: z.string().optional(),
@@ -157,6 +157,7 @@ export const correctionSubmissionSchema = z.object({
   updatedAt: isoDateString,
   resolvedAt: isoDateString.optional(),
   isMajor: z.boolean(),
+  version: z.number().int().min(1).optional(),
 });
 
 // ── Inferred types ─────────────────────────────────────────────────────────

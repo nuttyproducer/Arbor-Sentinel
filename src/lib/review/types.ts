@@ -193,7 +193,8 @@ export type CorrectionResolution =
   | "dispute"
   | "archive"
   | "withdraw"
-  | "remove";
+  | "remove"
+  | "reject";
 
 export interface CorrectionSubmission {
   id: string;
@@ -216,6 +217,23 @@ export interface CorrectionSubmission {
   resolvedAt?: string;
   /** Whether this is a major correction requiring public logging. */
   isMajor: boolean;
+  /** Content version counter — incremented each time the correction is applied. */
+  version?: number;
+}
+
+/**
+ * A public-facing correction log entry. Never contains PII, submitter identity,
+ * or internal review notes.
+ */
+export interface PublicCorrectionEntry {
+  id: string;
+  category: CorrectionCategory;
+  targetPage: string;
+  resolution?: CorrectionResolution;
+  /** Sanitized, human-readable summary of the correction. */
+  summary: string;
+  createdAt: string;
+  resolvedAt?: string;
 }
 
 // ── Content type risk levels for priority calculation ──────────────────────
