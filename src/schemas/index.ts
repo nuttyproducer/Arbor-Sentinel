@@ -385,3 +385,20 @@ export type ActionTemplateSchema = z.infer<typeof actionTemplateSchema>;
 export type CountrySectionSchema = z.infer<typeof countrySectionSchema>;
 export type InstitutionEntrySchema = z.infer<typeof institutionEntrySchema>;
 export type AttributionRecordSchema = z.infer<typeof attributionRecordSchema>;
+
+// ── Review schemas (re-exported from lib/review/schemas) ───────────────────
+export {
+  reviewStateSchema,
+  priorityLevelSchema,
+  reviewTypeSchema,
+  reviewItemSchema,
+  reviewCommentSchema,
+  reviewChecklistItemSchema,
+  reviewChecklistResultSchema,
+  stateTransitionSchema,
+  slaTargetSchema,
+  reviewerProfileSchema,
+  correctionCategorySchema,
+  correctionStateSchema,
+  correctionSubmissionSchema,
+} from "../lib/review/schemas";
