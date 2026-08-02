@@ -179,6 +179,115 @@ export function extractTranslationContent(item: ReviewItem): TranslationContent 
   };
 }
 
+interface EditorialContent {
+  editedText: string;
+  originalText: string;
+}
+
+/**
+ * Extract the AI-edited content (left panel) and the original source text
+ * (right panel) from a review item's pipeline stage results. Falls back to a
+ * placeholder when the stage result is absent.
+ */
+export function extractEditorialContent(item: ReviewItem): EditorialContent {
+  const editorialStage = item.aiOutput?.stageResults?.["editorial"] as
+    | { data?: { editedText?: string } }
+    | undefined;
+  const sourceStage = item.aiOutput?.stageResults?.["source"] as
+    | { data?: { text?: string } }
+    | undefined;
+
+  return {
+    editedText:
+      editorialStage?.data?.editedText ?? "No AI-edited content available for this item.",
+    originalText: sourceStage?.data?.text ?? "No original source text available for this item.",
+  };
+}
+
+// ── Country review content ──────────────────────────────────────────────────
+
+export interface CountrySource {
+  name: string;
+  /** Human-readable source type, e.g. "un", "government", "eu". */
+  type: string;
+  /** ISO date the source was published or last updated. */
+  date: string;
+  /** Whether the source has been independently verified. */
+  verified: boolean;
+}
+
+export interface CountryContent {
+  sources: CountrySource[];
+  /** Names of sources older than the freshness window. */
+  staleSourceNames: string[];
+  hasStaleSources: boolean;
+}
+
+/** Sources older than this window are flagged for a freshness warning. */
+const SOURCE_FRESHNESS_WINDOW_MS = 365 * 24 * 60 * 60 * 1000;
+
+function isSourceStale(dateIso: string, referenceIso: string): boolean {
+  const date = new Date(dateIso).getTime();
+  const reference = new Date(referenceIso).getTime();
+  if (Number.isNaN(date) || Number.isNaN(reference)) return false;
+  return reference - date > SOURCE_FRESHNESS_WINDOW_MS;
+}
+
+/**
+ * Extract the source list for a country page and compute which sources are
+ * stale relative to the item's `updatedAt` (so the freshness warning is
+ * deterministic for a given item).
+ */
+export function extractCountryContent(item: ReviewItem): CountryContent {
+  const stage = item.aiOutput?.stageResults?.["country"] as
+    | { data?: { sources?: CountrySource[] } }
+    | undefined;
+  const sources = stage?.data?.sources ?? [];
+  const referenceIso = item.updatedAt;
+  const staleSourceNames = sources
+    .filter((source) => isSourceStale(source.date, referenceIso))
+    .map((source) => source.name);
+
+  return {
+    sources,
+    staleSourceNames,
+    hasStaleSources: staleSourceNames.length > 0,
+  };
+}
+
+// ── Institution review content ──────────────────────────────────────────────
+
+export type EUCompetencyType = "eu_exclusive" | "shared" | "national";
+
+export interface CompetencyBoundary {
+  area: string;
+  /** Whether the institution may act in this area. */
+  canAct: boolean;
+  /** EU vs national vs shared competency classification. */
+  competencyType: EUCompetencyType;
+  detail: string;
+}
+
+export interface InstitutionContent {
+  role: string;
+  boundaries: CompetencyBoundary[];
+}
+
+/**
+ * Extract the institutional role and competency boundaries from a review
+ * item's pipeline stage results.
+ */
+export function extractInstitutionContent(item: ReviewItem): InstitutionContent {
+  const stage = item.aiOutput?.stageResults?.["institution"] as
+    | { data?: { role?: string; boundaries?: CompetencyBoundary[] } }
+    | undefined;
+
+  return {
+    role: stage?.data?.role ?? "Institutional role unavailable.",
+    boundaries: stage?.data?.boundaries ?? [],
+  };
+}
+
 // ── Named-entity highlighting ───────────────────────────────────────────────
 
 /**
