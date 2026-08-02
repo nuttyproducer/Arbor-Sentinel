@@ -8,8 +8,14 @@ import type {
   PriorityLevel,
   ContentRiskLevel,
   SourceRiskLevel,
+  AssignmentStrategy,
+  StateTransition,
 } from "./types";
-import { ReviewStateMachine, VALID_TRANSITIONS } from "./ReviewStateMachine";
+import {
+  ReviewStateMachine,
+  VALID_TRANSITIONS,
+  InvalidTransitionError,
+} from "./ReviewStateMachine";
 import { calculatePriority, getSLATarget, isOverdue } from "./ReviewPriority";
 import {
   InMemoryPersistence,
@@ -48,6 +54,16 @@ export interface UpdateStateOptions {
   reason?: string;
   /** Required checklist IDs for the `in_review -> approved` guard. */
   requiredChecklistItemIds?: string[];
+}
+
+/** Options for {@link ReviewQueue.assignItem}. */
+export interface AssignItemOptions {
+  /** Reviewer ID or "system" performing the transition. Defaults to `"system"`. */
+  actor?: string;
+  /** The strategy used to select the reviewer, recorded on the item. */
+  strategy?: AssignmentStrategy;
+  /** Human-readable rationale for the assignment. */
+  rationale?: string;
 }
 
 /** Aggregate queue statistics returned by {@link ReviewQueue.stats}. */
@@ -156,6 +172,9 @@ export function inferPriorityInput(
 }
 
 const REVIEW_STATES = Object.keys(VALID_TRANSITIONS) as ReviewState[];
+
+/** States an item may occupy while a reviewer is actively engaged. */
+const REASSIGNABLE_STATES: ReviewState[] = ["assigned", "in_review", "changes_requested"];
 
 // ── Queue ──────────────────────────────────────────────────────────────────
 
@@ -295,6 +314,97 @@ export class ReviewQueue {
     await this.persistence.save(items);
 
     return comment;
+  }
+
+  /**
+   * Assign a review item to a reviewer (I1 gap from Task 4): sets
+   * `assignedReviewer` (plus optional strategy/rationale metadata) and then
+   * transitions the item to `assigned` through the state machine.
+   *
+   * The `new -> assigned` guard requires a reviewer to be set on the item, so
+   * this method persists the reviewer *before* validating the transition. Throws
+   * {@link InvalidTransitionError} when the item is not in the `new` state.
+   */
+  async assignItem(id: string, reviewerId: string, opts: AssignItemOptions = {}): Promise<ReviewItem> {
+    const items = await this.persistence.load();
+    const index = items.findIndex((item) => item.id === id);
+    if (index === -1) throw new ItemNotFoundError(id);
+
+    const item = items[index];
+    const updatedAt = this.now().toISOString();
+    const withReviewer: ReviewItem = {
+      ...item,
+      assignedReviewer: reviewerId,
+      assignmentStrategy: opts.strategy ?? item.assignmentStrategy,
+      assignmentRationale: opts.rationale ?? item.assignmentRationale,
+      updatedAt,
+    };
+
+    const transition = this.stateMachine.transition(item.state, "assigned", {
+      actor: opts.actor ?? "system",
+      reason: opts.rationale,
+      item: withReviewer,
+    });
+
+    const updated: ReviewItem = {
+      ...withReviewer,
+      state: "assigned",
+      stateHistory: [...item.stateHistory, transition],
+    };
+
+    items[index] = updated;
+    await this.persistence.save(items);
+
+    return updated;
+  }
+
+  /**
+   * Change the reviewer on an already-engaged review item (e.g., reviewer
+   * unavailable or SLA breach). The review state is unchanged; the reassignment
+   * is recorded as a same-state entry in the item's history for auditability.
+   *
+   * Only items in `assigned`, `in_review`, or `changes_requested` can be
+   * reassigned — use {@link assignItem} for `new` items.
+   */
+  async reassignItem(id: string, reviewerId: string, reason?: string): Promise<ReviewItem> {
+    const items = await this.persistence.load();
+    const index = items.findIndex((item) => item.id === id);
+    if (index === -1) throw new ItemNotFoundError(id);
+
+    const item = items[index];
+    if (!REASSIGNABLE_STATES.includes(item.state)) {
+      throw new InvalidTransitionError(
+        item.state,
+        item.state,
+        `Cannot reassign item '${id}': only ${REASSIGNABLE_STATES.join(", ")} items can be reassigned (found '${item.state}').`,
+      );
+    }
+
+    const updatedAt = this.now().toISOString();
+    const transition: StateTransition = {
+      from: item.state,
+      to: item.state,
+      timestamp: updatedAt,
+      actor: "system",
+      reason: reason ?? `Reassigned to reviewer '${reviewerId}'.`,
+    };
+
+    const updated: ReviewItem = {
+      ...item,
+      assignedReviewer: reviewerId,
+      stateHistory: [...item.stateHistory, transition],
+      updatedAt,
+    };
+
+    items[index] = updated;
+    await this.persistence.save(items);
+
+    return updated;
+  }
+
+  /** Load a single review item by id, or `null` when it does not exist. */
+  async getById(id: string): Promise<ReviewItem | null> {
+    return this.persistence.getById(id);
   }
 
   /** Query items, ordered priority-first then FIFO. */

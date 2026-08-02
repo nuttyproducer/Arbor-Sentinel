@@ -253,6 +253,90 @@ describe("addComment", () => {
   });
 });
 
+// ── assignItem ──────────────────────────────────────────────────────────────
+
+describe("assignItem", () => {
+  it("sets the reviewer and transitions a new item to assigned", async () => {
+    const queue = makeQueue();
+    const item = await queue.enqueue(makeEnqueueInput());
+
+    const updated = await queue.assignItem(item.id, "reviewer-1", {
+      strategy: "round_robin",
+      rationale: "Round-robin pick",
+    });
+
+    expect(updated.state).toBe("assigned");
+    expect(updated.assignedReviewer).toBe("reviewer-1");
+    expect(updated.assignmentStrategy).toBe("round_robin");
+    expect(updated.assignmentRationale).toBe("Round-robin pick");
+    expect(updated.stateHistory).toHaveLength(1);
+    expect(updated.stateHistory[0]).toMatchObject({
+      from: "new",
+      to: "assigned",
+      actor: "system",
+      reason: "Round-robin pick",
+    });
+
+    // The item is no longer in the pending pool.
+    expect(await queue.dequeue()).toBeNull();
+  });
+
+  it("throws InvalidTransitionError when the item is not in the new state", async () => {
+    const queue = makeQueue();
+    const item = await queue.enqueue(makeEnqueueInput({ assignedReviewer: "reviewer-1" }));
+    await queue.updateState(item.id, "assigned", { actor: "system" });
+
+    await expect(queue.assignItem(item.id, "reviewer-2")).rejects.toBeInstanceOf(
+      InvalidTransitionError,
+    );
+  });
+
+  it("throws ItemNotFoundError for an unknown id", async () => {
+    const queue = makeQueue();
+    await expect(queue.assignItem("missing", "reviewer-1")).rejects.toBeInstanceOf(
+      ItemNotFoundError,
+    );
+  });
+});
+
+// ── reassignItem ────────────────────────────────────────────────────────────
+
+describe("reassignItem", () => {
+  it("changes the reviewer while preserving the review state", async () => {
+    const queue = makeQueue();
+    const item = await queue.enqueue(makeEnqueueInput());
+    await queue.assignItem(item.id, "reviewer-1", { strategy: "round_robin" });
+
+    const updated = await queue.reassignItem(item.id, "reviewer-2", "Reviewer unavailable");
+
+    expect(updated.state).toBe("assigned");
+    expect(updated.assignedReviewer).toBe("reviewer-2");
+    expect(updated.stateHistory).toHaveLength(2);
+    expect(updated.stateHistory[1]).toMatchObject({
+      from: "assigned",
+      to: "assigned",
+      actor: "system",
+      reason: "Reviewer unavailable",
+    });
+  });
+
+  it("throws for items that are not actively assigned", async () => {
+    const queue = makeQueue();
+    const item = await queue.enqueue(makeEnqueueInput()); // state: "new"
+
+    await expect(queue.reassignItem(item.id, "reviewer-2")).rejects.toBeInstanceOf(
+      InvalidTransitionError,
+    );
+  });
+
+  it("throws ItemNotFoundError for an unknown id", async () => {
+    const queue = makeQueue();
+    await expect(queue.reassignItem("missing", "reviewer-2")).rejects.toBeInstanceOf(
+      ItemNotFoundError,
+    );
+  });
+});
+
 // ── query ───────────────────────────────────────────────────────────────────
 
 describe("query", () => {
