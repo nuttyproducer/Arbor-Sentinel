@@ -50,9 +50,7 @@ export function MapSearch({ features, className = "" }: MapSearchProps) {
   }, [features, debouncedQuery]);
 
   const handleSelect = (feature: MapFeature) => {
-    map?.panTo({
-      center: [feature.safeCoordinate.lon, feature.safeCoordinate.lat],
-    });
+    map?.panTo([feature.safeCoordinate.lon, feature.safeCoordinate.lat]);
   };
 
   return (

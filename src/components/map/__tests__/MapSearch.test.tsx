@@ -158,9 +158,7 @@ describe("MapSearch", () => {
     });
 
     fireEvent.click(getByRole("option", { name: "Gaza Hospital Strike" }));
-    expect(mockMap.panTo).toHaveBeenCalledWith({
-      center: [34.5, 31.5],
-    });
+    expect(mockMap.panTo).toHaveBeenCalledWith([34.5, 31.5]);
   });
 
   it("does not crash when map is null", () => {
