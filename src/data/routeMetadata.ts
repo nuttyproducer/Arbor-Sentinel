@@ -130,6 +130,12 @@ const meta: Record<string, RouteMeta> = {
     canonicalPath: "/evidence",
     ogType: "website",
   },
+  "/map": {
+    title: fullTitle("Map"),
+    description: "Interactive map of documented events, sources, organizations, legal jurisdictions, and humanitarian infrastructure — all coordinates at safe precision.",
+    canonicalPath: "/map",
+    ogType: "website",
+  },
 
   // ── Trust / methodology ─────────────────────────────────────────────
   "/methodology": {

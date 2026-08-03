@@ -19,6 +19,7 @@ import InstitutionsIndexPage from "../InstitutionsIndexPage";
 import DossiersPage from "../DossiersPage";
 import DossierDetailPage from "../DossierDetailPage";
 import SearchPage from "../SearchPage";
+import MapPage from "../MapPage";
 
 // Mock framer-motion — jsdom doesn't support animation APIs.
 // Components using Reveal will render children without animation.
@@ -41,6 +42,43 @@ vi.mock("framer-motion", () => ({
   useTransform: () => 0,
   useReducedMotion: () => true,
 }));
+
+// Mock maplibre-gl — jsdom has no WebGL/canvas context. The Map mock fires the
+// "load" event synchronously so MapContainer exposes a map instance, and the
+// mock implements the API surface used by MapLayer, MapControls, MapPopup, and
+// MapSearch (addLayer/addSource, queryRenderedFeatures, panTo, etc.).
+vi.mock("maplibre-gl", () => {
+  const mockMap = {
+    on: vi.fn((event: string, callback?: () => void) => {
+      if (event === "load") callback?.();
+      return mockMap;
+    }),
+    off: vi.fn(),
+    remove: vi.fn(),
+    resize: vi.fn(),
+    getCanvas: vi.fn(() => document.createElement("canvas")),
+    getContainer: vi.fn(() => document.createElement("div")),
+    addSource: vi.fn(),
+    addLayer: vi.fn(),
+    removeLayer: vi.fn(),
+    removeSource: vi.fn(),
+    getLayer: vi.fn(() => undefined),
+    getSource: vi.fn(() => undefined),
+    setLayoutProperty: vi.fn(),
+    queryRenderedFeatures: vi.fn(() => []),
+    zoomIn: vi.fn(),
+    zoomOut: vi.fn(),
+    flyTo: vi.fn(),
+    panTo: vi.fn(),
+  };
+  const MapMock = vi.fn(function () {
+    return mockMap;
+  });
+  return {
+    default: { Map: MapMock },
+    Map: MapMock,
+  };
+});
 
 /**
  * Route rendering smoke tests.
@@ -256,6 +294,19 @@ describe("Route rendering smoke tests", () => {
     ).toBeInTheDocument();
     expect(
       screen.getByLabelText("Search records"),
+    ).toBeInTheDocument();
+  });
+
+  it("renders MapPage", () => {
+    renderPage(MapPage);
+    expect(
+      screen.getByRole("heading", { name: "Interactive Map" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByLabelText("Search features"),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByLabelText("Map filters"),
     ).toBeInTheDocument();
   });
 });
