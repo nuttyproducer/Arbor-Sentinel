@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { useMapContext } from "./MapContext";
-import { LAYER_GROUP_LABELS, type MapLayerConfig, type LayerGroup } from "../../lib/map/types";
+import {
+  LAYER_GROUP_LABELS,
+  type MapLayerConfig,
+  type LayerGroup,
+  type LayerVisibility,
+} from "../../lib/map/types";
 
 interface LayerGroupControlProps {
   layers: MapLayerConfig[];
@@ -11,11 +16,13 @@ function LayerCheckbox({
   config,
   checked,
   onChange,
+  layerVisibility,
   depth = 0,
 }: {
   config: MapLayerConfig;
   checked: boolean;
   onChange: (id: string, visible: boolean) => void;
+  layerVisibility: LayerVisibility;
   depth?: number;
 }) {
   return (
@@ -38,8 +45,9 @@ function LayerCheckbox({
         <LayerCheckbox
           key={sub.id}
           config={sub}
-          checked={sub.defaultVisible}
+          checked={layerVisibility[sub.id] ?? sub.defaultVisible}
           onChange={onChange}
+          layerVisibility={layerVisibility}
           depth={depth + 1}
         />
       ))}
@@ -48,7 +56,7 @@ function LayerCheckbox({
 }
 
 export function LayerGroupControl({ layers, className = "" }: LayerGroupControlProps) {
-  const { setLayerVisibility, toggleLayerGroup } = useMapContext();
+  const { setLayerVisibility, toggleLayerGroup, layerVisibility } = useMapContext();
   const [expandedGroups, setExpandedGroups] = useState<Set<LayerGroup>>(
     new Set(["events", "sources"])
   );
@@ -100,8 +108,9 @@ export function LayerGroupControl({ layers, className = "" }: LayerGroupControlP
                 <LayerCheckbox
                   key={l.id}
                   config={l}
-                  checked={l.defaultVisible}
+                  checked={layerVisibility[l.id] ?? l.defaultVisible}
                   onChange={setLayerVisibility}
+                  layerVisibility={layerVisibility}
                 />
               ))}
           </div>

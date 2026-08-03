@@ -3,11 +3,13 @@ import { useEffect, useRef, useState, useCallback, type ReactNode } from "react"
 import * as maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { MapContext, type MapContextValue } from "./MapContext";
-import type { MapViewport, LayerVisibility, LayerGroup } from "../../lib/map/types";
+import type { MapViewport, LayerVisibility, LayerGroup, MapLayerConfig } from "../../lib/map/types";
 
 interface MapContainerProps {
   initialViewport?: MapViewport;
   style?: string;
+  /** All layer configs rendered inside the map. Used by group-level toggles. */
+  layerConfigs?: MapLayerConfig[];
   children: ReactNode;
 }
 
@@ -42,6 +44,7 @@ const OSM_STYLE: maplibregl.StyleSpecification = {
 export function MapContainer({
   initialViewport = DEFAULT_VIEWPORT,
   style,
+  layerConfigs,
   children,
 }: MapContainerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -90,13 +93,20 @@ export function MapContainer({
   }, []);
 
   const toggleLayerGroup = useCallback((group: LayerGroup) => {
+    const groupLayers = (layerConfigs ?? []).filter((l) => l.group === group);
+    if (groupLayers.length === 0) return;
     setLayerVisibilityState((prev) => {
-      // Toggle: if any sub-layer is visible, hide all; otherwise show all.
-      // The actual sub-layer IDs are keyed in layerVisibility.
-      // This is a simple flip — layer components react to the group toggle.
-      return { ...prev, [`__group__${group}`]: !prev[`__group__${group}`] };
+      // Toggle: if any layer in the group is visible, hide all; otherwise
+      // show all. Writes real per-layer ids into layerVisibility, which
+      // MapLayer reads via context — no synthetic keys.
+      const anyVisible = groupLayers.some((l) => prev[l.id] ?? l.defaultVisible);
+      const next = { ...prev };
+      for (const l of groupLayers) {
+        next[l.id] = !anyVisible;
+      }
+      return next;
     });
-  }, []);
+  }, [layerConfigs]);
 
   const contextValue: MapContextValue = {
     map,

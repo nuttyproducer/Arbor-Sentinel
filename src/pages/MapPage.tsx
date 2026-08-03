@@ -5,6 +5,7 @@ import { PageIntro } from "../components/pages/PageIntro";
 import { PageStatusNotice } from "../components/pages/PageStatusNotice";
 import { MapContainer } from "../components/map/MapContainer";
 import { MapLayer } from "../components/map/MapLayer";
+import { LayerGroupControl } from "../components/map/LayerGroupControl";
 import { MapControls } from "../components/map/MapControls";
 import { MapLegend } from "../components/map/MapLegend";
 import { MapPopup } from "../components/map/MapPopup";
@@ -131,7 +132,7 @@ export default function MapPage() {
       <div className="grid lg:grid-cols-3 gap-6">
         {/* ── Map ─────────────────────────────────────────────────────── */}
         <div className="lg:col-span-2 relative h-[500px] lg:h-[600px] overflow-hidden rounded-lg border border-charcoal/20 bg-bone">
-          <MapContainer>
+          <MapContainer layerConfigs={allLayerConfigs}>
             <MapLayer config={eventConfig} visible={eventConfig.defaultVisible} />
             <MapLayer config={sourceConfig} visible={sourceConfig.defaultVisible} />
             <MapLayer config={organizationConfig} visible={organizationConfig.defaultVisible} />
@@ -147,8 +148,9 @@ export default function MapPage() {
           </MapContainer>
         </div>
 
-        {/* ── Search + filters ────────────────────────────────────────── */}
+        {/* ── Layers + search + filters ───────────────────────────────── */}
         <div className="space-y-6">
+          <LayerGroupControl layers={allLayerConfigs} />
           <MapSearch features={ALL_FEATURES} />
           <MapFilters features={ALL_FEATURES} onFiltersChange={setFilters} />
         </div>

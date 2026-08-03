@@ -53,9 +53,12 @@ function applyStyle(map: Map, config: MapLayerConfig): void {
  * guards against double-adding when the map reference is stable.
  */
 export function MapLayer({ config, visible = true, beforeId }: MapLayerProps): null {
-  const { map } = useMapContext();
+  const { map, layerVisibility } = useMapContext();
   const addedRef = useRef(false);
   const sourceId = `${config.id}--source`;
+  // LayerGroupControl / setLayerVisibility in context take precedence; the
+  // `visible` prop (defaultVisible) is the fallback for the initial state.
+  const effectiveVisible = layerVisibility[config.id] ?? visible;
 
   // Add source + layer on mount (or once the map becomes available)
   useEffect(() => {
@@ -95,9 +98,9 @@ export function MapLayer({ config, visible = true, beforeId }: MapLayerProps): n
   // Update visibility
   useEffect(() => {
     if (!map || !addedRef.current) return;
-    const visibility = visible ? "visible" : "none";
+    const visibility = effectiveVisible ? "visible" : "none";
     map.setLayoutProperty(config.id, "visibility", visibility);
-  }, [map, visible, config.id]);
+  }, [map, effectiveVisible, config.id]);
 
   return null;
 }

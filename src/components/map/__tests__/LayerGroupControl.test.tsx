@@ -58,6 +58,28 @@ describe("LayerGroupControl", () => {
     expect(toggleLayerGroup).toHaveBeenCalledWith("events");
   });
 
+  it("reflects layerVisibility context in checkbox state", () => {
+    const layers = [
+      makeLayerConfig({ id: "layer-a", label: "Layer A", defaultVisible: false }),
+    ];
+
+    const contextValue: MapContextValue = {
+      map: null,
+      layerVisibility: { "layer-a": true },
+      setLayerVisibility: vi.fn(),
+      toggleLayerGroup: vi.fn(),
+    };
+
+    const { getByLabelText } = render(
+      <MapContext.Provider value={contextValue}>
+        <LayerGroupControl layers={layers} />
+      </MapContext.Provider>
+    );
+
+    // Context wins over defaultVisible — the checkbox reflects live state.
+    expect((getByLabelText("Layer A") as HTMLInputElement).checked).toBe(true);
+  });
+
   it("calls setLayerVisibility when individual layer checkbox is toggled", () => {
     const setLayerVisibility = vi.fn();
     const layers = [makeLayerConfig({ id: "layer-a", label: "Layer A" })];
