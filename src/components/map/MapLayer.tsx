@@ -1,5 +1,6 @@
 // src/components/map/MapLayer.tsx
 import { useEffect, useRef } from "react";
+import type { Map, GeoJSONSource } from "maplibre-gl";
 import { useMapContext } from "./MapContext";
 import type { MapLayerConfig } from "../../lib/map/types";
 import { createGeoJSONSource } from "../../lib/map/sources";
@@ -9,6 +10,36 @@ interface MapLayerProps {
   config: MapLayerConfig;
   visible?: boolean;
   beforeId?: string;
+}
+
+/**
+ * Apply config.style to an existing MapLibre layer via setPaintProperty.
+ * Circle and fill layers expose different paint properties, so the layer
+ * kind is read from the live MapLibre layer (falling back to a point layer).
+ */
+function applyStyle(map: Map, config: MapLayerConfig): void {
+  const layer = map.getLayer(config.id);
+  const isFill = layer?.type === "fill";
+  const { style } = config;
+
+  if (isFill) {
+    if (style.color) {
+      map.setPaintProperty(config.id, "fill-color", style.color);
+    }
+    if (style.fillOpacity !== undefined) {
+      map.setPaintProperty(config.id, "fill-opacity", style.fillOpacity);
+    }
+  } else {
+    if (style.color) {
+      map.setPaintProperty(config.id, "circle-color", style.color);
+    }
+    if (style.radius !== undefined) {
+      map.setPaintProperty(config.id, "circle-radius", style.radius);
+    }
+    if (style.strokeWidth !== undefined) {
+      map.setPaintProperty(config.id, "circle-stroke-width", style.strokeWidth);
+    }
+  }
 }
 
 /**
@@ -46,6 +77,20 @@ export function MapLayer({ config, visible = true, beforeId }: MapLayerProps): n
       addedRef.current = false;
     };
   }, [map]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Update source data + style when the config changes (timeline drag,
+  // filter change). The mount effect above runs once, so a new `config`
+  // object (new features / style) must push updates into the live layer here.
+  useEffect(() => {
+    if (!map || !addedRef.current) return;
+    if (map.getSource(sourceId)) {
+      const geoJSONSource = map.getSource(sourceId) as GeoJSONSource;
+      geoJSONSource.setData(createGeoJSONSource(config.features).data);
+    }
+    if (map.getLayer(config.id)) {
+      applyStyle(map, config);
+    }
+  }, [map, config, sourceId]);
 
   // Update visibility
   useEffect(() => {

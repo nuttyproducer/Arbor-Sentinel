@@ -12,7 +12,10 @@ function createMockMap() {
   const layers: string[] = [];
   const sources: Record<string, unknown> = {};
   return {
-    addSource: vi.fn((id: string, spec: unknown) => { sources[id] = spec; }),
+    addSource: vi.fn((id: string, spec: unknown) => {
+      // GeoJSON sources expose setData() — the M1 fix relies on it.
+      sources[id] = { ...(spec as object), setData: vi.fn() };
+    }),
     addLayer: vi.fn((spec: { id: string }) => { layers.push(spec.id); }),
     removeLayer: vi.fn((id: string) => {
       const idx = layers.indexOf(id);
@@ -114,6 +117,72 @@ describe("MapLayer", () => {
       "test-layer",
       "visibility",
       "none"
+    );
+  });
+
+  it("updates source data when config.features change", () => {
+    const configA = makeConfig();
+    const { rerender } = renderWithContext(configA, true);
+
+    const configB = makeConfig({
+      features: [
+        {
+          ...configA.features[0],
+          id: "f2",
+          title: "Changed",
+          safeCoordinate: safeCoord(51, 3),
+        },
+      ],
+    });
+
+    const contextValue: MapContextValue = {
+      map: mockMap as unknown as Map,
+      layerVisibility: { [configB.id]: true },
+      setLayerVisibility: vi.fn(),
+      toggleLayerGroup: vi.fn(),
+    };
+
+    rerender(
+      <MapContext.Provider value={contextValue}>
+        <MapLayer config={configB} visible />
+      </MapContext.Provider>
+    );
+
+    const sourceId = "test-layer--source";
+    const source = mockMap.getSource(sourceId) as unknown as {
+      setData: ReturnType<typeof vi.fn>;
+    };
+    expect(source.setData).toHaveBeenCalled();
+  });
+
+  it("updates paint properties when config.style changes", () => {
+    const configA = makeConfig();
+    const { rerender } = renderWithContext(configA, true);
+
+    const configB = makeConfig({ style: { color: "#00FF00", radius: 12 } });
+
+    const contextValue: MapContextValue = {
+      map: mockMap as unknown as Map,
+      layerVisibility: { [configB.id]: true },
+      setLayerVisibility: vi.fn(),
+      toggleLayerGroup: vi.fn(),
+    };
+
+    rerender(
+      <MapContext.Provider value={contextValue}>
+        <MapLayer config={configB} visible />
+      </MapContext.Provider>
+    );
+
+    expect(mockMap.setPaintProperty).toHaveBeenCalledWith(
+      "test-layer",
+      "circle-color",
+      "#00FF00"
+    );
+    expect(mockMap.setPaintProperty).toHaveBeenCalledWith(
+      "test-layer",
+      "circle-radius",
+      12
     );
   });
 
