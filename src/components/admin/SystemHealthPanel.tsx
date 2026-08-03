@@ -1,35 +1,10 @@
 import type { SystemHealthSummary } from "../../lib/collectors/monitoring/types";
 import { SOURCE_TYPE_LABELS } from "../../types/content";
 import type { SourceType } from "../../types/content";
+import { StatTile } from "./shared/StatTile";
 
 interface SystemHealthPanelProps {
   summary: SystemHealthSummary;
-}
-
-function StatTile({
-  label,
-  value,
-  subtitle,
-  colorClass = "text-ink",
-}: {
-  label: string;
-  value: number | string;
-  subtitle?: string;
-  colorClass?: string;
-}) {
-  return (
-    <div className="bg-white border border-charcoal/10 rounded-lg p-4">
-      <dt className="font-mono text-[11px] uppercase tracking-wider text-charcoal/50 mb-1">
-        {label}
-      </dt>
-      <dd className={`font-serif text-2xl font-semibold ${colorClass}`}>
-        {value}
-      </dd>
-      {subtitle && (
-        <p className="font-mono text-[10px] text-charcoal/40 mt-1">{subtitle}</p>
-      )}
-    </div>
-  );
 }
 
 export function SystemHealthPanel({ summary }: SystemHealthPanelProps) {
