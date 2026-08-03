@@ -2,7 +2,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { AutoRefreshProvider, AutoRefreshControls, useAutoRefresh, useAutoRefreshContext } from "../AutoRefreshProvider";
+import { AutoRefreshProvider, AutoRefreshControls } from "../AutoRefreshProvider";
+import { useAutoRefresh, useAutoRefreshContext } from "../useAutoRefresh";
 
 function TestConsumer({ onRefresh }: { onRefresh: () => void }) {
   const { interval } = useAutoRefreshContext();

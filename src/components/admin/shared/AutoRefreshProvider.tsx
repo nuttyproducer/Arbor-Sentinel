@@ -1,22 +1,11 @@
 // src/components/admin/shared/AutoRefreshProvider.tsx
-import { createContext, useContext, useEffect, useRef, useState, useCallback, type ReactNode } from "react";
+import { useState, useCallback, type ReactNode } from "react";
 import type { AutoRefreshInterval } from "../../../lib/admin/types";
-
-const MAX_REFRESH_RATE_MS = 30_000; // 30s minimum
-
-interface AutoRefreshContextValue {
-  interval: AutoRefreshInterval;
-  setInterval: (i: AutoRefreshInterval) => void;
-}
-
-const AutoRefreshContext = createContext<AutoRefreshContextValue>({
-  interval: null,
-  setInterval: () => {},
-});
-
-export function useAutoRefreshContext() {
-  return useContext(AutoRefreshContext);
-}
+import {
+  AutoRefreshContext,
+  useAutoRefreshContext,
+  INTERVAL_OPTIONS,
+} from "./useAutoRefresh";
 
 export interface AutoRefreshProviderProps {
   children: ReactNode;
@@ -39,38 +28,6 @@ export function AutoRefreshProvider({
     </AutoRefreshContext.Provider>
   );
 }
-
-export function useAutoRefresh(
-  callback: () => void,
-  intervalMs: AutoRefreshInterval,
-) {
-  const callbackRef = useRef(callback);
-
-  // Keep the ref in sync with the latest callback
-  useEffect(() => {
-    callbackRef.current = callback;
-  });
-
-  useEffect(() => {
-    if (intervalMs === null) return;
-
-    // Enforce max refresh rate
-    const effectiveInterval = Math.max(intervalMs, MAX_REFRESH_RATE_MS);
-
-    const id = setInterval(() => {
-      callbackRef.current();
-    }, effectiveInterval);
-
-    return () => clearInterval(id);
-  }, [intervalMs]);
-}
-
-const INTERVAL_OPTIONS: Array<{ value: AutoRefreshInterval; label: string }> = [
-  { value: null, label: "Off" },
-  { value: 30_000, label: "30s" },
-  { value: 60_000, label: "60s" },
-  { value: 300_000, label: "5 min" },
-];
 
 export function AutoRefreshControls() {
   const { interval, setInterval } = useAutoRefreshContext();
