@@ -139,7 +139,7 @@ export default function MapPage() {
             <MapLayer config={legalConfig} visible={legalConfig.defaultVisible} />
             <MapLayer config={infrastructureConfig} visible={infrastructureConfig.defaultVisible} />
             <MapControls />
-            <MapLegend layers={allLayerConfigs} />
+            <MapLegend layers={allLayerConfigs} className="top-3 left-3" />
             <MapPopup />
             <MapTimeline
               features={ALL_FEATURES}

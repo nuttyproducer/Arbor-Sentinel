@@ -25,7 +25,7 @@ export function MapLegend({ layers, className = "" }: MapLegendProps) {
 
   return (
     <div
-      className={`absolute bottom-8 left-3 z-20 bg-bone/95 border border-charcoal/20 rounded-lg p-3 max-w-[220px] text-xs ${className}`}
+      className={`absolute ${className || "bottom-8 left-3"} z-20 bg-bone/95 border border-charcoal/20 rounded-lg p-3 max-w-[220px] text-xs`}
       aria-label="Map legend"
     >
       <h3 className="font-mono text-[10px] uppercase tracking-widest text-charcoal/60 mb-2">

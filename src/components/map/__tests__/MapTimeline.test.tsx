@@ -97,13 +97,15 @@ describe("MapTimeline", () => {
     expect(lastCall[1]).toBe("2024-07-01");
   });
 
-  it("shows the current date range as labels", () => {
+  it("initializes to the full date span so all events show", () => {
+    const onRangeChange = vi.fn();
     const { getByLabelText } = render(
-      <MapTimeline features={features} onRangeChange={vi.fn()} />
+      <MapTimeline features={features} onRangeChange={onRangeChange} />
     );
 
     expect(getByLabelText("Range start").textContent).toBe("2024-01-01");
-    expect(getByLabelText("Range end").textContent).toBe("2024-01-01");
+    expect(getByLabelText("Range end").textContent).toBe("2024-12-31");
+    expect(onRangeChange).toHaveBeenCalledWith("2024-01-01", "2024-12-31");
   });
 
   it("toggles play/pause and advances the range on animation frames", () => {

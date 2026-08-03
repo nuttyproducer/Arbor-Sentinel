@@ -25,8 +25,10 @@ export function MapTimeline({ features, onRangeChange }: MapTimelineProps) {
   const maxMs = useMemo(() => new Date(max).getTime(), [max]);
   const rangeMs = maxMs - minMs;
 
-  const [value, setValue] = useState(0);
-  const valueRef = useRef(0);
+  // Start at the full range so the initial view shows every dated event
+  // instead of only the earliest one.
+  const [value, setValue] = useState(SLIDER_MAX);
+  const valueRef = useRef(SLIDER_MAX);
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState<Speed>(1);
   const [reducedMotion, setReducedMotion] = useState(() => {
@@ -84,6 +86,11 @@ export function MapTimeline({ features, onRangeChange }: MapTimelineProps) {
 
   const togglePlay = () => {
     if (reducedMotion) return;
+    if (!playing && valueRef.current >= SLIDER_MAX) {
+      // Already at the end; restart playback from the beginning.
+      valueRef.current = 0;
+      setValue(0);
+    }
     setPlaying((p) => !p);
   };
 
