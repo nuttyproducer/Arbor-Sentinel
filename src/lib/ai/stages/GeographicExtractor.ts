@@ -10,7 +10,7 @@ import type { ExtractedLocation, LocationPrecision, GeoJSONFeature } from "./typ
 /** Locations that must NEVER have exact coordinates published. */
 const SENSITIVE_LOCATION_TYPES = new Set([
   "shelter", "safe_house", "medical_facility", "aid_distribution_point",
-  "checkpoint", "witness_location", "individual_home",
+  "checkpoint", "witness_location", "individual_home", "school", "hospital",
 ]);
 
 /** Precision downgrade: what precision to use for sensitive locations. */

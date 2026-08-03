@@ -3,7 +3,7 @@ import type { RawCoordinate, SafeCoordinate, LocationPrecision, SafetyContext } 
 /** Locations that must NEVER have exact coordinates published. Mirrors GeographicExtractor's set. */
 export const SENSITIVE_LOCATION_TYPES = new Set([
   "shelter", "safe_house", "medical_facility", "aid_distribution_point",
-  "checkpoint", "witness_location", "individual_home",
+  "checkpoint", "witness_location", "individual_home", "school", "hospital",
 ]);
 
 /** Precision downgrade map for sensitive location types. */

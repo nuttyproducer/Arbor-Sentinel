@@ -69,6 +69,8 @@ describe("safeCoordinate", () => {
     expect(SENSITIVE_LOCATION_TYPES.has("checkpoint")).toBe(true);
     expect(SENSITIVE_LOCATION_TYPES.has("witness_location")).toBe(true);
     expect(SENSITIVE_LOCATION_TYPES.has("individual_home")).toBe(true);
+    expect(SENSITIVE_LOCATION_TYPES.has("school")).toBe(true);
+    expect(SENSITIVE_LOCATION_TYPES.has("hospital")).toBe(true);
   });
 });
 
