@@ -19,6 +19,7 @@
     "@fontsource/inter": "^5.2.8",
     "framer-motion": "^12.7.0",
     "i18next": "^26.3.6",
+    "maplibre-gl": "^6.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-i18next": "^17.0.11",
