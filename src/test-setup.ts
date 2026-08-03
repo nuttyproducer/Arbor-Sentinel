@@ -1,5 +1,36 @@
 import "@testing-library/jest-dom/vitest";
 
+// jsdom does not implement ResizeObserver, which Recharts' ResponsiveContainer
+// requires. Provide a stub that fires an initial resize with a realistic content
+// rect so charts render at a measurable size inside tests.
+class ResizeObserverMock {
+  callback: ResizeObserverCallback | null = null;
+
+  constructor(callback: ResizeObserverCallback) {
+    this.callback = callback;
+  }
+
+  observe() {
+    // Fire an initial resize so Recharts renders bars rather than a 0x0 chart.
+    if (this.callback) {
+      this.callback(
+        [
+          {
+            contentRect: { width: 500, height: 300 },
+          },
+        ] as ResizeObserverEntry[],
+        this as unknown as ResizeObserver,
+      );
+    }
+  }
+
+  unobserve() {}
+
+  disconnect() {}
+}
+
+globalThis.ResizeObserver = ResizeObserverMock as unknown as typeof ResizeObserver;
+
 // Mock the i18n config module to prevent real i18next initialization.
 // The config runs i18n.use().init() at module level which requires
 // real plugins — not available in jsdom test environment.
