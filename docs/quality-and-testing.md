@@ -146,3 +146,32 @@ Before public release, manually verify:
 - [ ] All external links have `rel="noopener noreferrer"`
 - [ ] Reduced-motion setting disables scroll-triggered reveals
 - [ ] Images have alt text or are marked `aria-hidden`
+
+---
+
+## Data Quality Dashboards (M4.4-03)
+
+The Data Quality Dashboard at `/admin/data-quality` provides aggregate visibility into
+pipeline output quality. It complements the content validation rules (see §8 of
+CURRENT-IMPLEMENTATION-STATE.md) by surfacing:
+
+- **Confidence score distributions** across AI pipeline stages — low-confidence outputs
+  may warrant human review priority
+- **Contradiction rates** by content type and source type — helps identify source quality
+  patterns and areas where the contradiction detector needs tuning
+- **Duplicate rates** — monitors the duplicate detector's false positive and merge rates
+- **Source coverage gaps** — identifies regions and source types with insufficient coverage,
+  driving collector prioritization
+- **Data freshness** — unified view of content staleness across all categories, using the
+  same REVIEW_CADENCE thresholds from the content validation rules
+
+### Relationship to content validation
+
+The dashboard metrics and content validation rules serve different purposes:
+
+- **Content validation** (Rule 17, `checkStaleReviews`): CI-time checks that flag specific
+  records that need review. Deterministic pass/fail.
+- **Quality dashboards**: Runtime aggregate views for operational monitoring. Shows trends
+  and distributions, not individual record-level issues.
+
+Both use the same freshness thresholds defined in `src/lib/content-validation/types.ts`.
