@@ -22,7 +22,7 @@ export function MapSearchResults({
     <ul
       role="listbox"
       aria-label="Search results"
-      className={`bg-bone/95 border border-charcoal/20 rounded-lg mt-2 overflow-hidden divide-y divide-charcoal/10 max-h-64 overflow-y-auto ${className}`}
+      className={`bg-bone/95 border border-charcoal/20 rounded-lg mt-2 divide-y divide-charcoal/10 max-h-64 overflow-y-auto ${className}`}
     >
       {results.map((f) => (
         <li key={f.id}>
