@@ -239,6 +239,14 @@ const meta: Record<string, RouteMeta> = {
     ogType: "website",
     robots: "noindex,nofollow",
   },
+  "/admin/review-metrics": {
+    title: fullTitle("Review Queue Metrics"),
+    description:
+      "Review queue metrics dashboard — queue depth, age distribution, throughput, reviewer performance, SLA compliance, and bottleneck detection. Admin access only. Not linked from public navigation.",
+    canonicalPath: "/admin/review-metrics",
+    ogType: "website",
+    robots: "noindex,nofollow",
+  },
 
   // ── Meta ────────────────────────────────────────────────────────────
   "/changelog": {
