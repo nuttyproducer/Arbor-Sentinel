@@ -47,6 +47,7 @@ const SearchPage = lazy(() => import("./pages/SearchPage"));
 const MonitoringDashboard = lazy(() => import("./pages/admin/MonitoringDashboard"));
 const PipelineDashboard = lazy(() => import("./pages/admin/PipelineDashboard"));
 const ReviewMetricsDashboard = lazy(() => import("./pages/admin/ReviewMetricsDashboard"));
+const DataQualityDashboard = lazy(() => import("./pages/admin/DataQualityDashboard"));
 
 function RouteMeta() {
   const { pathname } = useLocation();
@@ -115,6 +116,7 @@ export default function App() {
           <Route path="/admin/monitoring" element={<MonitoringDashboard />} />
           <Route path="/admin/pipeline" element={<PipelineDashboard />} />
           <Route path="/admin/review-metrics" element={<ReviewMetricsDashboard />} />
+          <Route path="/admin/data-quality" element={<DataQualityDashboard />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
         </Suspense>

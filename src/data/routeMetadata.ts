@@ -247,6 +247,13 @@ const meta: Record<string, RouteMeta> = {
     ogType: "website",
     robots: "noindex,nofollow",
   },
+  "/admin/data-quality": {
+    title: fullTitle("Data Quality"),
+    description: "Data quality dashboard — confidence score distribution, contradiction rates, duplicate detection, source coverage gaps, and data freshness. Admin access only. Not linked from public navigation.",
+    canonicalPath: "/admin/data-quality",
+    ogType: "website",
+    robots: "noindex,nofollow",
+  },
 
   // ── Meta ────────────────────────────────────────────────────────────
   "/changelog": {
