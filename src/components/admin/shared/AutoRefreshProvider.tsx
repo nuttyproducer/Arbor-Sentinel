@@ -29,11 +29,6 @@ export function AutoRefreshProvider({
 }: AutoRefreshProviderProps) {
   const [interval, setIntervalState] = useState<AutoRefreshInterval>(defaultInterval);
 
-  // Keep state in sync when a new defaultInterval is provided (e.g. via rerender).
-  useEffect(() => {
-    setIntervalState(defaultInterval);
-  }, [defaultInterval]);
-
   const setInterval = useCallback((i: AutoRefreshInterval) => {
     setIntervalState(i);
   }, []);
@@ -50,7 +45,11 @@ export function useAutoRefresh(
   intervalMs: AutoRefreshInterval,
 ) {
   const callbackRef = useRef(callback);
-  callbackRef.current = callback;
+
+  // Keep the ref in sync with the latest callback
+  useEffect(() => {
+    callbackRef.current = callback;
+  });
 
   useEffect(() => {
     if (intervalMs === null) return;
