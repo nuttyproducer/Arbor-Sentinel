@@ -231,6 +231,14 @@ const meta: Record<string, RouteMeta> = {
     ogType: "website",
     robots: "noindex,nofollow",
   },
+  "/admin/pipeline": {
+    title: fullTitle("Pipeline Monitoring"),
+    description:
+      "Pipeline monitoring dashboard — source overview, ingestion metrics, AI pipeline throughput and latency, collector status, and error rates. Admin access only. Not linked from public navigation.",
+    canonicalPath: "/admin/pipeline",
+    ogType: "website",
+    robots: "noindex,nofollow",
+  },
 
   // ── Meta ────────────────────────────────────────────────────────────
   "/changelog": {
