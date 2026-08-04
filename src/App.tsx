@@ -106,7 +106,7 @@ export default function App() {
   return (
     <DisplayPreferenceProvider>
     <LocaleProvider>
-      <BrowserRouter basename={import.meta.env.BASE_URL}>
+      <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '')}>
         <RouteMeta />
         <ScrollToTop />
         <PageShell>
