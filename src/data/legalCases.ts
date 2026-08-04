@@ -327,7 +327,7 @@ export const legalCases: LegalCaseEntry[] = [
     parties: ["Belgian Federal Government", "Traders and importers"],
     summary:
       "In July 2026, the Belgian government advanced a royal decree banning imports from Israeli communities in the West Bank, East Jerusalem, and Gaza, with a 120-day transitional period and exemptions for Palestinian producers and humanitarian supplies. Belgium joined Spain, the Netherlands, and Ireland in imposing such bans. The measure is justified by reference to the ICJ's July 2024 advisory opinion finding Israeli settlements illegal. The decree implements the government's September 2025 sanctions package.",
-    legalStatuses: ["court_proceeding_active"],
+    legalStatuses: ["not_judicially_determined"],
     openedDate: "2025-09",
     latestVerifiedUpdateDate: "2026-07",
     nextMilestone: "Publication and entry into force of the royal decree; potential administrative challenges before the Council of State",
@@ -346,7 +346,7 @@ export const legalCases: LegalCaseEntry[] = [
     reviewedByRole: "Contributor — legal research background",
     version: 1,
     proceduralNote:
-      "The royal decree is an administrative trade measure. It is subject to administrative and judicial challenge before entry into force and after. The status label reflects that the measure is adopted and in a transitional period, with its implementation and any legal challenges ongoing; it is not a judicial finding about the underlying conflict.",
+      "The royal decree is an administrative trade measure adopted by the federal government, not a court proceeding. Its legality has not yet been tested before a court — it is subject to administrative challenge before the Council of State. The status label 'not yet judicially determined' reflects that the measure is adopted and in a transitional period, with its implementation and any legal challenges ongoing; it is not a judicial finding about the underlying conflict.",
     correctionUrl: "/corrections",
   },
 ];

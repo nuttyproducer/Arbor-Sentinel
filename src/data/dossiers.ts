@@ -139,7 +139,7 @@ export const dossiers: DossierRecord[] = [
       "be-sanctions-package-2025-09",
       "be-flemish-arms-transit-order-2025-07",
       "be-brussels-airspace-court-2025-03",
-      "ie-dail-gaza-debates-2024",
+      "arms-export-parliamentary-scrutiny",
     ],
     legalCaseIds: [
       "be-flemish-arms-transit-case",
