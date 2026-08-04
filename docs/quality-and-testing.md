@@ -175,3 +175,112 @@ The dashboard metrics and content validation rules serve different purposes:
   and distributions, not individual record-level issues.
 
 Both use the same freshness thresholds defined in `src/lib/content-validation/types.ts`.
+
+---
+
+## Collector Test Suite (M4.7-01)
+
+The collector test suite provides comprehensive coverage for all source collectors:
+court (ICJ, ICC), UN (OHCHR, OCHA), government (EU, Belgium), NGO (Amnesty, HRW,
+Btselem, MSF, ICRC), and media (Journalism, Academic).
+
+### Structure
+
+```
+src/lib/collectors/
+├── __tests__/
+│   ├── fixtures/                        # Standardized test fixtures per source type
+│   │   ├── index.ts                     # Re-exports all fixture modules
+│   │   ├── courtFixtures.ts             # Court: normal, empty, malformed, error, HTML, normalization variants
+│   │   ├── unFixtures.ts                # UN: OHCHR/OCHA normal, RSS, normalization variants
+│   │   ├── governmentFixtures.ts        # EU/BE: resolutions, legislation, vote tallies
+│   │   ├── ngoFixtures.ts               # NGO: all 5 orgs, report types, methodology, legal refs
+│   │   └── mediaFixtures.ts             # Media: journalism/academic, RSS, paywalled content
+│   ├── allCollectors.test.ts            # Integration: all 13 collectors register and instantiate
+│   ├── collectorValidation.test.ts      # Validation: CollectResult Zod schema, pipeline invariants
+│   ├── BaseCollector.test.ts            # Base class: pipeline stages, fingerprinting, timeout
+│   ├── CollectorRegistry.test.ts        # Registry: registration, instance caching, health tracking
+│   ├── retry.test.ts                    # Retry: backoff, jitter, retryable status codes
+│   └── rateLimiter.test.ts              # Rate limiter: concurrency, burst, domain isolation
+├── courts/__tests/
+│   ├── allCourts.test.ts                # Integration: ICJ + ICC pipeline, normalization, errors
+│   ├── ICJCollector.test.ts             # Unit: ICJ-specific HTML parsing, document type detection
+│   ├── ICCCollector.test.ts             # Unit: ICC-specific content handling
+│   └── LegalNormalizer.test.ts          # Unit: court document normalization, validation
+├── un/__tests__/
+│   ├── allUN.test.ts                    # Integration: OHCHR + OCHA pipeline, RSS feeds
+│   ├── OHCHRCollector.test.ts           # Unit: OHCHR-specific parsing
+│   ├── OCHACollector.test.ts            # Unit: OCHA-specific RSS handling
+│   └── UNNormalizer.test.ts             # Unit: UN document normalization, document symbols
+├── eu/__tests__/
+│   ├── allEU.test.ts                    # Integration: EU + Belgium pipeline, multilingual
+│   ├── EUCollector.test.ts              # Unit: EU Parliament/Council parsing
+│   ├── BelgiumCollector.test.ts         # Unit: Belgian parliamentary document parsing
+│   └── GovernmentNormalizer.test.ts     # Unit: gov doc validation, vote tallies, adoption status
+├── ngo/__tests__/
+│   ├── allNGO.test.ts                   # Integration: all 5 NGOs pipeline, registration
+│   ├── AmnestyCollector.test.ts         # Unit: Amnesty-specific HTML parsing
+│   ├── HRWCollector.test.ts             # Unit: HRW-specific report handling
+│   ├── BtselemCollector.test.ts         # Unit: Btselem-specific content
+│   ├── MSFCollector.test.ts             # Unit: MSF field report parsing
+│   ├── ICRCCollector.test.ts            # Unit: ICRC IHL statement handling
+│   ├── NGONormalizer.test.ts            # Unit: NGO document validation, disclaimer enforcement
+│   └── registry.test.ts                 # Unit: NGO-specific registry configuration
+├── media/__tests__/
+│   ├── allMedia.test.ts                 # Integration: journalism + academic pipeline
+│   ├── JournalismCollector.test.ts      # Unit: RSS-based journalism feed parsing
+│   ├── AcademicCollector.test.ts        # Unit: academic paper metadata extraction
+│   └── MediaNormalizer.test.ts          # Unit: media doc normalization, content types
+└── monitoring/__tests__/
+    ├── HealthMonitor.test.ts            # Unit: collector health monitoring
+    └── AlertSystem.test.ts              # Unit: alert generation and thresholds
+```
+
+### Fixture coverage
+
+Each fixture module covers five response scenarios:
+
+| Scenario | What it tests |
+|---|---|
+| **Normal** | Valid document with all fields populated — happy path |
+| **Empty** | Document with empty/minimal fields — graceful degradation |
+| **Malformed** | Missing required fields (URL, title, body) — validation rejection |
+| **Error** | HTTP errors (404, 500, 429, timeout) — typed error handling |
+| **Rate-limited** | 429 responses with retry-after headers — backoff behavior |
+
+Normalization variant fixtures exercise: multilingual documents (EN, FR, NL),
+missing dates, multi-region scope, diverse document types, and edge cases.
+
+### Key test categories
+
+| Category | What is verified |
+|---|---|
+| **Registration** | Every collector registers in CollectorRegistry, source type coverage |
+| **Pipeline** | fetch → validate → normalize → deduplicate → store executes end-to-end |
+| **Schema validation** | Every collect() output validates against Zod CollectResult schema |
+| **Pipeline invariants** | itemsValidated ≤ itemsFetched, itemsStored ≤ itemsDeduplicated, etc. |
+| **Error handling** | 404, 500, 429, network errors produce CollectResult with success: false |
+| **Normalization** | Each normalizer tested with diverse input formats, field extraction verified |
+| **Timestamp consistency** | startedAt ≤ completedAt, both valid ISO 8601 |
+| **Run ID uniqueness** | Each collect() call produces a unique run ID |
+
+### Guardrails
+
+- **Never make actual network calls** — all tests use `vi.stubGlobal("fetch", ...)` mocks
+- **Fixture data is synthetic** — no copyrighted content from real sources
+- **Tests are deterministic** — no timing-dependent assertions, no real API calls
+- **Coverage target** — 90%+ line coverage for collector code
+
+### Running collector tests
+
+```bash
+# Run all collector tests
+npx vitest run src/lib/collectors/
+
+# Run a specific collector's tests
+npx vitest run src/lib/collectors/courts/
+
+# Run only the new integration tests
+npx vitest run src/lib/collectors/__tests__/allCollectors.test.ts
+npx vitest run src/lib/collectors/__tests__/collectorValidation.test.ts
+```
