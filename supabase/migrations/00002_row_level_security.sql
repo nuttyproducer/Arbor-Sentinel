@@ -25,7 +25,7 @@ SECURITY DEFINER
 SET search_path = ''
 AS $$
   SELECT EXISTS (
-    SELECT 1 FROM user_roles
+    SELECT 1 FROM public.user_roles
     WHERE user_id = auth.uid() AND role = required_role
   );
 $$;
@@ -40,7 +40,7 @@ SECURITY DEFINER
 SET search_path = ''
 AS $$
   SELECT EXISTS (
-    SELECT 1 FROM user_roles
+    SELECT 1 FROM public.user_roles
     WHERE user_id = auth.uid() AND role = ANY(required_roles)
   );
 $$;
@@ -55,7 +55,7 @@ SECURITY DEFINER
 SET search_path = ''
 AS $$
   SELECT EXISTS (
-    SELECT 1 FROM user_roles
+    SELECT 1 FROM public.user_roles
     WHERE user_id = auth.uid() AND role = 'admin'
   );
 $$;

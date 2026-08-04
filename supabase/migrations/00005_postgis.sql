@@ -75,7 +75,7 @@ IMMUTABLE
 SET search_path = ''
 AS $$
   SELECT CASE
-    WHEN precision_level = 'exact' AND (is_admin() OR has_role('security_admin'))
+    WHEN precision_level = 'exact' AND (public.is_admin() OR public.has_role('security_admin'))
     THEN geom
     ELSE ST_SetSRID(
       ST_MakePoint(
@@ -120,7 +120,7 @@ AS $$
       ei.location_geom::geography,
       ST_SetSRID(ST_MakePoint(center_lng, center_lat), 4326)::geography
     ) / 1000.0 AS distance_km
-  FROM evidence_items ei
+  FROM public.evidence_items ei
   WHERE ei.location_geom IS NOT NULL
     AND ei.review_status = 'published'
     AND ei.visibility = 'public'
@@ -160,7 +160,7 @@ AS $$
     ei.category,
     ST_Y(ei.location_geom) AS lat,
     ST_X(ei.location_geom) AS lng
-  FROM evidence_items ei
+  FROM public.evidence_items ei
   WHERE ei.location_geom IS NOT NULL
     AND ei.review_status = 'published'
     AND ei.visibility = 'public'
@@ -182,7 +182,7 @@ AS $$
       jsonb_build_object(
         'type', 'Feature',
         'geometry', ST_AsGeoJSON(
-          safe_location(ei.location_geom, ei.location_precision)
+          public.safe_location(ei.location_geom, ei.location_precision)
         )::jsonb,
         'properties', jsonb_build_object(
           'id', ei.id,
@@ -195,7 +195,7 @@ AS $$
       ORDER BY ei.created_at DESC
     ), '[]'::jsonb)
   )
-  FROM evidence_items ei
+  FROM public.evidence_items ei
   WHERE ei.location_geom IS NOT NULL
     AND ei.review_status = 'published'
     AND ei.visibility = 'public';

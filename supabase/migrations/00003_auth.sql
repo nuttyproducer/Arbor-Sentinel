@@ -15,7 +15,7 @@ SECURITY DEFINER
 SET search_path = ''
 AS $$
 BEGIN
-  INSERT INTO user_roles (user_id, role)
+  INSERT INTO public.user_roles (user_id, role)
   VALUES (NEW.id, 'contributor');
   RETURN NEW;
 END;
@@ -89,7 +89,7 @@ SECURITY DEFINER
 SET search_path = ''
 AS $$
   SELECT COUNT(*)::int
-  FROM two_factor_attempts
+  FROM public.two_factor_attempts
   WHERE user_id = check_user_id
     AND success = false
     AND attempt_at > now() - interval '15 minutes';

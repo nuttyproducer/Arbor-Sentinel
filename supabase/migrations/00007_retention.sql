@@ -44,16 +44,16 @@ DECLARE
   record_data jsonb;
 BEGIN
   -- Only admins can archive
-  IF NOT is_admin() THEN
+  IF NOT public.is_admin() THEN
     RAISE EXCEPTION 'Only admins can archive records.';
   END IF;
 
   -- Fetch the record based on content type
   CASE target_content_type
     WHEN 'evidence_items' THEN
-      SELECT to_jsonb(ei) INTO record_data FROM evidence_items ei WHERE ei.id = target_content_id;
+      SELECT to_jsonb(ei) INTO record_data FROM public.evidence_items ei WHERE ei.id = target_content_id;
     WHEN 'sources' THEN
-      SELECT to_jsonb(s) INTO record_data FROM sources s WHERE s.id = target_content_id;
+      SELECT to_jsonb(s) INTO record_data FROM public.sources s WHERE s.id = target_content_id;
     ELSE
       RAISE EXCEPTION 'Archive not supported for content type: %', target_content_type;
   END CASE;
@@ -63,7 +63,7 @@ BEGIN
   END IF;
 
   -- Insert into archived_content with purge date based on type
-  INSERT INTO archived_content (content_type, content_id, data, archived_reason, purge_after)
+  INSERT INTO public.archived_content (content_type, content_id, data, archived_reason, purge_after)
   VALUES (
     target_content_type,
     target_content_id,
@@ -90,7 +90,7 @@ DECLARE
   purged_count int;
 BEGIN
   -- 30-day grace period: mark for deletion first, actually delete after 30 days
-  DELETE FROM archived_content
+  DELETE FROM public.archived_content
   WHERE purge_after < now() - interval '30 days';
 
   GET DIAGNOSTICS purged_count = ROW_COUNT;
@@ -112,7 +112,7 @@ DECLARE
 BEGIN
   -- Purge draft evidence items older than 1 year
   WITH deleted AS (
-    DELETE FROM evidence_items
+    DELETE FROM public.evidence_items
     WHERE review_status = 'draft'
       AND created_at < now() - interval '1 year'
     RETURNING id
@@ -121,7 +121,7 @@ BEGIN
 
   -- Purge unpublished dossiers older than 1 year
   WITH deleted AS (
-    DELETE FROM dossiers
+    DELETE FROM public.dossiers
     WHERE published = false
       AND created_at < now() - interval '1 year'
     RETURNING id

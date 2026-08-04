@@ -71,7 +71,7 @@ BEGIN
   END IF;
 
   -- Insert audit record
-  INSERT INTO audit_log (
+  INSERT INTO public.audit_log (
     actor_id,
     actor_role,
     action,
@@ -81,7 +81,7 @@ BEGIN
     ip_address
   ) VALUES (
     auth.uid(),
-    user_role(),
+    public.user_role(),
     audit_action,
     TG_TABLE_NAME,
     target_id_val,

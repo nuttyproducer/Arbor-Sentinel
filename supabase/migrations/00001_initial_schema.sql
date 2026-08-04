@@ -472,7 +472,7 @@ SECURITY DEFINER
 SET search_path = ''
 AS $$
   SELECT COALESCE(
-    (SELECT role FROM user_roles WHERE user_id = auth.uid()),
+    (SELECT role FROM public.user_roles WHERE user_id = auth.uid()),
     'public'
   );
 $$;

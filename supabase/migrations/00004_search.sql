@@ -135,7 +135,7 @@ AS $$
     ts_headline('arbor_sentinel', summary, plainto_tsquery('arbor_sentinel', search_query), 'MaxWords=30, MinWords=15') AS snippet,
     ts_rank(search_vector, plainto_tsquery('arbor_sentinel', search_query)) AS rank,
     created_at
-  FROM evidence_items
+  FROM public.evidence_items
   WHERE search_vector @@ plainto_tsquery('arbor_sentinel', search_query)
     AND review_status = 'published' AND visibility = 'public'
     AND (search_types IS NULL OR 'evidence' = ANY(search_types))
@@ -147,7 +147,7 @@ AS $$
     ts_headline('arbor_sentinel', COALESCE(notes, ''), plainto_tsquery('arbor_sentinel', search_query), 'MaxWords=30, MinWords=15') AS snippet,
     ts_rank(search_vector, plainto_tsquery('arbor_sentinel', search_query)) AS rank,
     created_at
-  FROM sources
+  FROM public.sources
   WHERE search_vector @@ plainto_tsquery('arbor_sentinel', search_query)
     AND (search_types IS NULL OR 'source' = ANY(search_types))
 
@@ -158,7 +158,7 @@ AS $$
     ts_headline('arbor_sentinel', COALESCE(summary, ''), plainto_tsquery('arbor_sentinel', search_query), 'MaxWords=30, MinWords=15') AS snippet,
     ts_rank(search_vector, plainto_tsquery('arbor_sentinel', search_query)) AS rank,
     created_at
-  FROM legal_cases
+  FROM public.legal_cases
   WHERE search_vector @@ plainto_tsquery('arbor_sentinel', search_query)
     AND (search_types IS NULL OR 'legal_case' = ANY(search_types))
 
@@ -169,7 +169,7 @@ AS $$
     NULL AS snippet,
     ts_rank(search_vector, plainto_tsquery('arbor_sentinel', search_query)) AS rank,
     created_at
-  FROM countries
+  FROM public.countries
   WHERE search_vector @@ plainto_tsquery('arbor_sentinel', search_query)
     AND (search_types IS NULL OR 'country' = ANY(search_types))
 
@@ -180,7 +180,7 @@ AS $$
     ts_headline('arbor_sentinel', COALESCE(notes, ''), plainto_tsquery('arbor_sentinel', search_query), 'MaxWords=30, MinWords=15') AS snippet,
     ts_rank(search_vector, plainto_tsquery('arbor_sentinel', search_query)) AS rank,
     created_at
-  FROM organizations
+  FROM public.organizations
   WHERE search_vector @@ plainto_tsquery('arbor_sentinel', search_query)
     AND (search_types IS NULL OR 'organization' = ANY(search_types))
 
