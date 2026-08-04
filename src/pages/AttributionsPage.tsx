@@ -30,7 +30,7 @@ export function AttributionsPage() {
           <PageIntro
             eyebrow="Attributions"
             title="Attributions and image credits."
-            description="Accountability Atlas uses open-licensed or permission-cleared visual materials only when they support public understanding without sensationalism. This page records image credits, licenses, modifications, and where materials are used."
+            description="Arbor Sentinel uses open-licensed or permission-cleared visual materials only when they support public understanding without sensationalism. This page records image credits, licenses, modifications, and where materials are used."
           />
 
           <PageStatusNotice label="Active" variant="info">
@@ -149,14 +149,14 @@ export function AttributionsPage() {
                 <span className="text-clay mt-1.5" aria-hidden="true">•</span>
                 <span>
                   <strong>Logo and wordmark</strong> — original work created for
-                  Accountability Atlas. Licensed under CC BY-SA 4.0.
+                  Arbor Sentinel. Licensed under CC BY-SA 4.0.
                 </span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-clay mt-1.5" aria-hidden="true">•</span>
                 <span>
                   <strong>Grid pattern texture</strong> — original SVG created for
-                  Accountability Atlas. Licensed under CC BY-SA 4.0.
+                  Arbor Sentinel. Licensed under CC BY-SA 4.0.
                 </span>
               </li>
               <li className="flex items-start gap-2">
@@ -182,7 +182,7 @@ export function AttributionsPage() {
                 corrections process
               </Link>{" "}
               or open an issue on{" "}
-              <ExternalLink href="https://github.com/nuttyproducer/accountability-atlas/issues">
+              <ExternalLink href="https://github.com/nuttyproducer/arbor-sentinel/issues">
                 GitHub
               </ExternalLink>
               .

@@ -80,7 +80,7 @@ describe("Keyboard navigation — Header", () => {
 
   it("logo link has accessible name", () => {
     renderWithProviders(<Header />);
-    const logo = screen.getByLabelText("Accountability Atlas — Home");
+    const logo = screen.getByLabelText("Arbor Sentinel — Home");
     expect(logo).toBeInTheDocument();
   });
 

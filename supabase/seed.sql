@@ -1,5 +1,5 @@
 -- ============================================================================
--- Accountability Atlas — Seed Data
+-- Arbor Sentinel — Seed Data
 -- Reference data for development and testing.
 -- Sources data from the static TypeScript files in src/data/.
 -- All content is public, reviewed information. No sensitive data.

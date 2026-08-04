@@ -1,5 +1,5 @@
 # ============================================================================
-# Accountability Atlas — k6 Load Test Configuration
+# Arbor Sentinel — k6 Load Test Configuration
 # ============================================================================
 # Targets (M7-04 acceptance criteria):
 #   home page   < 2 s   (p95)

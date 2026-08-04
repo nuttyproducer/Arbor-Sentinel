@@ -14,7 +14,7 @@ function renderHeader(initialRoute = "/") {
 describe("Header", () => {
   it("renders the logo and wordmark", () => {
     renderHeader();
-    expect(screen.getByText("Accountability Atlas")).toBeInTheDocument();
+    expect(screen.getByText("Arbor Sentinel")).toBeInTheDocument();
     expect(
       screen.getByText("Civic Accountability Platform"),
     ).toBeInTheDocument();
@@ -23,7 +23,7 @@ describe("Header", () => {
   it("renders the home link with accessible label", () => {
     renderHeader();
     const homeLink = screen.getByLabelText(
-      "Accountability Atlas — Home",
+      "Arbor Sentinel — Home",
     );
     expect(homeLink).toBeInTheDocument();
     expect(homeLink.getAttribute("href")).toBe("/");
@@ -42,7 +42,7 @@ describe("Header", () => {
     const ghLink = desktopNav.querySelector('a[href*="github.com"]');
     expect(ghLink).toHaveAttribute(
       "href",
-      "https://github.com/nuttyproducer/accountability-atlas",
+      "https://github.com/nuttyproducer/arbor-sentinel",
     );
   });
 

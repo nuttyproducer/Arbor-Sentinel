@@ -2,7 +2,7 @@
 
 ## Our pledge
 
-We pledge to make participation in Accountability Atlas a harassment-free experience for everyone, regardless of age, body size, visible or invisible disability, ethnicity, sex characteristics, gender identity and expression, level of experience, education, socio-economic status, nationality, personal appearance, race, caste, color, religion, sexual identity and orientation, or political viewpoint, so long as participation follows the project mission and safety standards.
+We pledge to make participation in Arbor Sentinel a harassment-free experience for everyone, regardless of age, body size, visible or invisible disability, ethnicity, sex characteristics, gender identity and expression, level of experience, education, socio-economic status, nationality, personal appearance, race, caste, color, religion, sexual identity and orientation, or political viewpoint, so long as participation follows the project mission and safety standards.
 
 We are committed to a community rooted in human dignity, civilian protection, lawful accountability, and evidence-based work.
 

@@ -1,5 +1,5 @@
 -- ============================================================================
--- Accountability Atlas — Audit Logging
+-- Arbor Sentinel — Audit Logging
 -- Migration: 00006
 -- Description: Comprehensive audit log table with automatic triggers on all CRUD
 -- Reversible: Yes

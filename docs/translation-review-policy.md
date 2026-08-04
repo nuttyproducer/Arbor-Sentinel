@@ -7,7 +7,7 @@
 
 ## Purpose
 
-Accountability Atlas publishes in English during the public static beta.
+Arbor Sentinel publishes in English during the public static beta.
 When translations into additional languages are introduced, this policy
 defines the standards, workflow, and review requirements.
 

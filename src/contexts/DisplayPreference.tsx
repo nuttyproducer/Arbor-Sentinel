@@ -14,7 +14,7 @@ import { createContext, useContext, useState, useEffect, useCallback, type React
 
 export type DisplayDensity = "standard" | "low-graphic";
 
-const STORAGE_KEY = "accountability-atlas:display-density";
+const STORAGE_KEY = "arbor-sentinel:display-density";
 
 interface DisplayPreferenceContextValue {
   density: DisplayDensity;

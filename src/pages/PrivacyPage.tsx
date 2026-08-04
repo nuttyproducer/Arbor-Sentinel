@@ -32,7 +32,7 @@ export function PrivacyPage() {
           <PageIntro
             eyebrow="Privacy"
             title="Privacy in the public static beta."
-            description="The current version of Accountability Atlas is designed to avoid collecting sensitive personal data."
+            description="The current version of Arbor Sentinel is designed to avoid collecting sensitive personal data."
           />
 
           <PageStatusNotice label="Public static beta policy" variant="info">
@@ -171,7 +171,7 @@ export function PrivacyPage() {
                 </Link>
               </li>
               <li>
-                <ExternalLink href="https://github.com/nuttyproducer/accountability-atlas/blob/main/SECURITY.md">
+                <ExternalLink href="https://github.com/nuttyproducer/arbor-sentinel/blob/main/SECURITY.md">
                   Security policy
                 </ExternalLink>
               </li>

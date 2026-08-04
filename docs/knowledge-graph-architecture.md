@@ -1,6 +1,6 @@
 # Knowledge Graph Architecture
 
-This document describes the knowledge graph schema, storage, and usage for the Accountability Atlas.
+This document describes the knowledge graph schema, storage, and usage for the Arbor Sentinel.
 
 ---
 

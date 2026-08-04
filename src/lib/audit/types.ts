@@ -1,5 +1,5 @@
 // src/lib/audit/types.ts
-// Audit log types for the Accountability Atlas.
+// Audit log types for the Arbor Sentinel.
 
 export type AuditAction = 'create' | 'read' | 'update' | 'delete' | 'restore' | 'archive' | 'purge';
 

@@ -54,7 +54,7 @@ export function ContributorCTA() {
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Button
-                href="https://github.com/nuttyproducer/accountability-atlas/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22"
+                href="https://github.com/nuttyproducer/arbor-sentinel/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22"
                 variant="primary"
                 icon={<ExternalIcon />}
                 external
@@ -62,7 +62,7 @@ export function ContributorCTA() {
                 View Good First Issues
               </Button>
               <Button
-                href="https://github.com/nuttyproducer/accountability-atlas/blob/main/CONTRIBUTING.md"
+                href="https://github.com/nuttyproducer/arbor-sentinel/blob/main/CONTRIBUTING.md"
                 variant="secondary"
                 icon={<ExternalIcon />}
                 external

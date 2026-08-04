@@ -1,7 +1,7 @@
 name: Security Scan
 
 # ============================================================================
-# Accountability Atlas — Security Scanning Workflow
+# Arbor Sentinel — Security Scanning Workflow
 # ============================================================================
 # Runs dependency audit, secret scanning, and security header checks.
 #

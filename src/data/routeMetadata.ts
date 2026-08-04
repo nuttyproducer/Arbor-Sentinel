@@ -11,7 +11,7 @@
  * URLs resolve correctly in every deployment environment.
  *
  *   import { setCanonicalBase } from "../data/routeMetadata";
- *   setCanonicalBase("https://accountabilityatlas.org");
+ *   setCanonicalBase("https://arborsentinel.org");
  *
  * INDEXING
  * --------
@@ -59,12 +59,12 @@ export interface RouteMeta {
   ogType?: "website" | "article";
 }
 
-const BASE_TITLE = "Accountability Atlas";
+const BASE_TITLE = "Arbor Sentinel";
 
 function fullTitle(pageTitle: string): string {
   return pageTitle === BASE_TITLE
     ? `${BASE_TITLE} — Building public infrastructure against genocide and mass atrocities.`
-    : `${pageTitle} — Accountability Atlas`;
+    : `${pageTitle} — Arbor Sentinel`;
 }
 
 const meta: Record<string, RouteMeta> = {
@@ -151,7 +151,7 @@ const meta: Record<string, RouteMeta> = {
   "/methodology": {
     title: fullTitle("Methodology"),
     description:
-      "How Accountability Atlas separates sources, leads, allegations, legal findings, and reviewed public evidence — with verification levels, legal status labels, and publication workflow.",
+      "How Arbor Sentinel separates sources, leads, allegations, legal findings, and reviewed public evidence — with verification levels, legal status labels, and publication workflow.",
     canonicalPath: "/methodology",
     ogType: "article",
   },
@@ -167,7 +167,7 @@ const meta: Record<string, RouteMeta> = {
   "/contribute": {
     title: fullTitle("Contribute"),
     description:
-      "Help build Accountability Atlas: developers, designers, researchers, reviewers, writers, and translators — open-source contribution with safety review.",
+      "Help build Arbor Sentinel: developers, designers, researchers, reviewers, writers, and translators — open-source contribution with safety review.",
     canonicalPath: "/contribute",
     ogType: "website",
   },
@@ -176,7 +176,7 @@ const meta: Record<string, RouteMeta> = {
   "/press": {
     title: fullTitle("Press & Resources"),
     description:
-      "How to understand, describe, cite, and represent Accountability Atlas responsibly. For journalists, researchers, contributors, and civic-tech reviewers.",
+      "How to understand, describe, cite, and represent Arbor Sentinel responsibly. For journalists, researchers, contributors, and civic-tech reviewers.",
     canonicalPath: "/press",
     ogType: "website",
   },
@@ -199,14 +199,14 @@ const meta: Record<string, RouteMeta> = {
   "/disclaimer": {
     title: fullTitle("Public Disclaimer"),
     description:
-      "Accountability Atlas is an independent open-source civic accountability project — not a court, NGO, charity, or official authority. Public static beta. Corrections welcome.",
+      "Arbor Sentinel is an independent open-source civic accountability project — not a court, NGO, charity, or official authority. Public static beta. Corrections welcome.",
     canonicalPath: "/disclaimer",
     ogType: "website",
   },
   "/attributions": {
     title: fullTitle("Attributions"),
     description:
-      "Image credits, licences, modifications, and attribution records for every image used on Accountability Atlas — open-licensed or permission-cleared only.",
+      "Image credits, licences, modifications, and attribution records for every image used on Arbor Sentinel — open-licensed or permission-cleared only.",
     canonicalPath: "/attributions",
     ogType: "website",
   },
@@ -215,7 +215,7 @@ const meta: Record<string, RouteMeta> = {
   "/sources": {
     title: fullTitle("Source Registry"),
     description:
-      "Public source registry — every source referenced on Accountability Atlas, with publisher, type, trust level, health status, automation config, access dates, URL status, and links to original documents.",
+      "Public source registry — every source referenced on Arbor Sentinel, with publisher, type, trust level, health status, automation config, access dates, URL status, and links to original documents.",
     canonicalPath: "/sources",
     ogType: "website",
   },
@@ -291,7 +291,7 @@ const meta: Record<string, RouteMeta> = {
   "/beta/feedback": {
     title: fullTitle("Beta Feedback"),
     description:
-      "Submit feedback about the Accountability Atlas beta — rating, category, and detailed comments for the maintenance team.",
+      "Submit feedback about the Arbor Sentinel beta — rating, category, and detailed comments for the maintenance team.",
     canonicalPath: "/beta/feedback",
     robots: "noindex,nofollow",
     ogType: "website",
@@ -299,7 +299,7 @@ const meta: Record<string, RouteMeta> = {
   "/beta/bug-report": {
     title: fullTitle("Beta Bug Report"),
     description:
-      "Report a bug in the Accountability Atlas beta — description, reproduction steps, expected vs actual behavior, and severity.",
+      "Report a bug in the Arbor Sentinel beta — description, reproduction steps, expected vs actual behavior, and severity.",
     canonicalPath: "/beta/bug-report",
     robots: "noindex,nofollow",
     ogType: "website",
@@ -309,7 +309,7 @@ const meta: Record<string, RouteMeta> = {
   "/changelog": {
     title: fullTitle("Changelog"),
     description:
-      "A record of features, improvements, and fixes on the Accountability Atlas platform — maintained by contributors during the public static beta.",
+      "A record of features, improvements, and fixes on the Arbor Sentinel platform — maintained by contributors during the public static beta.",
     canonicalPath: "/changelog",
     ogType: "website",
   },
@@ -402,7 +402,7 @@ export function getRouteMeta(pathname: string): RouteMeta {
     return {
       title: fullTitle("Knowledge Graph Explorer"),
       description:
-        "Explore the Accountability Atlas knowledge graph — entities, documents, sources, locations, and their relationships. Populated from AI-processed evidence as it is reviewed.",
+        "Explore the Arbor Sentinel knowledge graph — entities, documents, sources, locations, and their relationships. Populated from AI-processed evidence as it is reviewed.",
       canonicalPath: key,
       ogType: "website",
     };

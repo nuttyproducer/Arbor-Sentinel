@@ -1,5 +1,5 @@
 -- ============================================================================
--- Accountability Atlas — Row-Level Security Policies
+-- Arbor Sentinel — Row-Level Security Policies
 -- Migration: 00002
 -- Description: RLS enabled on every table with role-based access control
 -- Reversible: Yes (see down migration at end)

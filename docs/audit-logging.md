@@ -1,4 +1,4 @@
-# Audit Logging — Accountability Atlas
+# Audit Logging — Arbor Sentinel
 
 ## Overview
 

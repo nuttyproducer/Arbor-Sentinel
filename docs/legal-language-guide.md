@@ -9,7 +9,7 @@
 ## Purpose
 
 This guide defines approved and prohibited language patterns for legal
-content on Accountability Atlas. It is more specific than the legal-language
+content on Arbor Sentinel. It is more specific than the legal-language
 policy and is the primary reference for contributors drafting or reviewing
 legal text.
 

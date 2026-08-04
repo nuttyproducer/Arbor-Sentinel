@@ -1,13 +1,13 @@
-# Accountability Atlas — Security Contact
+# Arbor Sentinel — Security Contact
 #
 # This file follows RFC 9116.  If you have found a security vulnerability
-# in the Accountability Atlas platform, please report it privately.
+# in the Arbor Sentinel platform, please report it privately.
 #
 # Last updated: 2026-08-04
 
-Canonical: https://accountabilityatlas.org/.well-known/security.txt
+Canonical: https://arborsentinel.org/.well-known/security.txt
 
-Contact: https://github.com/nuttyproducer/accountability-atlas/blob/main/SECURITY.md
+Contact: https://github.com/nuttyproducer/arbor-sentinel/blob/main/SECURITY.md
 
 # A dedicated security email has not yet been configured.
 # Until one is available, use the GitHub private vulnerability reporting
@@ -15,9 +15,9 @@ Contact: https://github.com/nuttyproducer/accountability-atlas/blob/main/SECURIT
 
 Expires: 2026-12-31T23:59:59Z
 
-Policy: https://github.com/nuttyproducer/accountability-atlas/blob/main/SECURITY.md
+Policy: https://github.com/nuttyproducer/arbor-sentinel/blob/main/SECURITY.md
 
-Acknowledgments: https://github.com/nuttyproducer/accountability-atlas/security/advisories
+Acknowledgments: https://github.com/nuttyproducer/arbor-sentinel/security/advisories
 
 Preferred-Languages: en
 

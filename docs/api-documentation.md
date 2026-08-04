@@ -1,9 +1,9 @@
-# API Documentation — Accountability Atlas
+# API Documentation — Arbor Sentinel
 
 ## Base URL
 
 ```
-Production: https://api.accountabilityatlas.org/api/v1
+Production: https://api.arborsentinel.org/api/v1
 Development: http://localhost:54321/api/v1
 ```
 

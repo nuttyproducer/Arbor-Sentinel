@@ -1,6 +1,6 @@
 # Reviewer Guide
 
-**Status:** Active — applies to all external reviewers contributing to Accountability Atlas.  
+**Status:** Active — applies to all external reviewers contributing to Arbor Sentinel.  
 **Last reviewed:** 2026-07-24  
 **Version:** 0.1.0
 
@@ -8,13 +8,13 @@
 
 ## Purpose
 
-This guide explains how external reviewers can contribute to Accountability Atlas
+This guide explains how external reviewers can contribute to Arbor Sentinel
 in a way that is structured, narrow, safe, and recordable. It defines what review
 is, what it is not, and how the platform protects both reviewers and the integrity
 of published content.
 
 **This is not a public partnership programme.** Reviewing content for
-Accountability Atlas does not create a partnership, endorsement, affiliation,
+Arbor Sentinel does not create a partnership, endorsement, affiliation,
 employment, or official representation relationship.
 
 ---
@@ -22,7 +22,7 @@ employment, or official representation relationship.
 ## Who this guide is for
 
 This guide is for anyone invited to review content published or proposed for
-publication on Accountability Atlas, including:
+publication on Arbor Sentinel, including:
 
 - **Source verifiers** — check that sources exist, resolve, and support the summary
 - **Editorial reviewers** — check accuracy, clarity, consistency, tone, and terminology
@@ -94,7 +94,7 @@ decide whether to adjust the scope or seek an alternative reviewer.
 
 ### 3. Understand the platform's boundaries
 
-Accountability Atlas:
+Arbor Sentinel:
 
 - **Is not a legal authority.** It organises public records and attributes legal
   conclusions to the bodies that made them.
@@ -254,7 +254,7 @@ Reviewers must not:
   forward it.
 - **Use the review relationship to imply endorsement.** You may say "I reviewed
   [specific content] for [specific aspect]" but not "I endorse Accountability
-  Atlas" or "I am a partner of Accountability Atlas" unless you have separately
+  Atlas" or "I am a partner of Arbor Sentinel" unless you have separately
   entered into a written partnership agreement.
 - **Contact listed organisations about their listing.** Only authorised
   maintainers may conduct outreach to listed organisations.
@@ -296,7 +296,7 @@ Reviewers may be credited **only with permission**:
 - **Public acknowledgement:** You may be listed in the [Attributions](./attributions.md)
   page or contributor list **only** with your permission.
 - **Self-description:** You may describe your contribution publicly ("I served
-  as a legal reviewer for Accountability Atlas content on [topic]") without
+  as a legal reviewer for Arbor Sentinel content on [topic]") without
   needing platform permission, provided you do not claim to speak for the
   platform.
 

@@ -160,7 +160,7 @@ export class AcademicCollector extends BaseCollector {
   }
 
   private async checkUnpaywall(doi: string): Promise<string | undefined> {
-    const url = `${AcademicCollector.UNPAYWALL_API}/${encodeURIComponent(doi)}?email=collector@accountabilityatlas.org`;
+    const url = `${AcademicCollector.UNPAYWALL_API}/${encodeURIComponent(doi)}?email=collector@arborsentinel.org`;
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 10000);
 

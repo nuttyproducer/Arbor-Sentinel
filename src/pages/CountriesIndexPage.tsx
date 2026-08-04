@@ -114,7 +114,7 @@ export default function CountriesIndexPage() {
         delay={0.18}
       >
         <p>
-          Accountability Atlas does not publish numerical accountability
+          Arbor Sentinel does not publish numerical accountability
           scores, country rankings, or comparative indices during the static
           beta. A score requires a published methodology, weighting rationale,
           source rules, missing-data policy, date/version labels, correction

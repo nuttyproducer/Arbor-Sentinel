@@ -1,5 +1,5 @@
 -- ============================================================================
--- Accountability Atlas — Storage Buckets
+-- Arbor Sentinel — Storage Buckets
 -- Supabase Storage configuration for document and export storage
 -- ============================================================================
 

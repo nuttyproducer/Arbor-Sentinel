@@ -73,7 +73,7 @@ describe("NotFoundPage", () => {
     const btn = screen.getByText("GitHub");
     expect(btn.closest("a")).toHaveAttribute(
       "href",
-      "https://github.com/nuttyproducer/accountability-atlas",
+      "https://github.com/nuttyproducer/arbor-sentinel",
     );
     expect(btn.closest("a")).toHaveAttribute("target", "_blank");
   });

@@ -370,7 +370,7 @@ export const sources: SourceRecord[] = [
     official: true,
     status: "active",
     notes:
-      "The Commission's June 2026 report is a 100-page specialised report focused on violations and crimes committed against Palestinian children from 7 October 2023 to 31 March 2026. The Commission found that Israeli authorities deliberately targeted Palestinian children, resulting in acts that constitute genocide, crimes against humanity (including persecution), and war crimes. The report further substantiates the Commission's earlier finding that Israel committed genocide in Gaza. Commission of Inquiry findings are fact-finding outputs — they inform international accountability processes but are not judicial rulings. The report findings are attributed to the Commission, not to Accountability Atlas.",
+      "The Commission's June 2026 report is a 100-page specialised report focused on violations and crimes committed against Palestinian children from 7 October 2023 to 31 March 2026. The Commission found that Israeli authorities deliberately targeted Palestinian children, resulting in acts that constitute genocide, crimes against humanity (including persecution), and war crimes. The report further substantiates the Commission's earlier finding that Israel committed genocide in Gaza. Commission of Inquiry findings are fact-finding outputs — they inform international accountability processes but are not judicial rulings. The report findings are attributed to the Commission, not to Arbor Sentinel.",
     version: 1,
     lastCheckedAt: "2026-07-24",
     correctionUrl: "/corrections",

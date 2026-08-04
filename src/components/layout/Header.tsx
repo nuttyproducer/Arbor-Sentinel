@@ -21,7 +21,7 @@ export function Header() {
           <Link
             to="/"
             className="flex items-center gap-3 group rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-trust/50 focus-visible:ring-offset-2"
-            aria-label="Accountability Atlas — Home"
+            aria-label="Arbor Sentinel — Home"
           >
             <img
               src={logoMark}
@@ -33,7 +33,7 @@ export function Header() {
             />
             <div className="hidden sm:block">
               <span className="font-serif text-xl font-semibold text-ink leading-tight block">
-                Accountability Atlas
+                Arbor Sentinel
               </span>
               <span className="font-mono text-[11px] font-medium tracking-[0.15em] text-charcoal/60 uppercase">
                 Civic Accountability Platform

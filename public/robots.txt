@@ -1,4 +1,4 @@
-# Accountability Atlas — public launch indexing (M7-06)
+# Arbor Sentinel — public launch indexing (M7-06)
 #
 # Public static content is fully reviewed and ready for indexing.
 # Admin and beta routes are disallowed below and also carry

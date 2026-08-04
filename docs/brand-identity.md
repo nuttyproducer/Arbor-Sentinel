@@ -26,7 +26,7 @@ We aim for:
 Best brand direction
 --------------------
 
-For **Accountability Atlas**, I would choose:
+For **Arbor Sentinel**, I would choose:
 
 Brand Direction: “The Calm Pressure System”
 ===========================================
@@ -48,10 +48,10 @@ I would define the personality like this:
 
 This is important because the tone will affect everything: homepage, buttons, colors, issue labels, contributor docs, social media, outreach emails, and future reports.
 
-Name check: Accountability Atlas
+Name check: Arbor Sentinel
 --------------------------------
 
-I still think **Accountability Atlas** is very strong.
+I still think **Arbor Sentinel** is very strong.
 
 Why it works:
 
@@ -238,7 +238,7 @@ Hero should be calm and strong.
 
 Possible hero copy:
 
-`Accountability Atlas  Evidence for protection.  Action for accountability.  A civic-technology platform for verified atrocity documentation, humanitarian accountability, legal tracking, and lawful public action.`
+`Arbor Sentinel  Evidence for protection.  Action for accountability.  A civic-technology platform for verified atrocity documentation, humanitarian accountability, legal tracking, and lawful public action.`
 
 CTA buttons:
 
@@ -334,7 +334,7 @@ First brand identity draft
 
 Here is the starting identity I would use:
 
-Name:  Accountability Atlas  
+Name:  Arbor Sentinel  
 Tagline:  Evidence for protection. Action for accountability.  
 Category:  Open civic-technology platform  
 Mission:  To help citizens, researchers, journalists, and civil society access verified atrocity documentation, understand legal and policy accountability, and take lawful action for civilian protection and humanitarian access.  

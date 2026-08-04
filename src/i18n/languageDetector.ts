@@ -2,7 +2,7 @@
  * Minimal language detector for i18next.
  *
  * Detection order:
- *  1. localStorage key "accountability-atlas-lang"
+ *  1. localStorage key "arbor-sentinel-lang"
  *  2. navigator.language (browser preference)
  *  3. Fallback to "en"
  *
@@ -12,7 +12,7 @@
 
 import type { LanguageDetectorModule } from "i18next";
 
-const STORAGE_KEY = "accountability-atlas-lang";
+const STORAGE_KEY = "arbor-sentinel-lang";
 const SUPPORTED = ["en", "nl", "fr"];
 
 function normalize(lang: string): string | undefined {

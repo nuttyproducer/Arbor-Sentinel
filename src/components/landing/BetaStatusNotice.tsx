@@ -15,7 +15,7 @@ export function BetaStatusNotice() {
                   id="beta-status-title"
                   className="text-base text-charcoal/75 leading-relaxed"
                 >
-                  Accountability Atlas is currently being built as a static
+                  Arbor Sentinel is currently being built as a static
                   public beta. Preview pages are clearly labeled, methodology is
                   public, corrections are welcome, and sensitive evidence
                   submissions are not accepted at this stage.

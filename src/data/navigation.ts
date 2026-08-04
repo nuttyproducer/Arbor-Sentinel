@@ -14,6 +14,6 @@ export const mainNavItems: NavItem[] = [
 
 export const githubLink: NavItem = {
   label: "GitHub",
-  href: "https://github.com/nuttyproducer/accountability-atlas",
+  href: "https://github.com/nuttyproducer/arbor-sentinel",
   external: true,
 };

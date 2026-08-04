@@ -265,7 +265,7 @@ export default function OrganizationDetailPage() {
         </p>
         <p className="text-sm text-charcoal/75 leading-relaxed">
           Listing does not imply partnership, endorsement, approval, or
-          affiliation with Accountability Atlas. This organization is listed
+          affiliation with Arbor Sentinel. This organization is listed
           as a public resource based on publicly available information. It is
           listed as{" "}
           <strong>

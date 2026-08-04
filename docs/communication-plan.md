@@ -4,7 +4,7 @@
 **Last reviewed:** 2026-08-04  
 **Owned by:** Spokesperson + editorial lead
 
-This plan governs how Accountability Atlas communicates about the public
+This plan governs how Arbor Sentinel communicates about the public
 launch. It complements `docs/communications-playbook.md` (tone, pitches,
 crisis posture) and `docs/outreach.md` (partner/contributor outreach).
 
@@ -66,7 +66,7 @@ Approved talking points. Stay on these; do not ad-lib claims about scale,
 partnerships, or status.
 
 ### Core message
-> Accountability Atlas is an open-source civic-technology platform that
+> Arbor Sentinel is an open-source civic-technology platform that
 > organizes verified public evidence, tracks legal and political
 > responsibility, and helps people take lawful action for civilian
 > protection — starting with Gaza and the wider regional crisis.
@@ -98,7 +98,7 @@ partnerships, or status.
 
 ## 4. FAQ
 
-### What is Accountability Atlas?
+### What is Arbor Sentinel?
 An open-source civic-technology platform for organizing verified public
 evidence, tracking legal and political responsibility, and enabling lawful
 public action — starting with Gaza and the wider regional crisis.
@@ -121,7 +121,7 @@ Not yet. Sensitive submissions require expert-reviewed security, legal,
 privacy, and human-rights workflows.
 
 ### Who is behind it?
-Accountability Atlas is built by a group of contributors. The named
+Arbor Sentinel is built by a group of contributors. The named
 spokesperson is the contact for press. The project is open source on GitHub.
 
 ### How can I correct an error?
@@ -144,7 +144,7 @@ adapted. Do not improvise beyond them without spokesperson + legal review.
 
 ### 5.1 General backlash / criticism of the project
 
-> Accountability Atlas is an open-source project with a published
+> Arbor Sentinel is an open-source project with a published
 > methodology, transparent sourcing, and a public corrections route. We
 > welcome scrutiny: if a source, translation, or legal characterization is
 > wrong, we want to know and will correct it in line with our correction
@@ -177,7 +177,7 @@ adapted. Do not improvise beyond them without spokesperson + legal review.
 
 ### 5.5 "Why is the content incomplete / only in English?" (scope defense)
 
-> Accountability Atlas is a public beta. We publish what is reviewed and
+> Arbor Sentinel is a public beta. We publish what is reviewed and
 > verified, and we label review status honestly on every record. Coverage
 > grows as content is reviewed. We do not publish unreviewed material as if
 > it were final.

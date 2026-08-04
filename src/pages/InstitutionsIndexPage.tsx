@@ -37,7 +37,7 @@ export default function InstitutionsIndexPage() {
         delay={0.15}
       >
         <p>
-          A fundamental design choice in Accountability Atlas is the separation
+          A fundamental design choice in Arbor Sentinel is the separation
           of country pages from institution pages. Countries and institutions
           have different legal natures, different decision-making procedures,
           and different accountability pathways. Conflating them produces

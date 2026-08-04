@@ -162,20 +162,20 @@ Full details: [secure incident channel]
 
 ### 5.2 External holding statement (during containment)
 
-> We are investigating an issue affecting the Accountability Atlas platform.
+> We are investigating an issue affecting the Arbor Sentinel platform.
 > The platform may be temporarily unavailable while we address it. We will
 > provide an update within [timeframe]. For questions, contact [press email].
 
 ### 5.3 External resolution statement
 
-> The issue affecting Accountability Atlas has been resolved. [One or two
+> The issue affecting Arbor Sentinel has been resolved. [One or two
 > sentences on what happened and what we changed to prevent recurrence.]
 > We thank users for their patience. If you believe you were affected,
 > contact [press email].
 
 ### 5.4 Data breach notification (only after legal + Data Safety Officer review)
 
-> We are writing to inform you of an incident affecting Accountability Atlas.
+> We are writing to inform you of an incident affecting Arbor Sentinel.
 > On [date], [what happened]. We have [containment + remediation]. Based on
 > our review, [what data was / was not affected]. We take this seriously and
 > have taken the following steps to prevent recurrence: [steps]. For

@@ -13,7 +13,7 @@ const sections = [
     id: 'overview',
     title: 'Platform overview',
     body: [
-      'Accountability Atlas is an open-source platform for organizing verified public evidence, tracking legal and political responsibility, and helping people take lawful action. It is built around a few core ideas:',
+      'Arbor Sentinel is an open-source platform for organizing verified public evidence, tracking legal and political responsibility, and helping people take lawful action. It is built around a few core ideas:',
     ],
     bullets: [
       'Evidence is sourced from public records and clearly attributed.',
@@ -91,7 +91,7 @@ export function BetaQuickStart() {
         <div className="max-w-3xl mx-auto">
           <PageIntro
             eyebrow="Quick Start"
-            title="Get started with the Accountability Atlas."
+            title="Get started with the Arbor Sentinel."
             description="A short walkthrough of the platform. Full details live in the beta user guide and the public documentation."
           />
 

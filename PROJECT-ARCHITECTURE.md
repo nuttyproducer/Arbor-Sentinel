@@ -1,4 +1,4 @@
-# Project Architecture — Accountability Atlas
+# Project Architecture — Arbor Sentinel
 
 **Version:** 1.0  
 **Date:** 2026-07-24  
@@ -6,7 +6,7 @@
 **License:** AGPL-3.0-or-later (code) / CC BY-SA 4.0 (documentation)
 
 > This document describes the complete technical architecture, data flow, and
-> subsystem overview of the Accountability Atlas platform. It is written for
+> subsystem overview of the Arbor Sentinel platform. It is written for
 > senior engineers, architects, and technical contributors who need to understand
 > the entire system from a single document.
 
@@ -32,7 +32,7 @@
 
 ## 1. Architecture Overview
 
-Accountability Atlas is organized around a **6-layer information pipeline**.
+Arbor Sentinel is organized around a **6-layer information pipeline**.
 The website (Layer 6) is only one layer in the pipeline. Every layer is designed
 to be independently replaceable, testable, and securely isolated.
 
@@ -155,7 +155,7 @@ only after:
 No analytics, no cookies, no tracking scripts, no user accounts, no public
 submissions, no personal data collection. The static beta works with zero
 client-side storage of personal information. Language preference is stored
-in `localStorage` only (key: `accountability-atlas-lang`), never transmitted.
+in `localStorage` only (key: `arbor-sentinel-lang`), never transmitted.
 
 ### 2.6 Composition Over Duplication
 
@@ -407,7 +407,7 @@ Every collector respects:
 - **robots.txt** crawl-delay directives
 - Per-domain rate limits configured in the Source Registry
 - Token-bucket algorithm with configurable burst
-- User-agent identification via `AccountabilityAtlas/1.0 (+https://accountabilityatlas.org)`
+- User-agent identification via `ArborSentinel/1.0 (+https://arborsentinel.org)`
 - Conditional requests (ETag, If-Modified-Since)
 - No scraping during peak hours for government domains
 
@@ -715,7 +715,7 @@ interface AISummaryOutput {
 Summarization prompts follow a strict template:
 
 ```
-You are an AI assistant for Accountability Atlas, a civic evidence platform.
+You are an AI assistant for Arbor Sentinel, a civic evidence platform.
 Your task is to produce an objective, neutral summary of the following source
 document. Follow these rules:
 
@@ -919,7 +919,7 @@ Different tasks use different models based on requirements:
 
 All AI prompts follow a consistent pattern:
 
-1. **System role:** "You are an AI assistant for Accountability Atlas..."
+1. **System role:** "You are an AI assistant for Arbor Sentinel..."
 2. **Task description:** Specific, unambiguous instruction
 3. **Rules list:** 3-7 numbered rules for the task
 4. **Output format:** Structured JSON schema
@@ -1521,7 +1521,7 @@ interface ActionWarning {
 **Architecture decisions:**
 
 - Language preference stored in `localStorage` only (key:
-  `accountability-atlas-lang`) — no URL prefix, no subdomain routing
+  `arbor-sentinel-lang`) — no URL prefix, no subdomain routing
 - English is the authoritative source language
 - UI chrome and status labels are fully internationalized (3 namespaces)
 - Content (summaries, evidence, legal) remains English until translated
@@ -2095,7 +2095,7 @@ Roles (functional MVP):
 **Public Launch:**
 - Project Galileo application (DDoS protection for humanitarian sites)
 - Independent security audit
-- Separate admin domain (admin.accountabilityatlas.org)
+- Separate admin domain (admin.arborsentinel.org)
 - Tor/onion service evaluation
 - Hardware security keys for all admin accounts
 - Encrypted object storage for user-uploaded assets

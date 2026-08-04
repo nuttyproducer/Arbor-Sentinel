@@ -9,7 +9,7 @@
 ## Purpose
 
 This policy defines what constitutes a conflict of interest for reviewers of
-Accountability Atlas content, how conflicts must be disclosed, and how they
+Arbor Sentinel content, how conflicts must be disclosed, and how they
 are managed. It protects the credibility of published content and the integrity
 of the review process.
 
@@ -17,7 +17,7 @@ of the review process.
 
 ## Why this matters
 
-Accountability Atlas publishes content about legal proceedings, government
+Arbor Sentinel publishes content about legal proceedings, government
 positions, institutional actions, humanitarian situations, and alleged atrocity
 crimes. Reviewers who have personal, professional, or financial connections to
 the subject matter could — even unintentionally — introduce bias, or create the

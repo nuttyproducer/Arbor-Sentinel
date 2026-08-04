@@ -1,5 +1,5 @@
 -- ============================================================================
--- Accountability Atlas — Authentication Schema
+-- Arbor Sentinel — Authentication Schema
 -- Migration: 00003
 -- Description: Auth triggers, session tracking, 2FA support tables
 -- Requires: 00001_initial_schema (user_roles table must exist)

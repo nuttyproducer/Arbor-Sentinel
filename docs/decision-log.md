@@ -42,21 +42,21 @@ Who owns follow-up?
 ## 2026-07-09 — Working name selected
 
 **Decision:**  
-Use “Accountability Atlas” as the working project name.
+Use “Arbor Sentinel” as the working project name.
 
 **Context:**  
 The platform needs a serious, institution-grade name that works for evidence, maps, legal tracking, country scorecards, and future expansion.
 
 **Options considered:**
 
-1. Accountability Atlas
+1. Arbor Sentinel
 2. Civic Witness
 3. Evidence for Protection
 4. Civilian Protection Index
 5. Atrocity Accountability Hub
 
 **Chosen option:**  
-Accountability Atlas.
+Arbor Sentinel.
 
 **Reason:**  
 It is calm, global, credible, map-friendly, and flexible enough for multiple crisis modules.

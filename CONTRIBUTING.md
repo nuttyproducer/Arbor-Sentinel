@@ -1,4 +1,4 @@
-# Contributing to Accountability Atlas
+# Contributing to Arbor Sentinel
 
 Thank you for considering a contribution. This project handles serious human-rights, humanitarian, legal, and safety-sensitive topics. Contributions must be calm, careful, sourced, respectful, and aligned with the project mission.
 

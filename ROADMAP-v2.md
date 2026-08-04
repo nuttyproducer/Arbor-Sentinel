@@ -1,4 +1,4 @@
-# Accountability Atlas — Roadmap v2
+# Arbor Sentinel — Roadmap v2
 
 > **Former roadmap:** `ROADMAP.md` has been archived as `ROADMAP-v1-archive.md`.
 >
@@ -291,7 +291,7 @@ route must provide value even when its final feature is not active.
 
 **Status:** Planned
 
-**Goal:** Transform Accountability Atlas from a static information site into an
+**Goal:** Transform Arbor Sentinel from a static information site into an
 AI-assisted civic intelligence platform. Build a pipeline that ingests public
 sources, normalizes them into structured data, applies AI processing
 (translation, summarization, entity extraction, classification, relationship

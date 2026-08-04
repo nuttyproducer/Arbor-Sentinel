@@ -10,7 +10,7 @@ What should be researched?
 
 ## Why it matters
 
-Explain relevance to Accountability Atlas.
+Explain relevance to Arbor Sentinel.
 
 ## Source type
 

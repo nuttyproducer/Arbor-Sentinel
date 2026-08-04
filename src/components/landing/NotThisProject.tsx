@@ -16,7 +16,7 @@ export function NotThisProject() {
         <Reveal delay={0.1}>
           <div className="max-w-3xl mx-auto bg-bone border border-charcoal/15 rounded-lg p-8 lg:p-10">
             <p className="text-charcoal leading-relaxed text-xl">
-              Accountability Atlas will not publish doxing material, encourage
+              Arbor Sentinel will not publish doxing material, encourage
               harassment, collect sensitive witness submissions before secure
               review, claim false partnerships, or treat unverified social media
               posts as verified evidence.

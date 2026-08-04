@@ -9,7 +9,7 @@ body:
         ## Accessibility review
 
         Use this template to request an accessibility review or to submit
-        accessibility findings for Accountability Atlas pages or components.
+        accessibility findings for Arbor Sentinel pages or components.
 
         **This is not a partnership programme.** Submitting an accessibility
         review does not create a partnership, endorsement, affiliation,
@@ -207,7 +207,7 @@ body:
           required: true
         - label: I have disclosed any conflicts of interest to the maintainer (see reviewer-conflict-of-interest.md)
           required: true
-        - label: I understand that this review does not create a partnership, endorsement, affiliation, employment, or official representation relationship with Accountability Atlas
+        - label: I understand that this review does not create a partnership, endorsement, affiliation, employment, or official representation relationship with Arbor Sentinel
           required: true
         - label: I understand that I may describe my contribution but may not speak for the project without written authorisation
           required: true

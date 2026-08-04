@@ -1,5 +1,5 @@
 -- ============================================================================
--- Accountability Atlas — Data Retention Policies
+-- Arbor Sentinel — Data Retention Policies
 -- Migration: 00007
 -- Description: Retention policies, archival triggers, and purge procedures
 -- Reversible: Yes

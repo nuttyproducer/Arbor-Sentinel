@@ -9,7 +9,7 @@ body:
         ## Translation review
 
         Use this template to request a translation review or to submit
-        translation review findings for Accountability Atlas content.
+        translation review findings for Arbor Sentinel content.
 
         **This is not a partnership programme.** Submitting a translation
         review does not create a partnership, endorsement, affiliation,
@@ -218,7 +218,7 @@ body:
           required: true
         - label: I have disclosed any conflicts of interest to the maintainer (see reviewer-conflict-of-interest.md)
           required: true
-        - label: I understand that this review does not create a partnership, endorsement, affiliation, employment, or official representation relationship with Accountability Atlas
+        - label: I understand that this review does not create a partnership, endorsement, affiliation, employment, or official representation relationship with Arbor Sentinel
           required: true
         - label: I understand that I may describe my contribution but may not speak for the project without written authorisation
           required: true

@@ -34,7 +34,7 @@ describe('BetaWelcome', () => {
   it('renders the welcome heading', () => {
     renderPage();
     expect(
-      screen.getByRole('heading', { name: /Welcome to the Accountability Atlas beta/i }),
+      screen.getByRole('heading', { name: /Welcome to the Arbor Sentinel beta/i }),
     ).toBeInTheDocument();
   });
 

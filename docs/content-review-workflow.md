@@ -5,7 +5,7 @@
 
 ## Purpose
 
-Every content record published on Accountability Atlas must pass through a
+Every content record published on Arbor Sentinel must pass through a
 defined review workflow. This document describes the stages, roles, and
 metadata requirements.
 

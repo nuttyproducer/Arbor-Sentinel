@@ -24,7 +24,7 @@ interface DocumentHeadProps {
  *
  * @example
  *   <DocumentHead
- *     title="Methodology — Accountability Atlas"
+ *     title="Methodology — Arbor Sentinel"
  *     description="How the platform works with evidence."
  *     canonicalPath="/methodology"
  *   />

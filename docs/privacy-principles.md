@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Accountability Atlas should collect as little personal data as possible and avoid exposing users, contributors, witnesses, or affected communities.
+Arbor Sentinel should collect as little personal data as possible and avoid exposing users, contributors, witnesses, or affected communities.
 
 ---
 

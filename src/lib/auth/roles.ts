@@ -1,5 +1,5 @@
 // src/lib/auth/roles.ts
-// Role definitions and permission checks for the Accountability Atlas.
+// Role definitions and permission checks for the Arbor Sentinel.
 // Roles: public, contributor, researcher, moderator, partner_org,
 //         legal_reviewer, security_admin, admin
 

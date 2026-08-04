@@ -1,6 +1,6 @@
 // src/lib/graph/GraphDB.ts
 //
-// In-memory graph database for the Accountability Atlas knowledge graph.
+// In-memory graph database for the Arbor Sentinel knowledge graph.
 // Supports CRUD operations, type/property queries, path finding (BFS/DFS/shortest),
 // and subgraph extraction.
 //

@@ -27,7 +27,7 @@ This file is the human-readable companion to `src/data/attributions.ts`, which i
 
 **File:** `src/assets/images/hero-gaza-displacement.jpg`
 
-**Usage:** Hero section background image on the Accountability Atlas landing page. Used as a decorative CSS background with a dark overlay to provide visual context while maintaining text readability.
+**Usage:** Hero section background image on the Arbor Sentinel landing page. Used as a decorative CSS background with a dark overlay to provide visual context while maintaining text readability.
 
 **Modifications:** Cropped, compressed, converted to WebP, dark overlay applied via CSS for text readability.
 
@@ -51,7 +51,7 @@ This file is the human-readable companion to `src/data/attributions.ts`, which i
 
 **File:** `src/assets/images/Destruction_of_Gaza_1.jpg`
 
-**Usage:** Starting Focus section on the Accountability Atlas landing page. Used as an editorial image figure with caption to provide visual context for the Gaza focus area.
+**Usage:** Starting Focus section on the Arbor Sentinel landing page. Used as an editorial image figure with caption to provide visual context for the Gaza focus area.
 
 **Modifications:** Cropped, compressed, dark overlay applied in UI for text readability.
 
@@ -63,8 +63,8 @@ This file is the human-readable companion to `src/data/attributions.ts`, which i
 
 ## Other assets
 
-- **Logo and wordmark** — original work created for Accountability Atlas. Licensed under CC BY-SA 4.0.
-- **Grid pattern texture** — original SVG created for Accountability Atlas. Licensed under CC BY-SA 4.0.
+- **Logo and wordmark** — original work created for Arbor Sentinel. Licensed under CC BY-SA 4.0.
+- **Grid pattern texture** — original SVG created for Arbor Sentinel. Licensed under CC BY-SA 4.0.
 - **Typography** — IBM Plex Serif, IBM Plex Mono, and Inter are open-source fonts available via Google Fonts under the SIL Open Font License.
 
 ---
@@ -74,4 +74,4 @@ This file is the human-readable companion to `src/data/attributions.ts`, which i
 Attribution is provided in good faith per the applicable license terms. The canonical attribution data is maintained in `src/data/attributions.ts`. If you are the rights holder and have concerns about usage, or if you believe an attribution is incorrect or incomplete, please submit a correction through:
 
 - The [corrections process](/corrections) on the platform
-- A [GitHub issue](https://github.com/nuttyproducer/accountability-atlas/issues) in the project repository
+- A [GitHub issue](https://github.com/nuttyproducer/arbor-sentinel/issues) in the project repository

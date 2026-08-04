@@ -227,7 +227,7 @@ body::before {
 
   /* Internal links: show path */
   a[href^="/"]::after {
-    content: " (accountabilityatlas.org" attr(href) ")";
+    content: " (arborsentinel.org" attr(href) ")";
     font-size: 8pt;
     color: #555;
   }

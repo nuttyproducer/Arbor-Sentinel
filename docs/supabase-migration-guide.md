@@ -1,6 +1,6 @@
-# Supabase Migration Guide — Accountability Atlas
+# Supabase Migration Guide — Arbor Sentinel
 
-This guide covers how to migrate the Accountability Atlas from local/static data to a production Supabase backend.
+This guide covers how to migrate the Arbor Sentinel from local/static data to a production Supabase backend.
 
 ## Prerequisites
 

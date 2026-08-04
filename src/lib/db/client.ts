@@ -1,5 +1,5 @@
 // src/lib/db/client.ts
-// Supabase client initialization for the Accountability Atlas.
+// Supabase client initialization for the Arbor Sentinel.
 // - Browser client: uses anon key, safe for frontend (respects RLS)
 // - Admin client: uses service_role key, SERVER-SIDE ONLY (bypasses RLS)
 //

@@ -65,7 +65,7 @@ Run: `npm audit --json`
 - **Affected:** react-router@7.18.2 (via react-router-dom@7.18.2)
 - **Fix version:** 8.2.1+ (not yet released as react-router-dom package)
 - **Impact:** CSRF bypass in React Server Components mode only
-- **Assessment for Accountability Atlas:** This project does NOT use React Server Components (it's a Vite SPA). The vulnerability is specific to RSC mode. Risk is mitigated.
+- **Assessment for Arbor Sentinel:** This project does NOT use React Server Components (it's a Vite SPA). The vulnerability is specific to RSC mode. Risk is mitigated.
 - **Action:** Upgrade to react-router-dom@^8.2.1 when available. Monitor the advisory.
 - **Date documented:** 2026-08-04
 

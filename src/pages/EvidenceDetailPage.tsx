@@ -32,7 +32,7 @@ function CitationControl({ title, version, lastReviewedAt, canonicalPath }: Cita
   const today = new Date().toISOString().slice(0, 10);
 
   const citation = [
-    `Accountability Atlas, "${title}," version ${version}`,
+    `Arbor Sentinel, "${title}," version ${version}`,
     lastReviewedAt ? `, last reviewed ${lastReviewedAt}` : "",
     `, ${canonicalPath}`,
     `, accessed ${today}.`,
@@ -126,7 +126,7 @@ export default function EvidenceDetailPage() {
     c.sourceIds.some((sid) => item.sourceIds.includes(sid)),
   );
 
-  const canonicalPath = `https://accountabilityatlas.org/evidence/${item.slug}`;
+  const canonicalPath = `https://arborsentinel.org/evidence/${item.slug}`;
 
   return (
     <Container className="py-16 lg:py-20 evidence-print">

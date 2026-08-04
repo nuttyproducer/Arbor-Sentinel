@@ -8,7 +8,7 @@ with listed organisations, institutions, and individuals.
 
 ## Purpose
 
-Accountability Atlas references many organisations, institutions, and
+Arbor Sentinel references many organisations, institutions, and
 individuals. It is essential that the nature of each relationship is
 accurately described and that no false implication of partnership,
 endorsement, or affiliation is created.
@@ -71,7 +71,7 @@ content partnership, advisory role, etc.). The scope, terms, and
 limitations of the relationship are published.
 
 **Required disclaimer:**
-> [Organisation] and Accountability Atlas have a defined relationship for
+> [Organisation] and Arbor Sentinel have a defined relationship for
 > [scope]. This relationship is limited to [specific activities]. It does
 > not imply endorsement of all platform content or of all positions of
 > either party.

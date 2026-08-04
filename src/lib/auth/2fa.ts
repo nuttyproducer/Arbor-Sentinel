@@ -127,7 +127,7 @@ export function generateSecret(): TOTPSecret {
   const secretBytes = generateRandomBytes(20); // 160 bits
   const secret = bytesToBase32(secretBytes);
 
-  const issuer = encodeURIComponent('Accountability Atlas');
+  const issuer = encodeURIComponent('Arbor Sentinel');
   const account = 'admin';
   const uri = `otpauth://totp/${issuer}:${account}?secret=${secret}&issuer=${issuer}&algorithm=${TOTP_ALGORITHM}&digits=${TOTP_DIGITS}&period=${TOTP_PERIOD}`;
 

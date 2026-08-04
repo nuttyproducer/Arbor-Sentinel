@@ -165,7 +165,7 @@ async function migrateOrganizations(): Promise<void> {
 // ── Main migration runner ─────────────────────────────────────────────────────
 
 async function migrate(): Promise<void> {
-  console.log('═══ Accountability Atlas — Static Data Migration ═══');
+  console.log('═══ Arbor Sentinel — Static Data Migration ═══');
   console.log(`Started: ${new Date().toISOString()}`);
   console.log(`Target: Supabase at ${import.meta.env.VITE_SUPABASE_URL || '(not set)'}`);
 

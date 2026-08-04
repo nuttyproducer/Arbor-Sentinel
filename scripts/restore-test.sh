@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================================
-# Accountability Atlas — Backup Restore Test
+# Arbor Sentinel — Backup Restore Test
 # Usage: ./scripts/restore-test.sh
 #
 # Tests that the latest backup can be successfully restored.
@@ -19,7 +19,7 @@ PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 BACKUP_DIR="${BACKUP_DIR:-$PROJECT_ROOT/backups}"
 TEST_DB_URL="${TEST_DB_URL:-}"
 
-echo "═══ Accountability Atlas — Restore Test ═══"
+echo "═══ Arbor Sentinel — Restore Test ═══"
 echo "Started: $(date -u +"%Y-%m-%dT%H:%M:%SZ")"
 
 # ── Validate ──────────────────────────────────────────────────────────────────

@@ -1,6 +1,6 @@
 {
   "site": {
-    "name": "Accountability Atlas",
+    "name": "Arbor Sentinel",
     "tagline": "Plateforme civique de redevabilité",
     "description": "Des preuves pour la protection. Des actions pour la redevabilité."
   },
@@ -104,6 +104,6 @@
     "codeLicense": "Code sous licence",
     "contentLicense": "Contenu sous licence",
     "noLegalAdvice": "Ce projet ne fournit pas de conseils juridiques. Ce n'est pas une ONG enregistrée ni une organisation caritative. Aucun partenariat avec les organisations répertoriées n'est implicite.",
-    "copyright": "© {{year}} Contributeurs d'Accountability Atlas."
+    "copyright": "© {{year}} Contributeurs d'Arbor Sentinel."
   }
 }

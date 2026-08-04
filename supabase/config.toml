@@ -1,11 +1,11 @@
-# Supabase Configuration — Accountability Atlas
-# Project: accountability-atlas
+# Supabase Configuration — Arbor Sentinel
+# Project: arbor-sentinel
 # Generated for Milestone 5 — Backend Foundation
 
 [project]
-id = "accountability-atlas"
-name = "Accountability Atlas"
-organization_slug = "accountability-atlas"
+id = "arbor-sentinel"
+name = "Arbor Sentinel"
+organization_slug = "arbor-sentinel"
 
 [api]
 port = 54321

@@ -21,7 +21,7 @@
     <circle cx="25" cy="-15" r="15" fill="#D99A2B" opacity="0.12" />
   </g>
   <!-- Project name -->
-  <text x="600" y="370" text-anchor="middle" font-family="IBM Plex Serif, Georgia, serif" font-size="52" font-weight="700" fill="#101828">Accountability Atlas</text>
+  <text x="600" y="370" text-anchor="middle" font-family="IBM Plex Serif, Georgia, serif" font-size="52" font-weight="700" fill="#101828">Arbor Sentinel</text>
   <!-- Tagline -->
   <text x="600" y="420" text-anchor="middle" font-family="IBM Plex Serif, Georgia, serif" font-size="28" font-weight="500" fill="#1F2937">Evidence for protection. Action for accountability.</text>
   <!-- Sub-label -->

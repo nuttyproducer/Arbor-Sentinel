@@ -1,5 +1,5 @@
 -- ============================================================================
--- Accountability Atlas — Initial Schema
+-- Arbor Sentinel — Initial Schema
 -- Migration: 00001
 -- Description: Core tables from PRD Section 16 + M4 Intelligence Layer additions
 -- Reversible: Yes (see down migration at end)

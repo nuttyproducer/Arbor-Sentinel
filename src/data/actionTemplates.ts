@@ -368,7 +368,7 @@ Thank you for your work covering this topic.
     intendedAudience:
       "Developers, designers, researchers, legal reviewers, translators, writers, and security reviewers who want to contribute to the platform.",
     purpose:
-      "Accountability Atlas is an open-source project built by volunteers. Contributing your skills — even in small, safe ways — helps build infrastructure against genocide and mass atrocities. Every contribution is reviewed for safety and accuracy.",
+      "Arbor Sentinel is an open-source project built by volunteers. Contributing your skills — even in small, safe ways — helps build infrastructure against genocide and mass atrocities. Every contribution is reviewed for safety and accuracy.",
     policyAsk:
       "Volunteer contributors can: develop the platform's frontend and data infrastructure; review sources and methodology; improve accessibility and translations; help with documentation; and participate in safety and security review.",
     sourceBasis:
@@ -1639,7 +1639,7 @@ Thank you for your work covering these issues.
     intendedAudience:
       "People with expertise in Belgian federal or regional governance, EU institutional law and policy, international humanitarian law, arms-export control, parliamentary procedure, or humanitarian coordination — who want to contribute their expertise to review the platform's Belgium and EU accountability records.",
     purpose:
-      "Accountability Atlas needs reviewers with specific Belgium and EU expertise. Belgian governance involves complex federal-regional competency divisions. EU decision-making involves multiple institutions with distinct procedures. Reviewers who understand these systems can help ensure the platform's Belgium and EU records are accurate, current, and properly scoped to each level of government. This action explains how to volunteer as a reviewer.",
+      "Arbor Sentinel needs reviewers with specific Belgium and EU expertise. Belgian governance involves complex federal-regional competency divisions. EU decision-making involves multiple institutions with distinct procedures. Reviewers who understand these systems can help ensure the platform's Belgium and EU records are accurate, current, and properly scoped to each level of government. This action explains how to volunteer as a reviewer.",
     policyAsk:
       "Volunteer reviewers can: review Belgium country accountability records for accuracy (federal, regional, and community-level competency boundaries); verify EU institutional records for procedural correctness; check that arms-export, humanitarian aid, and legal-cooperation records correctly attribute actions to the competent level of government; review Dutch and French translations of action templates; and flag outdated or superseded policy positions.",
     sourceBasis:
@@ -2318,7 +2318,7 @@ Merci pour votre travail sur ces questions.
     intendedAudience:
       "Mensen met expertise in het Belgische federale of regionale bestuur, EU-institutioneel recht en beleid, internationaal humanitair recht, wapenuitvoercontrole, parlementaire procedure of humanitaire coördinatie — die hun expertise willen inzetten om de België- en EU-verantwoordingsarchieven van het platform te beoordelen.",
     purpose:
-      "Accountability Atlas heeft reviewers nodig met specifieke België- en EU-expertise. Het Belgische bestuur omvat complexe federale-regionale bevoegdheidsverdelingen. De EU-besluitvorming omvat meerdere instellingen met verschillende procedures. Reviewers die deze systemen begrijpen, kunnen helpen ervoor te zorgen dat de België- en EU-archieven accuraat, actueel en correct afgestemd zijn op elk bestuursniveau.",
+      "Arbor Sentinel heeft reviewers nodig met specifieke België- en EU-expertise. Het Belgische bestuur omvat complexe federale-regionale bevoegdheidsverdelingen. De EU-besluitvorming omvat meerdere instellingen met verschillende procedures. Reviewers die deze systemen begrijpen, kunnen helpen ervoor te zorgen dat de België- en EU-archieven accuraat, actueel en correct afgestemd zijn op elk bestuursniveau.",
     policyAsk:
       "Vrijwillige reviewers kunnen: Belgische landverantwoordingsarchieven beoordelen op juistheid (federale, regionale en gemeenschapsniveau); EU-institutionele archieven verifiëren op procedurele correctheid; controleren dat wapenuitvoer-, humanitaire hulp- en juridische samenwerkingsrecords acties correct toeschrijven aan het bevoegde bestuursniveau; Nederlandse en Franse vertalingen van actiesjablonen beoordelen; en verouderde of achterhaalde beleidsstandpunten signaleren.",
     sourceBasis:
@@ -2364,7 +2364,7 @@ Merci pour votre travail sur ces questions.
     intendedAudience:
       "Personnes ayant une expertise en gouvernance fédérale ou régionale belge, en droit et politique institutionnels de l'UE, en droit international humanitaire, en contrôle des exportations d'armes, en procédure parlementaire ou en coordination humanitaire — souhaitant mettre leur expertise au service de l'examen des archives de responsabilité Belgique/UE de la plateforme.",
     purpose:
-      "Accountability Atlas a besoin de relecteurs·rices possédant une expertise spécifique Belgique/UE. La gouvernance belge implique des répartitions de compétences fédérales-régionales complexes. La prise de décision de l'UE implique plusieurs institutions aux procédures distinctes. Les relecteurs·rices qui comprennent ces systèmes peuvent aider à garantir que les archives Belgique/UE sont exactes, actuelles et correctement rattachées à chaque niveau de gouvernement.",
+      "Arbor Sentinel a besoin de relecteurs·rices possédant une expertise spécifique Belgique/UE. La gouvernance belge implique des répartitions de compétences fédérales-régionales complexes. La prise de décision de l'UE implique plusieurs institutions aux procédures distinctes. Les relecteurs·rices qui comprennent ces systèmes peuvent aider à garantir que les archives Belgique/UE sont exactes, actuelles et correctement rattachées à chaque niveau de gouvernement.",
     policyAsk:
       "Les relecteurs·rices bénévoles peuvent : examiner l'exactitude des archives de responsabilité du pays belge (niveaux fédéral, régional et communautaire) ; vérifier l'exactitude procédurale des archives institutionnelles de l'UE ; vérifier que les archives sur les exportations d'armes, l'aide humanitaire et la coopération juridique attribuent correctement les actions au niveau de gouvernement compétent ; examiner les traductions néerlandaises et françaises des modèles d'action ; et signaler les positions politiques obsolètes.",
     sourceBasis:

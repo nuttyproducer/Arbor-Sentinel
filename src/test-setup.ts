@@ -197,7 +197,7 @@ vi.mock("react-i18next", () => {
     search: { placeholder: "Search…", noResults: "No results found", filterByType: "Filter by type", matched: "Matched" },
     emptyStates: { notFound: "Page not found.", noResults: "No results found." },
     related: { references: "References", referencedBy: "Referenced By" },
-    site: { name: "Accountability Atlas", tagline: "Civic Accountability Platform" },
+    site: { name: "Arbor Sentinel", tagline: "Civic Accountability Platform" },
   };
 
   const enNavigation: Record<string, unknown> = {

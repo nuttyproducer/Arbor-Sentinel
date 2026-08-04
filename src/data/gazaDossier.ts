@@ -291,7 +291,7 @@ export const lawfulActionPathways = [
   {
     title: "Share Verified Information",
     description:
-      "Share the Accountability Atlas source registry, legal tracker entries, and dossier framework with journalists, researchers, and policymakers. Verified, source-linked public information supports informed advocacy, parliamentary questions, and media coverage grounded in documented facts.",
+      "Share the Arbor Sentinel source registry, legal tracker entries, and dossier framework with journalists, researchers, and policymakers. Verified, source-linked public information supports informed advocacy, parliamentary questions, and media coverage grounded in documented facts.",
     jurisdiction: "All",
   },
 ];

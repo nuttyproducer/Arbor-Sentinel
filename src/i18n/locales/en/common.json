@@ -1,6 +1,6 @@
 {
   "site": {
-    "name": "Accountability Atlas",
+    "name": "Arbor Sentinel",
     "tagline": "Civic Accountability Platform",
     "description": "Evidence for protection. Action for accountability."
   },
@@ -104,6 +104,6 @@
     "codeLicense": "Code licensed under",
     "contentLicense": "Content licensed under",
     "noLegalAdvice": "This project does not provide legal advice. This is not a registered NGO or charity. No partnership with listed organizations is implied.",
-    "copyright": "© {{year}} Accountability Atlas contributors."
+    "copyright": "© {{year}} Arbor Sentinel contributors."
   }
 }

@@ -8,7 +8,7 @@
 
 ## Purpose
 
-This template standardises how reviewers submit findings to Accountability Atlas
+This template standardises how reviewers submit findings to Arbor Sentinel
 maintainers. Use it for every review round. Completed templates become review
 evidence records (see [Review Evidence Format](./review-evidence-format.md)).
 
@@ -204,7 +204,7 @@ By submitting this review, I confirm that:
 - [ ] I have disclosed any conflicts of interest to the maintainer
 - [ ] I understand that this review does not create a partnership, endorsement,
   affiliation, employment, or official representation relationship with
-  Accountability Atlas
+  Arbor Sentinel
 - [ ] I understand that I may describe my contribution ("I reviewed [specific
   content] for [specific aspect]") but may not speak for the project without
   written authorisation

@@ -132,7 +132,7 @@ export function ChangelogPage() {
             <div className="w-10 h-px bg-border mb-4" aria-hidden="true" />
             <p className="text-lg text-charcoal/70 leading-relaxed mb-12">
               A record of features, improvements, and fixes on the
-              Accountability Atlas platform.
+              Arbor Sentinel platform.
             </p>
           </Reveal>
 
@@ -178,10 +178,10 @@ export function ChangelogPage() {
           {/* Bottom note */}
           <Reveal delay={0.2}>
             <p className="mt-12 pt-6 border-t border-border font-mono text-xs text-charcoal/40 leading-relaxed">
-              This changelog is maintained by the Accountability Atlas
+              This changelog is maintained by the Arbor Sentinel
               contributors. For the full commit history, see the{" "}
               <a
-                href="https://github.com/nuttyproducer/accountability-atlas"
+                href="https://github.com/nuttyproducer/arbor-sentinel"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-trust hover:text-trust/80 underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-trust/50 focus-visible:ring-offset-2 rounded-sm transition-colors duration-200"

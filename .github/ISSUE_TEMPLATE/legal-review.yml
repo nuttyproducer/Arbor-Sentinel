@@ -9,7 +9,7 @@ body:
         ## Legal review
 
         Use this template to request a legal review or to submit legal review
-        findings for Accountability Atlas content.
+        findings for Arbor Sentinel content.
 
         **This is not a partnership programme.** Submitting a legal review does
         not create a partnership, endorsement, affiliation, employment, or
@@ -177,7 +177,7 @@ body:
           required: true
         - label: I have disclosed any conflicts of interest to the maintainer (see reviewer-conflict-of-interest.md)
           required: true
-        - label: I understand that this review does not create a partnership, endorsement, affiliation, employment, or official representation relationship with Accountability Atlas
+        - label: I understand that this review does not create a partnership, endorsement, affiliation, employment, or official representation relationship with Arbor Sentinel
           required: true
         - label: I understand that I may describe my contribution but may not speak for the project without written authorisation
           required: true

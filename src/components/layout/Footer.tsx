@@ -26,17 +26,17 @@ const resourceLinks = [
 const externalLinks = [
   {
     label: "GitHub Repository",
-    href: "https://github.com/nuttyproducer/accountability-atlas",
+    href: "https://github.com/nuttyproducer/arbor-sentinel",
     external: true,
   },
   {
     label: "Security Policy",
-    href: "https://github.com/nuttyproducer/accountability-atlas/blob/main/SECURITY.md",
+    href: "https://github.com/nuttyproducer/arbor-sentinel/blob/main/SECURITY.md",
     external: true,
   },
   {
     label: "Contribution Guide",
-    href: "https://github.com/nuttyproducer/accountability-atlas/blob/main/CONTRIBUTING.md",
+    href: "https://github.com/nuttyproducer/arbor-sentinel/blob/main/CONTRIBUTING.md",
     external: true,
   },
 ];
@@ -60,7 +60,7 @@ export function Footer() {
               />
               <div>
                 <span className="font-serif text-xl font-semibold text-bone/90 leading-tight block">
-                  Accountability Atlas
+                  Arbor Sentinel
                 </span>
                 <span className="font-mono text-[11px] font-medium tracking-[0.15em] text-bone/50 uppercase">
                   Civic Accountability Platform
@@ -137,7 +137,7 @@ export function Footer() {
         {/* Trust language */}
         <div className="space-y-4 text-base text-bone/50 leading-relaxed mb-8">
           <p>
-            Accountability Atlas is an independent open-source civic
+            Arbor Sentinel is an independent open-source civic
             accountability project. It is not a registered NGO, charity, court,
             humanitarian organization, or formal partner of listed organizations
             unless explicitly stated.
@@ -156,7 +156,7 @@ export function Footer() {
             <p>
               Code licensed under{" "}
               <a
-                href="https://github.com/nuttyproducer/accountability-atlas/blob/main/LICENSE.md"
+                href="https://github.com/nuttyproducer/arbor-sentinel/blob/main/LICENSE.md"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-bone/80 hover:text-bone underline underline-offset-2 transition-colors duration-200"
@@ -185,7 +185,7 @@ export function Footer() {
         </div>
 
         <p className="font-mono text-sm text-bone/40 pt-10">
-          &copy; {new Date().getFullYear()} Accountability Atlas contributors.
+          &copy; {new Date().getFullYear()} Arbor Sentinel contributors.
         </p>
       </div>
     </footer>

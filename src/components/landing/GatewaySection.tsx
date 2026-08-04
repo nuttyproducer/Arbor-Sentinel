@@ -87,7 +87,7 @@ export function GatewaySection() {
             eyebrow="Public Static Beta"
             title="Enter the accountability system."
             id="gateway-title"
-            description="The next layer of Accountability Atlas turns the landing page into a navigable civic platform: methodology, dossiers, legal tracking, country accountability, lawful action tools, and public resource directories."
+            description="The next layer of Arbor Sentinel turns the landing page into a navigable civic platform: methodology, dossiers, legal tracking, country accountability, lawful action tools, and public resource directories."
           />
         </Reveal>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

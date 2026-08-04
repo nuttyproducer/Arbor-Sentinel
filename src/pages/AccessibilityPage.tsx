@@ -63,7 +63,7 @@ export function AccessibilityPage() {
           <PageIntro
             eyebrow="Accessibility"
             title="Accessibility commitment."
-            description="Accountability Atlas aims to be usable by people with different devices, abilities, languages, bandwidth constraints, and motion preferences."
+            description="Arbor Sentinel aims to be usable by people with different devices, abilities, languages, bandwidth constraints, and motion preferences."
           />
 
           <PageStatusNotice label="Accessibility commitment" variant="info">
@@ -145,7 +145,7 @@ export function AccessibilityPage() {
               <li className="flex items-start gap-2">
                 <span className="text-clay mt-1.5" aria-hidden="true">•</span>
                 <span>
-                  <ExternalLink href="https://github.com/nuttyproducer/accountability-atlas/issues/new">
+                  <ExternalLink href="https://github.com/nuttyproducer/arbor-sentinel/issues/new">
                     GitHub Issues
                   </ExternalLink>{" "}
                   — preferred during the static beta

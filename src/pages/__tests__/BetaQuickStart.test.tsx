@@ -34,7 +34,7 @@ describe('BetaQuickStart', () => {
   it('renders the quick start heading', () => {
     renderPage();
     expect(
-      screen.getByRole('heading', { name: /Get started with the Accountability Atlas/i }),
+      screen.getByRole('heading', { name: /Get started with the Arbor Sentinel/i }),
     ).toBeInTheDocument();
   });
 

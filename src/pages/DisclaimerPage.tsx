@@ -30,7 +30,7 @@ export function DisclaimerPage() {
             <div className="bg-bone border border-border rounded-lg p-7 lg:p-9 mb-10">
               <div className="text-charcoal/80 leading-relaxed space-y-5 text-base lg:text-lg">
                 <p>
-                  Accountability Atlas is an independent open-source civic
+                  Arbor Sentinel is an independent open-source civic
                   documentation and accountability project. It is currently in
                   public static beta and is not a registered NGO, charity,
                   court, humanitarian organization, legal authority, or formal
@@ -62,7 +62,7 @@ export function DisclaimerPage() {
           {/* Detailed sections */}
           <PolicySection title="Independent project" id="independent" delay={0.18}>
             <p>
-              Accountability Atlas is an independent open-source project. It is
+              Arbor Sentinel is an independent open-source project. It is
               not affiliated with any government, political party, religious
               organization, or advocacy group. The project is maintained by
               contributors who operate under a shared code of conduct,
@@ -93,7 +93,7 @@ export function DisclaimerPage() {
           <PolicySection title="External links" id="external-links" delay={0.27}>
             <p>
               This platform links to external websites, documents, and
-              resources. Accountability Atlas is not responsible for the
+              resources. Arbor Sentinel is not responsible for the
               content, accuracy, or practices of external sites. External links
               do not constitute endorsement.
             </p>
@@ -159,7 +159,7 @@ export function DisclaimerPage() {
                 </Link>
               </li>
               <li>
-                <ExternalLink href="https://github.com/nuttyproducer/accountability-atlas/blob/main/SECURITY.md">
+                <ExternalLink href="https://github.com/nuttyproducer/arbor-sentinel/blob/main/SECURITY.md">
                   Security policy
                 </ExternalLink>
               </li>

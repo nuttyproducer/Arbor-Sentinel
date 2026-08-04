@@ -1,6 +1,6 @@
 // src/lib/graph/types.ts
 //
-// Core graph type definitions for the Accountability Atlas knowledge graph.
+// Core graph type definitions for the Arbor Sentinel knowledge graph.
 // Defines node types, edge types, and query structures used by GraphDB,
 // EntityResolver, and graph visualization components.
 

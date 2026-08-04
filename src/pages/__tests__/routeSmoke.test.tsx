@@ -137,14 +137,14 @@ describe("Route rendering smoke tests", () => {
   it("renders HomePage", () => {
     renderPage(HomePage);
     expect(
-      screen.getByText("Accountability Atlas"),
+      screen.getByText("Arbor Sentinel"),
     ).toBeInTheDocument();
   });
 
   it("renders MethodologyPage", () => {
     renderPage(MethodologyPage);
     expect(
-      screen.getByText(/How Accountability Atlas works with evidence/),
+      screen.getByText(/How Arbor Sentinel works with evidence/),
     ).toBeInTheDocument();
   });
 

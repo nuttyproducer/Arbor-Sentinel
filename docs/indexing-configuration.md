@@ -29,7 +29,7 @@ and updates on every client-side navigation. Public routes inherit
 
 ```ts
 import { setCanonicalBase } from "./data/routeMetadata";
-setCanonicalBase("https://accountabilityatlas.org");
+setCanonicalBase("https://arborsentinel.org");
 ```
 
    Without this call, canonical URLs fall back to `window.location.origin`,

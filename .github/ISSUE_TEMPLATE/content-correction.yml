@@ -8,7 +8,7 @@ body:
       value: |
         ## Content correction
 
-        Use this template to report an error in published Accountability Atlas
+        Use this template to report an error in published Arbor Sentinel
         content. This form replaces the previous source correction template and
         covers all correction types.
 
@@ -25,7 +25,7 @@ body:
     attributes:
       label: Page or content URL
       description: Link to the page or content record where the error appears.
-      placeholder: https://accountability-atlas.org/evidence/evidence-0001
+      placeholder: https://arbor-sentinel.org/evidence/evidence-0001
     validations:
       required: true
 
@@ -156,7 +156,7 @@ body:
           required: true
         - label: I have provided a supporting source where available
           required: false
-        - label: I understand that submitting a correction does not create a partnership, endorsement, or affiliation with Accountability Atlas
+        - label: I understand that submitting a correction does not create a partnership, endorsement, or affiliation with Arbor Sentinel
           required: true
         - label: This submission does not contain private personal information, sensitive evidence, private testimony, or confidential institutional material (I have described safety/privacy concerns in general terms only)
           required: true

@@ -1,5 +1,5 @@
 -- ============================================================================
--- Accountability Atlas — Full-Text Search
+-- Arbor Sentinel — Full-Text Search
 -- Migration: 00004
 -- Description: PostgreSQL full-text search configuration, indexes, and triggers
 -- Reversible: Yes
@@ -9,7 +9,7 @@
 
 -- Create a custom text search configuration for English
 DO $$ BEGIN
-  CREATE TEXT SEARCH CONFIGURATION accountability_atlas (COPY = pg_catalog.english);
+  CREATE TEXT SEARCH CONFIGURATION arbor_sentinel (COPY = pg_catalog.english);
 EXCEPTION WHEN unique_violation THEN NULL;
 END $$;
 
@@ -21,9 +21,9 @@ ALTER TABLE evidence_items ADD COLUMN IF NOT EXISTS search_vector tsvector;
 CREATE OR REPLACE FUNCTION evidence_items_search_update() RETURNS trigger AS $$
 BEGIN
   NEW.search_vector :=
-    setweight(to_tsvector('accountability_atlas', COALESCE(NEW.title, '')), 'A') ||
-    setweight(to_tsvector('accountability_atlas', COALESCE(NEW.summary, '')), 'B') ||
-    setweight(to_tsvector('accountability_atlas', COALESCE(NEW.body, '')), 'C');
+    setweight(to_tsvector('arbor_sentinel', COALESCE(NEW.title, '')), 'A') ||
+    setweight(to_tsvector('arbor_sentinel', COALESCE(NEW.summary, '')), 'B') ||
+    setweight(to_tsvector('arbor_sentinel', COALESCE(NEW.body, '')), 'C');
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -41,8 +41,8 @@ ALTER TABLE sources ADD COLUMN IF NOT EXISTS search_vector tsvector;
 CREATE OR REPLACE FUNCTION sources_search_update() RETURNS trigger AS $$
 BEGIN
   NEW.search_vector :=
-    setweight(to_tsvector('accountability_atlas', COALESCE(NEW.name, '')), 'A') ||
-    setweight(to_tsvector('accountability_atlas', COALESCE(NEW.notes, '')), 'B');
+    setweight(to_tsvector('arbor_sentinel', COALESCE(NEW.name, '')), 'A') ||
+    setweight(to_tsvector('arbor_sentinel', COALESCE(NEW.notes, '')), 'B');
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -60,8 +60,8 @@ ALTER TABLE legal_cases ADD COLUMN IF NOT EXISTS search_vector tsvector;
 CREATE OR REPLACE FUNCTION legal_cases_search_update() RETURNS trigger AS $$
 BEGIN
   NEW.search_vector :=
-    setweight(to_tsvector('accountability_atlas', COALESCE(NEW.title, '')), 'A') ||
-    setweight(to_tsvector('accountability_atlas', COALESCE(NEW.summary, '')), 'B');
+    setweight(to_tsvector('arbor_sentinel', COALESCE(NEW.title, '')), 'A') ||
+    setweight(to_tsvector('arbor_sentinel', COALESCE(NEW.summary, '')), 'B');
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -79,7 +79,7 @@ ALTER TABLE countries ADD COLUMN IF NOT EXISTS search_vector tsvector;
 CREATE OR REPLACE FUNCTION countries_search_update() RETURNS trigger AS $$
 BEGIN
   NEW.search_vector :=
-    setweight(to_tsvector('accountability_atlas', COALESCE(NEW.name, '')), 'A');
+    setweight(to_tsvector('arbor_sentinel', COALESCE(NEW.name, '')), 'A');
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -97,8 +97,8 @@ ALTER TABLE organizations ADD COLUMN IF NOT EXISTS search_vector tsvector;
 CREATE OR REPLACE FUNCTION organizations_search_update() RETURNS trigger AS $$
 BEGIN
   NEW.search_vector :=
-    setweight(to_tsvector('accountability_atlas', COALESCE(NEW.name, '')), 'A') ||
-    setweight(to_tsvector('accountability_atlas', COALESCE(NEW.notes, '')), 'B');
+    setweight(to_tsvector('arbor_sentinel', COALESCE(NEW.name, '')), 'A') ||
+    setweight(to_tsvector('arbor_sentinel', COALESCE(NEW.notes, '')), 'B');
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -132,11 +132,11 @@ SET search_path = ''
 AS $$
   SELECT 'evidence' AS result_type, id AS result_id,
     title,
-    ts_headline('accountability_atlas', summary, plainto_tsquery('accountability_atlas', search_query), 'MaxWords=30, MinWords=15') AS snippet,
-    ts_rank(search_vector, plainto_tsquery('accountability_atlas', search_query)) AS rank,
+    ts_headline('arbor_sentinel', summary, plainto_tsquery('arbor_sentinel', search_query), 'MaxWords=30, MinWords=15') AS snippet,
+    ts_rank(search_vector, plainto_tsquery('arbor_sentinel', search_query)) AS rank,
     created_at
   FROM evidence_items
-  WHERE search_vector @@ plainto_tsquery('accountability_atlas', search_query)
+  WHERE search_vector @@ plainto_tsquery('arbor_sentinel', search_query)
     AND review_status = 'published' AND visibility = 'public'
     AND (search_types IS NULL OR 'evidence' = ANY(search_types))
 
@@ -144,22 +144,22 @@ AS $$
 
   SELECT 'source' AS result_type, id AS result_id,
     name AS title,
-    ts_headline('accountability_atlas', COALESCE(notes, ''), plainto_tsquery('accountability_atlas', search_query), 'MaxWords=30, MinWords=15') AS snippet,
-    ts_rank(search_vector, plainto_tsquery('accountability_atlas', search_query)) AS rank,
+    ts_headline('arbor_sentinel', COALESCE(notes, ''), plainto_tsquery('arbor_sentinel', search_query), 'MaxWords=30, MinWords=15') AS snippet,
+    ts_rank(search_vector, plainto_tsquery('arbor_sentinel', search_query)) AS rank,
     created_at
   FROM sources
-  WHERE search_vector @@ plainto_tsquery('accountability_atlas', search_query)
+  WHERE search_vector @@ plainto_tsquery('arbor_sentinel', search_query)
     AND (search_types IS NULL OR 'source' = ANY(search_types))
 
   UNION ALL
 
   SELECT 'legal_case' AS result_type, id AS result_id,
     title,
-    ts_headline('accountability_atlas', COALESCE(summary, ''), plainto_tsquery('accountability_atlas', search_query), 'MaxWords=30, MinWords=15') AS snippet,
-    ts_rank(search_vector, plainto_tsquery('accountability_atlas', search_query)) AS rank,
+    ts_headline('arbor_sentinel', COALESCE(summary, ''), plainto_tsquery('arbor_sentinel', search_query), 'MaxWords=30, MinWords=15') AS snippet,
+    ts_rank(search_vector, plainto_tsquery('arbor_sentinel', search_query)) AS rank,
     created_at
   FROM legal_cases
-  WHERE search_vector @@ plainto_tsquery('accountability_atlas', search_query)
+  WHERE search_vector @@ plainto_tsquery('arbor_sentinel', search_query)
     AND (search_types IS NULL OR 'legal_case' = ANY(search_types))
 
   UNION ALL
@@ -167,21 +167,21 @@ AS $$
   SELECT 'country' AS result_type, id AS result_id,
     name AS title,
     NULL AS snippet,
-    ts_rank(search_vector, plainto_tsquery('accountability_atlas', search_query)) AS rank,
+    ts_rank(search_vector, plainto_tsquery('arbor_sentinel', search_query)) AS rank,
     created_at
   FROM countries
-  WHERE search_vector @@ plainto_tsquery('accountability_atlas', search_query)
+  WHERE search_vector @@ plainto_tsquery('arbor_sentinel', search_query)
     AND (search_types IS NULL OR 'country' = ANY(search_types))
 
   UNION ALL
 
   SELECT 'organization' AS result_type, id AS result_id,
     name AS title,
-    ts_headline('accountability_atlas', COALESCE(notes, ''), plainto_tsquery('accountability_atlas', search_query), 'MaxWords=30, MinWords=15') AS snippet,
-    ts_rank(search_vector, plainto_tsquery('accountability_atlas', search_query)) AS rank,
+    ts_headline('arbor_sentinel', COALESCE(notes, ''), plainto_tsquery('arbor_sentinel', search_query), 'MaxWords=30, MinWords=15') AS snippet,
+    ts_rank(search_vector, plainto_tsquery('arbor_sentinel', search_query)) AS rank,
     created_at
   FROM organizations
-  WHERE search_vector @@ plainto_tsquery('accountability_atlas', search_query)
+  WHERE search_vector @@ plainto_tsquery('arbor_sentinel', search_query)
     AND (search_types IS NULL OR 'organization' = ANY(search_types))
 
   ORDER BY rank DESC, created_at DESC
@@ -217,5 +217,5 @@ ALTER TABLE countries DROP COLUMN IF EXISTS search_vector;
 ALTER TABLE legal_cases DROP COLUMN IF EXISTS search_vector;
 ALTER TABLE sources DROP COLUMN IF EXISTS search_vector;
 ALTER TABLE evidence_items DROP COLUMN IF EXISTS search_vector;
-DROP TEXT SEARCH CONFIGURATION IF EXISTS accountability_atlas;
+DROP TEXT SEARCH CONFIGURATION IF EXISTS arbor_sentinel;
 */

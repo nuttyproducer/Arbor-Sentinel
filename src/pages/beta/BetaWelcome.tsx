@@ -45,7 +45,7 @@ export function BetaWelcome() {
         <div className="max-w-3xl mx-auto">
           <PageIntro
             eyebrow="Beta Program"
-            title="Welcome to the Accountability Atlas beta."
+            title="Welcome to the Arbor Sentinel beta."
             description="You now have access to the beta feedback and bug reporting routes. Your reports go directly to the maintenance team — they help shape the platform before wider release."
           />
 

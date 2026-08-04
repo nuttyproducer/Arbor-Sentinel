@@ -2,7 +2,7 @@
 
 ## Brand personality
 
-Accountability Atlas should feel:
+Arbor Sentinel should feel:
 
 - calm;
 - serious;

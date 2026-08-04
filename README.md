@@ -1,4 +1,4 @@
-# Accountability Atlas
+# Arbor Sentinel
 
 <p align="center">
   <strong>Evidence for protection. Action for accountability.</strong>
@@ -14,9 +14,9 @@
 
 ---
 
-## 🌍 What is Accountability Atlas?
+## 🌍 What is Arbor Sentinel?
 
-**Accountability Atlas** is an early-stage, open-source civic-technology project for organizing verified public-interest evidence, documenting civic and humanitarian harm, and supporting lawful, accountable public action.
+**Arbor Sentinel** is an early-stage, open-source civic-technology project for organizing verified public-interest evidence, documenting civic and humanitarian harm, and supporting lawful, accountable public action.
 
 The project is being built as calm, transparent infrastructure for:
 
@@ -29,7 +29,7 @@ The project is being built as calm, transparent infrastructure for:
 - responsible public communication.
 
 > [!IMPORTANT]
-> Accountability Atlas is **not** a rage platform, a doxing project, a replacement for humanitarian organizations, or a legal authority.  
+> Arbor Sentinel is **not** a rage platform, a doxing project, a replacement for humanitarian organizations, or a legal authority.  
 > It is a public-interest technology project focused on careful documentation, lawful action, and human dignity.
 
 ---
@@ -69,7 +69,7 @@ The initial work centers on creating a clear structure for:
 
 ## 🚦 Current Status
 
-Accountability Atlas is currently an **early-stage open-source initiative**.
+Arbor Sentinel is currently an **early-stage open-source initiative**.
 
 It is not yet:
 
@@ -198,7 +198,7 @@ Start here:
 
 ## 📣 Outreach and Collaboration
 
-Accountability Atlas is open to collaboration with:
+Arbor Sentinel is open to collaboration with:
 
 - developers;
 - designers;
@@ -248,7 +248,7 @@ The project follows these principles:
 
 ## 🚫 What This Project Will Not Do
 
-Accountability Atlas will not:
+Arbor Sentinel will not:
 
 - encourage violence, harassment, or intimidation;
 - publish doxing material;
@@ -350,4 +350,4 @@ See `NOTICE.md` and the `LICENSES/` folder for details.
 
 > **Be smaller than you want to appear, but more reliable than people expect!**
 
-Accountability Atlas earns trust through calm language, transparent methodology, careful contributors, public corrections, and a strict commitment to human dignity.
+Arbor Sentinel earns trust through calm language, transparent methodology, careful contributors, public corrections, and a strict commitment to human dignity.

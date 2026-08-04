@@ -1,6 +1,6 @@
 # Source Policy
 
-This policy defines how Accountability Atlas uses sources.
+This policy defines how Arbor Sentinel uses sources.
 
 ---
 

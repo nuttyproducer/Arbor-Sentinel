@@ -1,6 +1,6 @@
 # Methodology
 
-This document explains how Accountability Atlas handles sources, claims, verification, legal language, corrections, and publication standards.
+This document explains how Arbor Sentinel handles sources, claims, verification, legal language, corrections, and publication standards.
 
 ---
 

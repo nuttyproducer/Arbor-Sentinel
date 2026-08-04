@@ -1,6 +1,6 @@
 # Legal Language Policy
 
-This policy protects the credibility and safety of Accountability Atlas.
+This policy protects the credibility and safety of Arbor Sentinel.
 
 ---
 

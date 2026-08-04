@@ -20,7 +20,7 @@ Used when the platform lists publicly available information about an organizatio
 
 Required disclaimer:
 
-> This directory entry uses public information. This organization has not necessarily reviewed, endorsed, or partnered with Accountability Atlas.
+> This directory entry uses public information. This organization has not necessarily reviewed, endorsed, or partnered with Arbor Sentinel.
 
 ### Reviewed listing
 
@@ -66,7 +66,7 @@ Do not process donations directly without:
 
 Donation pages must say:
 
-> Donations go directly to the listed organization through its official channel. Accountability Atlas does not handle these funds.
+> Donations go directly to the listed organization through its official channel. Arbor Sentinel does not handle these funds.
 
 unless the project later creates a legally reviewed funding mechanism.
 

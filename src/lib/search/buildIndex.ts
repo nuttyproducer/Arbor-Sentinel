@@ -28,10 +28,10 @@ const TRUST_PAGES: Omit<SearchableRecord, "active">[] = [
     type: "trust_page",
     title: "Methodology",
     description:
-      "How Accountability Atlas separates sources, leads, allegations, legal findings, and reviewed public evidence — with verification levels, legal status labels, and publication workflow.",
+      "How Arbor Sentinel separates sources, leads, allegations, legal findings, and reviewed public evidence — with verification levels, legal status labels, and publication workflow.",
     route: "/methodology",
     tags: ["methodology", "verification", "source hierarchy", "legal labels", "publication"],
-    publisher: "Accountability Atlas",
+    publisher: "Arbor Sentinel",
   },
   {
     id: "trust-corrections",
@@ -41,7 +41,7 @@ const TRUST_PAGES: Omit<SearchableRecord, "active">[] = [
       "Corrections are part of the trust model. Submit corrections for factual errors, outdated sources, unsafe information, mistranslations, or misrepresentation.",
     route: "/corrections",
     tags: ["corrections", "trust", "factual errors", "transparency"],
-    publisher: "Accountability Atlas",
+    publisher: "Arbor Sentinel",
   },
   {
     id: "trust-privacy",
@@ -51,7 +51,7 @@ const TRUST_PAGES: Omit<SearchableRecord, "active">[] = [
       "Privacy in the public static beta: no user accounts, no tracking scripts, no witness submissions, no evidence uploads. Static site by design.",
     route: "/privacy",
     tags: ["privacy", "data protection", "GDPR", "tracking", "security"],
-    publisher: "Accountability Atlas",
+    publisher: "Arbor Sentinel",
   },
   {
     id: "trust-accessibility",
@@ -61,57 +61,57 @@ const TRUST_PAGES: Omit<SearchableRecord, "active">[] = [
       "Accessibility commitment: WCAG 2.2 AA target, keyboard navigation, visible focus states, reduced motion support, mobile responsiveness, and readable typography.",
     route: "/accessibility",
     tags: ["accessibility", "WCAG", "keyboard", "screen reader", "inclusive design"],
-    publisher: "Accountability Atlas",
+    publisher: "Arbor Sentinel",
   },
   {
     id: "trust-disclaimer",
     type: "trust_page",
     title: "Public Disclaimer",
     description:
-      "Accountability Atlas is an independent open-source civic accountability project — not a court, NGO, charity, or official authority. Public static beta. Corrections welcome.",
+      "Arbor Sentinel is an independent open-source civic accountability project — not a court, NGO, charity, or official authority. Public static beta. Corrections welcome.",
     route: "/disclaimer",
     tags: ["disclaimer", "legal", "status", "limitations"],
-    publisher: "Accountability Atlas",
+    publisher: "Arbor Sentinel",
   },
   {
     id: "trust-attributions",
     type: "trust_page",
     title: "Attributions",
     description:
-      "Image credits, licences, modifications, and attribution records for every image used on Accountability Atlas — open-licensed or permission-cleared only.",
+      "Image credits, licences, modifications, and attribution records for every image used on Arbor Sentinel — open-licensed or permission-cleared only.",
     route: "/attributions",
     tags: ["attributions", "image credits", "licensing", "open source"],
-    publisher: "Accountability Atlas",
+    publisher: "Arbor Sentinel",
   },
   {
     id: "trust-contribute",
     type: "trust_page",
     title: "Contribute",
     description:
-      "Help build Accountability Atlas: developers, designers, researchers, reviewers, writers, and translators — open-source contribution with safety review.",
+      "Help build Arbor Sentinel: developers, designers, researchers, reviewers, writers, and translators — open-source contribution with safety review.",
     route: "/contribute",
     tags: ["contribute", "volunteer", "open source", "contributors", "GitHub"],
-    publisher: "Accountability Atlas",
+    publisher: "Arbor Sentinel",
   },
   {
     id: "trust-press",
     type: "trust_page",
     title: "Press & Resources",
     description:
-      "How to understand, describe, cite, and represent Accountability Atlas responsibly. For journalists, researchers, contributors, and civic-tech reviewers.",
+      "How to understand, describe, cite, and represent Arbor Sentinel responsibly. For journalists, researchers, contributors, and civic-tech reviewers.",
     route: "/press",
     tags: ["press", "journalists", "citation", "brand", "resources"],
-    publisher: "Accountability Atlas",
+    publisher: "Arbor Sentinel",
   },
   {
     id: "trust-changelog",
     type: "trust_page",
     title: "Changelog",
     description:
-      "A record of features, improvements, and fixes on the Accountability Atlas platform — maintained by contributors during the public static beta.",
+      "A record of features, improvements, and fixes on the Arbor Sentinel platform — maintained by contributors during the public static beta.",
     route: "/changelog",
     tags: ["changelog", "updates", "releases", "version history"],
-    publisher: "Accountability Atlas",
+    publisher: "Arbor Sentinel",
   },
   {
     id: "trust-gaza-dossier",
@@ -121,7 +121,7 @@ const TRUST_PAGES: Omit<SearchableRecord, "active">[] = [
       "A structured framework for understanding the humanitarian context, legal proceedings, documented harm categories, and policy priorities in the Gaza regional crisis.",
     route: "/gaza-dossier",
     tags: ["Gaza", "dossier", "humanitarian", "legal", "policy"],
-    publisher: "Accountability Atlas",
+    publisher: "Arbor Sentinel",
   },
   {
     id: "trust-legal-tracker",
@@ -131,7 +131,7 @@ const TRUST_PAGES: Omit<SearchableRecord, "active">[] = [
       "Track court proceedings, investigations, warrants, UN findings, and procedural milestones with consistent legal status labels.",
     route: "/legal-tracker",
     tags: ["legal", "court", "ICC", "ICJ", "warrants", "proceedings"],
-    publisher: "Accountability Atlas",
+    publisher: "Arbor Sentinel",
   },
 ];
 

@@ -286,7 +286,7 @@ export default function ActionHubPage() {
             </Link>
           </li>
           <li>
-            <ExternalLink href="https://github.com/nuttyproducer/accountability-atlas/blob/main/CONTRIBUTING.md">
+            <ExternalLink href="https://github.com/nuttyproducer/arbor-sentinel/blob/main/CONTRIBUTING.md">
               Contribution guide — how to contribute safely
             </ExternalLink>
           </li>

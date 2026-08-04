@@ -1,4 +1,4 @@
-# Press Kit — Accountability Atlas
+# Press Kit — Arbor Sentinel
 
 **Status:** Pre-launch (M7-06)  
 **Last reviewed:** 2026-08-04  
@@ -18,7 +18,7 @@ are recorded there.
 ## 1. Project one-pager
 
 ### What it is
-Accountability Atlas is an open-source civic-technology platform that
+Arbor Sentinel is an open-source civic-technology platform that
 organizes verified public evidence, tracks legal and political
 responsibility, and helps people take lawful action — starting with Gaza and
 the wider regional crisis. The structure is modular so it can support other
@@ -120,7 +120,7 @@ coverage with the brand colors unaltered. Do not crop or recolor the mark.
 
 - **The only authorized quotable source is the spokesperson.** All quotes
   must be attributed to the spokesperson by name/title, or to the project
-  ("Accountability Atlas said…").
+  ("Arbor Sentinel said…").
 - No contributor, volunteer, or listed organization may be quoted on behalf
   of the project.
 - We do not provide quotes that claim partnerships, endorsements, or

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================================
-# Accountability Atlas — Security Audit Script
+# Arbor Sentinel — Security Audit Script
 # ============================================================================
 # CI-compatible security audit. Runs dependency audit, checks security
 # headers in built output, scans for exposed secrets, and validates CSP.
@@ -36,7 +36,7 @@ FLAG_HEADERS=0
 FLAG_SECRETS=0
 
 echo "============================================"
-echo " Accountability Atlas — Security Audit"
+echo " Arbor Sentinel — Security Audit"
 echo " CI Mode: $CI_MODE"
 echo "============================================"
 echo ""

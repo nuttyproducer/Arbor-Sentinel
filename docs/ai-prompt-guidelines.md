@@ -8,7 +8,7 @@
 ## Purpose
 
 This document defines the structure, versioning, variable naming conventions,
-and safety rules for AI prompts used in the Accountability Atlas pipeline.
+and safety rules for AI prompts used in the Arbor Sentinel pipeline.
 
 ---
 

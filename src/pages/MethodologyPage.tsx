@@ -45,7 +45,7 @@ export function MethodologyPage() {
 
           <PageIntro
             eyebrow="Methodology"
-            title="How Accountability Atlas works with evidence."
+            title="How Arbor Sentinel works with evidence."
             description="The methodology explains how the platform separates sources, leads, allegations, legal findings, humanitarian reporting, advocacy language, and reviewed public evidence. This is an active draft — it will be updated as the platform develops."
           />
 
@@ -62,7 +62,7 @@ export function MethodologyPage() {
           {/* 1. Mission and scope */}
           <PolicySection title="Mission and scope" id="mission-scope" delay={0.15}>
             <p>
-              Accountability Atlas is an independent open-source civic
+              Arbor Sentinel is an independent open-source civic
               accountability project being built to organize verified public
               evidence, legal and humanitarian sources, country accountability
               information, and lawful action pathways.
@@ -513,7 +513,7 @@ export function MethodologyPage() {
             <p className="mt-4">
               No organisation listed on this platform should be described as a
               &ldquo;partner&rdquo; or &ldquo;verified partner&rdquo; of
-              Accountability Atlas unless that relationship has been confirmed
+              Arbor Sentinel unless that relationship has been confirmed
               in writing and published on the platform.
             </p>
           </PolicySection>
@@ -591,7 +591,7 @@ export function MethodologyPage() {
           </PolicySection>
 
           {/* 18. How to cite */}
-          <PolicySection title="How to cite Accountability Atlas" id="citation" delay={0.66}>
+          <PolicySection title="How to cite Arbor Sentinel" id="citation" delay={0.66}>
             <p>
               When citing this platform in research, journalism, legal
               submissions, or other work, please use the following format:
@@ -683,7 +683,7 @@ export function MethodologyPage() {
           <Reveal delay={0.78}>
             <div className="flex flex-col sm:flex-row gap-4 pt-4 border-t border-border mt-10">
               <Button
-                href="https://github.com/nuttyproducer/accountability-atlas/blob/main/docs/methodology.md"
+                href="https://github.com/nuttyproducer/arbor-sentinel/blob/main/docs/methodology.md"
                 variant="secondary"
                 external
               >

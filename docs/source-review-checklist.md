@@ -59,7 +59,7 @@ reviewing a record that references sources.
   court order is publicly available on the court's website, link to the court
   website — not a news article about the order.
 - **Don't cite this platform as the source.** Every source record should
-  point to the original publisher. Accountability Atlas is a finding aid.
+  point to the original publisher. Arbor Sentinel is a finding aid.
 - **Don't assume a source verifies every claim within it.** An official
   government statement proves what the government said. It does not
   independently verify the factual claims the government made.

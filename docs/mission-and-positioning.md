@@ -2,7 +2,7 @@
 
 ## Mission
 
-Accountability Atlas exists to organize verified public evidence, legal developments, humanitarian information, and lawful citizen actions in support of civilian protection, humanitarian access, and accountability for alleged atrocity crimes.
+Arbor Sentinel exists to organize verified public evidence, legal developments, humanitarian information, and lawful citizen actions in support of civilian protection, humanitarian access, and accountability for alleged atrocity crimes.
 
 ---
 
@@ -16,7 +16,7 @@ The platform should help people move from outrage to informed action.
 
 ## What the platform is
 
-Accountability Atlas is:
+Arbor Sentinel is:
 
 - a civic-technology project;
 - a public evidence and action hub;
@@ -30,7 +30,7 @@ Accountability Atlas is:
 
 ## What the platform is not
 
-Accountability Atlas is not:
+Arbor Sentinel is not:
 
 - a revenge platform;
 - a doxing project;
@@ -92,7 +92,7 @@ It should not sound like:
 
 ## Approved positioning statement
 
-Accountability Atlas is an open-source civic-tech project that organizes verified public evidence, legal developments, humanitarian information, and lawful action pathways for civilian protection and atrocity accountability.
+Arbor Sentinel is an open-source civic-tech project that organizes verified public evidence, legal developments, humanitarian information, and lawful action pathways for civilian protection and atrocity accountability.
 
 ---
 

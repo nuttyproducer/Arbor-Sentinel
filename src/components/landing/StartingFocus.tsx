@@ -75,7 +75,7 @@ export function StartingFocus() {
           {/* Lead statement — right border on desktop, left border on mobile */}
           <Reveal delay={0.2} duration={0.55} amount={0.35}>
             <p className="mt-8 border-r-0 border-l-2 border-amber/70 pl-5 lg:border-l-0 lg:border-r-2 lg:pl-0 lg:pr-6 text-lg md:text-xl leading-8 font-medium text-bone/90">
-              The first focus of Accountability Atlas is Gaza and the wider
+              The first focus of Arbor Sentinel is Gaza and the wider
               regional humanitarian crisis.
             </p>
           </Reveal>

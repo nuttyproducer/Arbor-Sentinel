@@ -77,7 +77,7 @@ export function Hero() {
               id="hero-title"
               className="font-serif font-bold text-5xl md:text-6xl lg:text-7xl leading-[0.95] tracking-tight text-bone"
             >
-              Accountability Atlas
+              Arbor Sentinel
             </h1>
           </Reveal>
 
@@ -102,7 +102,7 @@ export function Hero() {
           <Reveal delay={0.32} duration={0.5}>
             <div className="text-base md:text-lg leading-8 text-bone/85 max-w-2xl space-y-6">
               <p>
-                Accountability Atlas is an open-source platform for organizing
+                Arbor Sentinel is an open-source platform for organizing
                 verified public evidence, tracking legal and political
                 responsibility, and helping people take lawful action in response
                 to genocide allegations, mass civilian harm, humanitarian
@@ -170,7 +170,7 @@ export function Hero() {
             {/* Tertiary text link */}
             <div className="mt-4">
               <a
-                href="https://github.com/nuttyproducer/accountability-atlas"
+                href="https://github.com/nuttyproducer/arbor-sentinel"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 font-mono text-xs text-bone/45 hover:text-bone/75 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bone/50 focus-visible:ring-offset-2 focus-visible:ring-offset-ink rounded-sm"

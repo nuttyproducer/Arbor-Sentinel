@@ -1,8 +1,8 @@
 # NOTICE
 
-Project name: Accountability Atlas
+Project name: Arbor Sentinel
 
-Accountability Atlas is an open civic-technology project for verified atrocity
+Arbor Sentinel is an open civic-technology project for verified atrocity
 documentation, humanitarian accountability, legal/policy tracking, and lawful citizen
 action.
 
@@ -69,14 +69,14 @@ When in doubt, do not publish.
 When reusing project-created documentation licensed under CC BY-SA 4.0, attribution should
 include:
 
-- Project: Accountability Atlas
+- Project: Arbor Sentinel
 - Repository: [add repository URL here]
 - License: CC BY-SA 4.0
 - Notice of changes, if modified
 
 Suggested attribution:
 
-> Adapted from Accountability Atlas documentation, licensed under CC BY-SA 4.0.
+> Adapted from Arbor Sentinel documentation, licensed under CC BY-SA 4.0.
 
 When reusing software source code licensed under AGPL-3.0-or-later, comply with the full
 license terms, including source-code availability requirements for modified network

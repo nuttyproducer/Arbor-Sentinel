@@ -47,7 +47,7 @@ export function ContributePage() {
 
           <Reveal delay={0.1}>
             <p className="text-lg text-charcoal/80 leading-relaxed mb-10">
-              Accountability Atlas is an open-source project building
+              Arbor Sentinel is an open-source project building
               infrastructure against genocide and mass atrocities. We welcome
               developers, designers, researchers, legal and human-rights
               reviewers, OSINT/source-verification people, security auditors,
@@ -92,10 +92,10 @@ export function ContributePage() {
               </p>
               <ul className="space-y-2">
                 {[
-                  { label: "Contribution Guide", href: "https://github.com/nuttyproducer/accountability-atlas/blob/main/CONTRIBUTING.md" },
-                  { label: "Code of Conduct", href: "https://github.com/nuttyproducer/accountability-atlas/blob/main/CODE_OF_CONDUCT.md" },
-                  { label: "Security Policy", href: "https://github.com/nuttyproducer/accountability-atlas/blob/main/SECURITY.md" },
-                  { label: "Open Roles", href: "https://github.com/nuttyproducer/accountability-atlas/blob/main/docs/open-roles.md" },
+                  { label: "Contribution Guide", href: "https://github.com/nuttyproducer/arbor-sentinel/blob/main/CONTRIBUTING.md" },
+                  { label: "Code of Conduct", href: "https://github.com/nuttyproducer/arbor-sentinel/blob/main/CODE_OF_CONDUCT.md" },
+                  { label: "Security Policy", href: "https://github.com/nuttyproducer/arbor-sentinel/blob/main/SECURITY.md" },
+                  { label: "Open Roles", href: "https://github.com/nuttyproducer/arbor-sentinel/blob/main/docs/open-roles.md" },
                 ].map((link) => (
                   <li key={link.label}>
                     <a
@@ -117,7 +117,7 @@ export function ContributePage() {
           <Reveal delay={0.25}>
             <div className="flex flex-col sm:flex-row gap-4 pt-4 border-t border-border">
               <Button
-                href="https://github.com/nuttyproducer/accountability-atlas/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22"
+                href="https://github.com/nuttyproducer/arbor-sentinel/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22"
                 variant="primary"
                 icon={<ExternalIcon />}
                 external
@@ -125,7 +125,7 @@ export function ContributePage() {
                 View Good First Issues
               </Button>
               <Button
-                href="https://github.com/nuttyproducer/accountability-atlas/blob/main/CONTRIBUTING.md"
+                href="https://github.com/nuttyproducer/arbor-sentinel/blob/main/CONTRIBUTING.md"
                 variant="secondary"
                 icon={<ExternalIcon />}
                 external

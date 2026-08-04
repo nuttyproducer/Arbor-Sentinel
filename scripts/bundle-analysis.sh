@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================================
-# Accountability Atlas — Bundle Analysis Script
+# Arbor Sentinel — Bundle Analysis Script
 # ============================================================================
 # CI-compatible bundle check. Builds the app, parses the Vite/Rollup chunk
 # report, and validates the bundle against launch performance budgets.
@@ -55,7 +55,7 @@ TOTAL_LIMIT_KB=500
 DIST_DIR="dist"
 
 echo "============================================"
-echo " Accountability Atlas — Bundle Analysis"
+echo " Arbor Sentinel — Bundle Analysis"
 echo " CI Mode: $CI_MODE"
 echo "============================================"
 echo ""

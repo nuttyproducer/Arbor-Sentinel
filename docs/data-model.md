@@ -1,4 +1,4 @@
-# Data Model — Accountability Atlas
+# Data Model — Arbor Sentinel
 
 Complete database schema for the Supabase/PostgreSQL backend (Milestone 5).
 

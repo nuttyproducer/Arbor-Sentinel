@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================================
-# Accountability Atlas — Automated Database Backup
+# Arbor Sentinel — Automated Database Backup
 # Usage: ./scripts/backup.sh [--full] [--wal]
 #
 # Full backup: pg_dump of the entire database

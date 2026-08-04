@@ -7,7 +7,7 @@
 
 ## Purpose
 
-This matrix maps every content type on Accountability Atlas to the reviews
+This matrix maps every content type on Arbor Sentinel to the reviews
 required before it may be marked `reviewed`. Use this as a checklist when
 preparing content for publication.
 

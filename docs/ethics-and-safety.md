@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Accountability Atlas must help protect people, not create new risks. This document defines the project’s ethical boundaries.
+Arbor Sentinel must help protect people, not create new risks. This document defines the project’s ethical boundaries.
 
 ---
 
@@ -147,7 +147,7 @@ For MVP:
 
 ## Partner respect
 
-Do not imply that an organization supports or partners with Accountability Atlas unless written confirmation exists.
+Do not imply that an organization supports or partners with Arbor Sentinel unless written confirmation exists.
 
 Public organization directory entries must include a disclaimer if no partnership exists.
 

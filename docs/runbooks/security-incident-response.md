@@ -9,7 +9,7 @@
 ## Purpose
 
 Classification, containment, communication, recovery, and post-mortem procedures
-for security incidents affecting the Accountability Atlas platform.
+for security incidents affecting the Arbor Sentinel platform.
 
 ---
 
@@ -113,7 +113,7 @@ secure operations manual.
 
 ```
 We are investigating a [security incident / technical issue] affecting the
-Accountability Atlas platform. The platform may be temporarily unavailable
+Arbor Sentinel platform. The platform may be temporarily unavailable
 while we address this. We will provide an update within [timeframe].
 
 If you have questions, contact [role-based email].

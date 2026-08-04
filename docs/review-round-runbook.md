@@ -9,7 +9,7 @@
 ## Purpose
 
 This runbook defines the step-by-step procedures for maintainers to initiate,
-manage, and close review rounds on Accountability Atlas. It ensures that every
+manage, and close review rounds on Arbor Sentinel. It ensures that every
 review is structured, scoped, and recorded consistently — and that no reviewer
 is left with an ambiguous assignment.
 
@@ -126,7 +126,7 @@ review type, the content remains `review_pending`. Do not mark it `reviewed`.
 
 Contact the reviewer privately. The invitation must include:
 
-- **What this is:** A time-bound, scoped review for Accountability Atlas
+- **What this is:** A time-bound, scoped review for Arbor Sentinel
 - **What this is not:** A partnership, employment, advisory role, or ongoing commitment
 - **The review type** and what it involves
 - **The scope:** which content records, which criteria
@@ -141,7 +141,7 @@ Contact the reviewer privately. The invitation must include:
 ### 2.2 Invitation template
 
 ```text
-Subject: Review invitation — Accountability Atlas — [Review type] — [Content description]
+Subject: Review invitation — Arbor Sentinel — [Review type] — [Content description]
 
 Hi [name],
 
@@ -168,7 +168,7 @@ You may decline without giving a reason — and you may withdraw at any time.
 Thank you for considering this.
 
 — [Your name]
-  Maintainer, Accountability Atlas
+  Maintainer, Arbor Sentinel
 ```
 
 ### 2.3 Confirm the assignment
@@ -411,7 +411,7 @@ Subject: Review round complete — REV-YYYY-NNN — Thank you
 
 Hi [name],
 
-Thank you for completing the [review type] review for Accountability Atlas
+Thank you for completing the [review type] review for Arbor Sentinel
 (REV-YYYY-NNN).
 
 **Outcome:** [Summary of what was found and what actions were taken]
@@ -430,7 +430,7 @@ let me know.
 Thank you again for your contribution.
 
 — [Your name]
-  Maintainer, Accountability Atlas
+  Maintainer, Arbor Sentinel
 ```
 
 ### 8.3 Archive the round

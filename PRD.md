@@ -1,4 +1,4 @@
-# Accountability Atlas — Product Requirements Document (PRD)
+# Arbor Sentinel — Product Requirements Document (PRD)
 
 **Project type:** Human-rights civic technology platform  
 **Version:** 2.1 — Public Static Beta Update  
@@ -40,7 +40,7 @@ Major updates:
 
 ### 0.1 Final name
 
-**Accountability Atlas**
+**Arbor Sentinel**
 
 The name is calm, global, memorable, and suitable for evidence, maps, policy, law, civic action, and future expansion beyond one crisis.
 
@@ -60,7 +60,7 @@ An independent, open-source civic documentation and accountability platform.
 
 ### 0.5 Current status statement
 
-> Accountability Atlas is an early-stage open-source civic-technology initiative. It is currently being developed as a public static beta and is not yet a registered NGO, charity, court, humanitarian organization, or formal legal entity. Organizations and institutions referenced by the project are public sources or public resources unless a verified partnership is explicitly confirmed in writing.
+> Arbor Sentinel is an early-stage open-source civic-technology initiative. It is currently being developed as a public static beta and is not yet a registered NGO, charity, court, humanitarian organization, or formal legal entity. Organizations and institutions referenced by the project are public sources or public resources unless a verified partnership is explicitly confirmed in writing.
 
 ### 0.6 Current visual identity
 
@@ -79,7 +79,7 @@ An independent, open-source civic documentation and accountability platform.
 
 ## 1. Executive Summary
 
-**Accountability Atlas** is a multilingual, security-aware, evidence-led civic platform being built to organize verified public evidence, document alleged atrocity crimes and humanitarian harm, track legal and political responsibility, and help citizens, journalists, researchers, civil society, and policymakers take lawful action for civilian protection, humanitarian access, arms-transfer review, and legal accountability.
+**Arbor Sentinel** is a multilingual, security-aware, evidence-led civic platform being built to organize verified public evidence, document alleged atrocity crimes and humanitarian harm, track legal and political responsibility, and help citizens, journalists, researchers, civil society, and policymakers take lawful action for civilian protection, humanitarian access, arms-transfer review, and legal accountability.
 
 The platform begins with Gaza and the wider regional humanitarian crisis. It is designed to become a reusable framework for other documented mass-atrocity and humanitarian-crisis contexts, but expansion must never be a copy-paste exercise: every context requires local expertise, legal review, and region-specific safety decisions.
 
@@ -108,7 +108,7 @@ Early design and implementation work clarified several strategic lessons:
 
 ### 1.2 Current Build Reality — Static Public Beta First
 
-Accountability Atlas is being built as a **public static beta** before the full functional MVP.
+Arbor Sentinel is being built as a **public static beta** before the full functional MVP.
 
 The static beta exists to make the project understandable, navigable, reviewable, and useful before introducing backend complexity, public databases, admin systems, witness submissions, maps, automated dossiers, or user accounts.
 
@@ -129,7 +129,7 @@ This stage is not “just a landing page.” It is the first visible layer of th
 
 The static beta must communicate:
 
-1. what Accountability Atlas is;
+1. what Arbor Sentinel is;
 2. why Gaza is the first focus;
 3. how evidence will be classified and reviewed;
 4. how legal and political responsibility will be tracked;
@@ -184,7 +184,7 @@ Policymakers, journalists, NGOs, researchers, and lawyers need concise, dated, s
 
 ### 2.4 The platform solution
 
-Accountability Atlas turns dispersed public information into structured civic infrastructure:
+Arbor Sentinel turns dispersed public information into structured civic infrastructure:
 
 - source-graded evidence;
 - transparent verification methodology;
@@ -286,7 +286,7 @@ Corrections, status changes, source upgrades, source downgrades, disputes, and r
 
 Recommended framing:
 
-> Accountability Atlas documents alleged atrocity crimes, humanitarian harm, obstruction of aid, attacks affecting civilians and civilian infrastructure, and failures of international response. It supports lawful pressure for ceasefire, humanitarian access, arms-transfer review, civilian protection, transparency, and legal accountability.
+> Arbor Sentinel documents alleged atrocity crimes, humanitarian harm, obstruction of aid, attacks affecting civilians and civilian infrastructure, and failures of international response. It supports lawful pressure for ceasefire, humanitarian access, arms-transfer review, civilian protection, transparency, and legal accountability.
 
 Avoid official platform language such as:
 
@@ -447,7 +447,7 @@ The static beta must make it obvious how someone can help:
 
 ### 6.3 Differentiation
 
-Accountability Atlas combines functions often separated across multiple projects:
+Arbor Sentinel combines functions often separated across multiple projects:
 
 - evidence organization;
 - legal status explanation;
@@ -711,7 +711,7 @@ Help users find credible organizations without claiming ownership, endorsement, 
 
 The platform will not process, hold, or distribute donations during the MVP. It may link only to official organization pages and must state:
 
-> Donations go directly to the named organization. Accountability Atlas does not process, hold, or distribute funds.
+> Donations go directly to the named organization. Arbor Sentinel does not process, hold, or distribute funds.
 
 ---
 
@@ -946,7 +946,7 @@ Pre-headline:
 
 Project name:
 
-**Accountability Atlas**
+**Arbor Sentinel**
 
 Tagline:
 
@@ -954,7 +954,7 @@ Tagline:
 
 Core description:
 
-> Accountability Atlas is an open-source platform for organizing verified public evidence, tracking legal and political responsibility, and helping people take lawful action in response to genocide allegations, mass civilian harm, humanitarian obstruction, and atrocity crises.
+> Arbor Sentinel is an open-source platform for organizing verified public evidence, tracking legal and political responsibility, and helping people take lawful action in response to genocide allegations, mass civilian harm, humanitarian obstruction, and atrocity crises.
 >
 > Starting with Gaza and the wider regional crisis, the platform is being designed as a reusable framework for other urgent contexts where documentation, accountability, and public pressure are needed.
 
@@ -1012,7 +1012,7 @@ Make the platform trustworthy before the evidence database exists.
 11. Privacy summary
 12. Partner-verification policy
 13. AI-use policy
-14. How to cite Accountability Atlas
+14. How to cite Arbor Sentinel
 15. What is not active yet
 16. Reviewer/contributor request
 
@@ -1591,7 +1591,7 @@ Target WCAG 2.2 AA:
 
 ### 13.9 Image and Attribution Policy
 
-Accountability Atlas may use open-licensed, public-domain, or permission-cleared images to provide human and historical context.
+Arbor Sentinel may use open-licensed, public-domain, or permission-cleared images to provide human and historical context.
 
 Images must never be used for shock value, manipulation, dehumanization, or spectacle.
 
@@ -2990,13 +2990,13 @@ Ready for functional beta when:
 
 ## 36. Founder 60-Second Pitch
 
-Accountability Atlas is an open-source civic accountability platform that turns verified human-rights, legal, and humanitarian information into structured public understanding and lawful pressure. We begin with Gaza, connecting court records, UN and humanitarian updates, human-rights research, country policy tracking, organization directories, and action templates. Citizens can understand what their governments have done and use responsible pressure routes; journalists and researchers can find source-linked structures; policymakers can receive concise evidence-based briefs. We do not promote hatred, harassment, violence, doxing, or false partnership claims. We document, verify, explain, and help people act lawfully for civilian protection, humanitarian access, and accountability.
+Arbor Sentinel is an open-source civic accountability platform that turns verified human-rights, legal, and humanitarian information into structured public understanding and lawful pressure. We begin with Gaza, connecting court records, UN and humanitarian updates, human-rights research, country policy tracking, organization directories, and action templates. Citizens can understand what their governments have done and use responsible pressure routes; journalists and researchers can find source-linked structures; policymakers can receive concise evidence-based briefs. We do not promote hatred, harassment, violence, doxing, or false partnership claims. We document, verify, explain, and help people act lawfully for civilian protection, humanitarian access, and accountability.
 
 ---
 
 ## 37. Public Disclaimer Draft
 
-> Accountability Atlas is an independent open-source civic documentation and accountability project. It is currently in public static beta and is not yet a registered NGO, charity, legal entity, court, humanitarian organization, or formal partner of any listed organization unless explicitly stated.
+> Arbor Sentinel is an independent open-source civic documentation and accountability project. It is currently in public static beta and is not yet a registered NGO, charity, legal entity, court, humanitarian organization, or formal partner of any listed organization unless explicitly stated.
 >
 > The platform does not promote violence, hatred, harassment, doxing, antisemitism, Islamophobia, racism, or collective blame. Its purpose is to organize verified public evidence, support lawful civic action, amplify humanitarian needs, and strengthen accountability under international law.
 >
@@ -3010,12 +3010,12 @@ Accountability Atlas is an open-source civic accountability platform that turns 
 
 **Building public infrastructure against genocide and mass atrocities.**
 
-# Accountability Atlas
+# Arbor Sentinel
 
 **Evidence for protection.  
 Action for accountability.**
 
-Accountability Atlas is an open-source platform for organizing verified public evidence, tracking legal and political responsibility, and helping people take lawful action in response to genocide allegations, mass civilian harm, humanitarian obstruction, and atrocity crises.
+Arbor Sentinel is an open-source platform for organizing verified public evidence, tracking legal and political responsibility, and helping people take lawful action in response to genocide allegations, mass civilian harm, humanitarian obstruction, and atrocity crises.
 
 Starting with Gaza and the wider regional crisis, the platform is being designed as a reusable framework for other urgent contexts where documentation, accountability, and public pressure are needed.
 
@@ -3132,7 +3132,7 @@ Forbidden:
 
 ## 43. Final Strategic Recommendation
 
-Continue building Accountability Atlas as a **static-first, evidence-led public beta**.
+Continue building Arbor Sentinel as a **static-first, evidence-led public beta**.
 
 Do not rush into the largest features. Build the trustworthy path in order:
 

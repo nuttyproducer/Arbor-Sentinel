@@ -1,4 +1,4 @@
-# Backup and Recovery — Accountability Atlas
+# Backup and Recovery — Arbor Sentinel
 
 ## Backup Schedule
 

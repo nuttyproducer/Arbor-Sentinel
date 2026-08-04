@@ -65,7 +65,7 @@ export interface OrganizationRecord {
  *
  * Listing does not imply partnership, endorsement, approval, or
  * affiliation. Donation links point directly to the named
- * organization. Accountability Atlas does not process, hold, or
+ * organization. Arbor Sentinel does not process, hold, or
  * distribute funds.
  */
 export const organizationRecords: OrganizationRecord[] = [

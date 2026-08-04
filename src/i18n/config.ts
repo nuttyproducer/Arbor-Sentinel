@@ -1,5 +1,5 @@
 /**
- * i18next configuration for Accountability Atlas.
+ * i18next configuration for Arbor Sentinel.
  *
  * Architecture decision:
  * - react-i18next is used as the i18n framework. It is the most
@@ -111,7 +111,7 @@ i18n
       // 3. fallback to 'en'
       order: ["localStorage", "navigator"],
       caches: ["localStorage"],
-      lookupLocalStorage: "accountability-atlas-lang",
+      lookupLocalStorage: "arbor-sentinel-lang",
     },
   });
 

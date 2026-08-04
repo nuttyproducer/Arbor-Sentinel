@@ -29,7 +29,7 @@ export default function OrganizationsPage() {
         <p>
           This directory lists organisations as public resources. Listing does
           not imply partnership, endorsement, approval, affiliation, or any
-          formal relationship with Accountability Atlas. Organisations listed
+          formal relationship with Arbor Sentinel. Organisations listed
           here have not requested inclusion and may not be aware of it.
         </p>
       </PageStatusNotice>
@@ -144,7 +144,7 @@ export default function OrganizationsPage() {
           </li>
           <li className="flex items-start gap-2">
             <span className="text-clay mt-1.5" aria-hidden="true">•</span>
-            <span>Accountability Atlas speaks for or represents the organisation.</span>
+            <span>Arbor Sentinel speaks for or represents the organisation.</span>
           </li>
         </ul>
       </PolicySection>

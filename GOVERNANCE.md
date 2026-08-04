@@ -1,6 +1,6 @@
 # Governance
 
-Accountability Atlas is an open-source civic-tech project with safety-sensitive goals. It uses an open contribution model with a small trusted core team for high-risk decisions.
+Arbor Sentinel is an open-source civic-tech project with safety-sensitive goals. It uses an open contribution model with a small trusted core team for high-risk decisions.
 
 ---
 
@@ -171,7 +171,7 @@ Before confirmation, use:
 
 - “public resource listed”;
 - “organization directory entry”;
-- “not affiliated with Accountability Atlas.”
+- “not affiliated with Arbor Sentinel.”
 
 ---
 

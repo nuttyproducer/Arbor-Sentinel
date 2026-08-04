@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Corrections protect trust. Accountability Atlas should make it easy to report errors and should correct them quickly and transparently.
+Corrections protect trust. Arbor Sentinel should make it easy to report errors and should correct them quickly and transparently.
 
 ---
 

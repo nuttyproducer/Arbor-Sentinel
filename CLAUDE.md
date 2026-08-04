@@ -1,4 +1,4 @@
-# Accountability Atlas — Implementation Mode
+# Arbor Sentinel — Implementation Mode
 
 You are implementing a milestone for this project. The architecture, design, and specification have already been reviewed and approved. Your job is execution.
 

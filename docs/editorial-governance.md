@@ -1,6 +1,6 @@
 # Editorial Governance
 
-**Status:** Active — governs all content published on Accountability Atlas.  
+**Status:** Active — governs all content published on Arbor Sentinel.  
 **Last reviewed:** 2026-07-12  
 **Applies to:** All contributors, reviewers, and maintainers.
 
@@ -10,7 +10,7 @@
 
 This document defines who may do what, how decisions are made, and how
 conflicts are resolved when preparing, reviewing, publishing, correcting,
-and unpublishing content on Accountability Atlas.
+and unpublishing content on Arbor Sentinel.
 
 ---
 

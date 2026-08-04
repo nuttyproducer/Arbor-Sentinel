@@ -36,7 +36,7 @@ export function NotFoundPage() {
                 Contribute
               </Button>
               <Button
-                href="https://github.com/nuttyproducer/accountability-atlas"
+                href="https://github.com/nuttyproducer/arbor-sentinel"
                 variant="ghost"
                 icon={<ExternalIcon />}
                 external

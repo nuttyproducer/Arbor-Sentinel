@@ -1,4 +1,4 @@
-# Accountability Atlas — Product Requirements Document (PRD v2)
+# Arbor Sentinel — Product Requirements Document (PRD v2)
 
 **Project type:** AI-assisted open civic intelligence platform  
 **Architecture:** Pipeline-first, organized around information flow  
@@ -71,7 +71,7 @@ This document is the single source of truth for product architecture, principles
 
 ## 01. Vision
 
-Accountability Atlas is an open civic intelligence platform that transforms fragmented humanitarian, legal, governmental, academic, and journalistic information into transparent, source-backed, human-reviewed public knowledge.
+Arbor Sentinel is an open civic intelligence platform that transforms fragmented humanitarian, legal, governmental, academic, and journalistic information into transparent, source-backed, human-reviewed public knowledge.
 
 The platform moves beyond the traditional website model. It is an information processing pipeline — one that ingests raw public data from hundreds of sources, normalizes it into structured records, applies AI-assisted analysis (never AI decision-making), routes everything through human review, and only then publishes to the public layer where citizens, journalists, researchers, policymakers, and civil society can act on it.
 
@@ -288,7 +288,7 @@ The word genocide may be used only with precise attribution and procedural conte
 
 ## 05. Information Architecture
 
-Accountability Atlas is organized around information flow, not pages. The entire product is a pipeline with defined stages, each with inputs, processes, outputs, and quality gates.
+Arbor Sentinel is organized around information flow, not pages. The entire product is a pipeline with defined stages, each with inputs, processes, outputs, and quality gates.
 
 ### 05.1 The Pipeline
 
@@ -570,7 +570,7 @@ Detailed specification: See Section 15 (Publication Standards).
 
 ## 07. Intelligence Layer
 
-The Intelligence Layer is the AI subsystem of Accountability Atlas. Its design is governed by one absolute rule: **AI proposes. Humans decide.**
+The Intelligence Layer is the AI subsystem of Arbor Sentinel. Its design is governed by one absolute rule: **AI proposes. Humans decide.**
 
 ### 07.1 Architecture
 
@@ -1302,7 +1302,7 @@ EvidenceRecord {
 
 ## 13. Event Standards
 
-Accountability Atlas uses an event-first architecture. The fundamental organizational unit is the **Event**, not the article, document, or source item.
+Arbor Sentinel uses an event-first architecture. The fundamental organizational unit is the **Event**, not the article, document, or source item.
 
 ### 13.1 Event-First Principles
 
@@ -1717,7 +1717,7 @@ Scale: 14 / 16 / 18 / 20 / 24 / 30 / 36 / 48 / 60 / 72 px (with clamp() for resp
 
 ### 19.1 Threat Model
 
-Accountability Atlas faces threats that are not typical for most web projects. As a platform documenting alleged atrocity crimes and tracking political and legal accountability, it is a target for:
+Arbor Sentinel faces threats that are not typical for most web projects. As a platform documenting alleged atrocity crimes and tracking political and legal accountability, it is a target for:
 
 | Threat | Likelihood | Impact | Primary Mitigation |
 |---|---|---|---|
@@ -1801,7 +1801,7 @@ Planned for functional MVP:
 
 ### 20.2 GDPR Compliance
 
-Accountability Atlas operates in compliance with the General Data Protection Regulation (GDPR) as a data controller for platform data and as a data processor where applicable.
+Arbor Sentinel operates in compliance with the General Data Protection Regulation (GDPR) as a data controller for platform data and as a data processor where applicable.
 
 **Lawful bases:**
 - **Public interest** — For core platform functions (documenting humanitarian and legal information).

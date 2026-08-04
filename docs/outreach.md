@@ -153,7 +153,7 @@ Message:
 ## First public call for collaborators
 
 ```text
-I’m starting an open-source civic-tech project called Accountability Atlas.
+I’m starting an open-source civic-tech project called Arbor Sentinel.
 
 The goal is to build a calm, credible, evidence-based platform for atrocity documentation, humanitarian accountability, and lawful citizen action — starting with Gaza and the wider regional humanitarian crisis, with a structure that can later support other crises too.
 
@@ -184,7 +184,7 @@ If you want to help build something useful instead of only watching from the sid
 ```text
 Hi [Name],
 
-I’m starting an open-source civic-tech project called Accountability Atlas. The goal is to build a calm, credible platform for verified evidence, legal/humanitarian tracking, and lawful citizen action around atrocity accountability, starting with Gaza/oPt.
+I’m starting an open-source civic-tech project called Arbor Sentinel. The goal is to build a calm, credible platform for verified evidence, legal/humanitarian tracking, and lawful citizen action around atrocity accountability, starting with Gaza/oPt.
 
 I’m not asking for a big commitment. I’m looking for careful people who can review one part or contribute a small task.
 
@@ -205,7 +205,7 @@ Subject: Accuracy review request — public organization directory entry
 
 Dear [Organization/Team],
 
-My name is [Name], and I am coordinating Accountability Atlas, an open-source civic-tech project focused on verified public evidence, humanitarian accountability, and lawful citizen action.
+My name is [Name], and I am coordinating Arbor Sentinel, an open-source civic-tech project focused on verified public evidence, humanitarian accountability, and lawful citizen action.
 
 We are preparing a public directory of humanitarian and human-rights organizations so users can find official information and support channels. We do not want to imply partnership or endorsement without permission.
 

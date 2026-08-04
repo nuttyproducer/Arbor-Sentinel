@@ -7,7 +7,7 @@
 
 ## Purpose
 
-This dictionary defines every field used across the Accountability Atlas
+This dictionary defines every field used across the Arbor Sentinel
 static data model. It serves as the authoritative reference for contributors
 creating or reviewing records, and as the basis for future database schema
 design.

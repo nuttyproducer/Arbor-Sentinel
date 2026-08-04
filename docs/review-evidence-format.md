@@ -9,7 +9,7 @@
 ## Purpose
 
 This document defines the structured format for recording review evidence on
-Accountability Atlas. It supports the future transition from `review_pending`
+Arbor Sentinel. It supports the future transition from `review_pending`
 to `reviewed` by ensuring that every review produces consistent, machine-
 readable evidence that can be referenced in content metadata, audit trails,
 and publication decisions.

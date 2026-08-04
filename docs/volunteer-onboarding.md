@@ -1,6 +1,6 @@
 # Volunteer Onboarding
 
-Welcome to Accountability Atlas.
+Welcome to Arbor Sentinel.
 
 This project is serious, safety-sensitive, and built by volunteers. The best contribution is not always the biggest one. Small, careful work matters.
 

@@ -7,7 +7,7 @@
 
 ## Overview
 
-Accountability Atlas is an open-source platform for organizing verified public
+Arbor Sentinel is an open-source platform for organizing verified public
 evidence, tracking legal and political responsibility, and helping people take
 lawful action. During the beta, the platform is a static preview: content is
 hand-authored and reviewed, and automated generation is planned for later phases.

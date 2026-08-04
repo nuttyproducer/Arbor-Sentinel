@@ -1,6 +1,6 @@
 {
   "site": {
-    "name": "Accountability Atlas",
+    "name": "Arbor Sentinel",
     "tagline": "Civic Accountability Platform",
     "description": "Bewijs voor bescherming. Actie voor verantwoording."
   },
@@ -104,6 +104,6 @@
     "codeLicense": "Code gelicentieerd onder",
     "contentLicense": "Inhoud gelicentieerd onder",
     "noLegalAdvice": "Dit project verstrekt geen juridisch advies. Dit is geen geregistreerde ngo of liefdadigheidsinstelling. Geen partnerschap met vermelde organisaties wordt geïmpliceerd.",
-    "copyright": "© {{year}} Accountability Atlas medewerkers."
+    "copyright": "© {{year}} Arbor Sentinel medewerkers."
   }
 }

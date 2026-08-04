@@ -1,5 +1,5 @@
 -- ============================================================================
--- Accountability Atlas — PostGIS Spatial Queries
+-- Arbor Sentinel — PostGIS Spatial Queries
 -- Migration: 00005
 -- Description: Spatial columns, indexes, and safety enforcement functions
 -- Requires: PostGIS extension (created in 00001)

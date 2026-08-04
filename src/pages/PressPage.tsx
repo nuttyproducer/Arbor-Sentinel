@@ -15,7 +15,7 @@ export default function PressPage() {
       <PageIntro
         eyebrow="Press & Resources"
         title="Press and Resources"
-        description="How to understand, describe, cite, and represent Accountability Atlas. For journalists, researchers, contributors, and civic-tech reviewers."
+        description="How to understand, describe, cite, and represent Arbor Sentinel. For journalists, researchers, contributors, and civic-tech reviewers."
       />
 
       <PageStatusNotice
@@ -23,7 +23,7 @@ export default function PressPage() {
         variant="info"
       >
         <p>
-          Accountability Atlas is in public static beta. Content may include
+          Arbor Sentinel is in public static beta. Content may include
           draft structures, structural previews, and reviewed public-source
           summaries. This page will be updated as the platform develops.
           Corrections and clarifications are welcome.
@@ -33,7 +33,7 @@ export default function PressPage() {
       {/* 1. Project summary */}
       <PolicySection title="Project summary" id="project-summary" delay={0.15}>
         <p>
-          Accountability Atlas is an independent open-source civic
+          Arbor Sentinel is an independent open-source civic
           accountability project. It is being built as public infrastructure
           for organizing verified public evidence, tracking legal and political
           responsibility, and helping people take lawful action in response to
@@ -69,8 +69,8 @@ export default function PressPage() {
             <span className="text-clay mt-1.5" aria-hidden="true">•</span>
             <span>
               <strong>Repository:</strong>{" "}
-              <ExternalLink href="https://github.com/nuttyproducer/accountability-atlas">
-                github.com/nuttyproducer/accountability-atlas
+              <ExternalLink href="https://github.com/nuttyproducer/arbor-sentinel">
+                github.com/nuttyproducer/arbor-sentinel
               </ExternalLink>
             </span>
           </li>
@@ -88,7 +88,7 @@ export default function PressPage() {
       {/* 3. Founder/project pitch */}
       <PolicySection title="Project pitch" id="pitch" delay={0.21}>
         <p>
-          Accountability Atlas exists because the gap between what is
+          Arbor Sentinel exists because the gap between what is
           documented and what the public can effectively act on is too wide.
           Courts, UN bodies, human-rights organisations, and journalists
           produce extensive public documentation of mass-atrocity and
@@ -110,8 +110,8 @@ export default function PressPage() {
         </p>
       </PolicySection>
 
-      {/* 4. What Accountability Atlas is */}
-      <PolicySection title="What Accountability Atlas is" id="what-it-is" delay={0.24}>
+      {/* 4. What Arbor Sentinel is */}
+      <PolicySection title="What Arbor Sentinel is" id="what-it-is" delay={0.24}>
         <ul className="space-y-2">
           <li className="flex items-start gap-2">
             <span className="text-clay mt-1.5" aria-hidden="true">•</span>
@@ -154,8 +154,8 @@ export default function PressPage() {
         </ul>
       </PolicySection>
 
-      {/* 5. What Accountability Atlas is not */}
-      <PolicySection title="What Accountability Atlas is not" id="what-it-is-not" delay={0.27}>
+      {/* 5. What Arbor Sentinel is not */}
+      <PolicySection title="What Arbor Sentinel is not" id="what-it-is-not" delay={0.27}>
         <ul className="space-y-2">
           <li className="flex items-start gap-2">
             <span className="text-clay mt-1.5" aria-hidden="true">•</span>
@@ -227,11 +227,11 @@ export default function PressPage() {
       {/* 7. Citation guide */}
       <PolicySection title="Citation guide" id="citation" delay={0.33}>
         <p>
-          When citing Accountability Atlas, please use the following format.
+          When citing Arbor Sentinel, please use the following format.
           This ensures readers can find the exact version of the page you
           referenced.
         </p>
-        <CitationGuide exampleTitle="Methodology" exampleDate="2026-07-10" exampleUrl="https://accountabilityatlas.org/methodology" />
+        <CitationGuide exampleTitle="Methodology" exampleDate="2026-07-10" exampleUrl="https://arborsentinel.org/methodology" />
         <p className="mt-3">
           For pages with a &ldquo;Page structure last updated&rdquo; footer,
           use that date. For evidence records, cite the original source — not
@@ -243,7 +243,7 @@ export default function PressPage() {
       {/* 8. Quote and representation policy */}
       <PolicySection title="Quote and representation policy" id="representation" delay={0.36}>
         <p>
-          If you are writing about Accountability Atlas, please represent it
+          If you are writing about Arbor Sentinel, please represent it
           accurately:
         </p>
         <ul className="space-y-2 mt-3">
@@ -319,7 +319,7 @@ export default function PressPage() {
           <p className="text-sm text-charcoal/75 leading-relaxed">
             <strong>Downloadable brand assets are not yet available.</strong>{" "}
             The logo mark and wordmark are original works created for
-            Accountability Atlas and licensed under CC BY-SA 4.0. When the
+            Arbor Sentinel and licensed under CC BY-SA 4.0. When the
             platform moves beyond the public static beta phase, a brand
             assets package — including SVG, PNG, and usage guidelines — will
             be published.
@@ -353,8 +353,8 @@ export default function PressPage() {
             <span className="text-clay mt-1.5" aria-hidden="true">•</span>
             <span>
               <strong>GitHub Issues — </strong>
-              <ExternalLink href="https://github.com/nuttyproducer/accountability-atlas/issues">
-                github.com/nuttyproducer/accountability-atlas/issues
+              <ExternalLink href="https://github.com/nuttyproducer/arbor-sentinel/issues">
+                github.com/nuttyproducer/arbor-sentinel/issues
               </ExternalLink>
               . For corrections, suggestions, bug reports, and
               clarifications. This is the preferred method during the static

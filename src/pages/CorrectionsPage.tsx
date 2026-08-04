@@ -46,7 +46,7 @@ export function CorrectionsPage() {
           <PageIntro
             eyebrow="Corrections"
             title="Corrections are part of the trust model."
-            description="Accountability Atlas welcomes corrections when information is inaccurate, outdated, unsafe, mistranslated, misleading, or missing important context."
+            description="Arbor Sentinel welcomes corrections when information is inaccurate, outdated, unsafe, mistranslated, misleading, or missing important context."
           />
 
           <PageStatusNotice label="Static process" variant="info">
@@ -81,7 +81,7 @@ export function CorrectionsPage() {
                 <span className="text-clay mt-1.5" aria-hidden="true">•</span>
                 <span>
                   <strong>GitHub Issues</strong> — open an issue on the{" "}
-                  <ExternalLink href="https://github.com/nuttyproducer/accountability-atlas/issues">
+                  <ExternalLink href="https://github.com/nuttyproducer/arbor-sentinel/issues">
                     public repository
                   </ExternalLink>
                   . This is the preferred method during the static beta.
@@ -164,7 +164,7 @@ export function CorrectionsPage() {
           <Reveal delay={0.33}>
             <div className="flex flex-col sm:flex-row gap-4 pt-4 border-t border-border mt-10">
               <Button
-                href="https://github.com/nuttyproducer/accountability-atlas/issues/new"
+                href="https://github.com/nuttyproducer/arbor-sentinel/issues/new"
                 variant="primary"
                 external
               >

@@ -126,7 +126,7 @@ export const legalCases: LegalCaseEntry[] = [
     reviewedByRole: "Static beta — editorial review pending; sourceIds expanded with September 2024 UNGA report and June 2026 children report",
     version: 1,
     proceduralNote:
-      "UN Commissions of Inquiry are fact-finding bodies. Their findings inform international accountability processes but are not judicial rulings. The Commission's June 2026 finding that acts constitute genocide, crimes against humanity, and war crimes is attributed to the Commission, not to Accountability Atlas. The platform reports the Commission's public findings — it does not independently verify or endorse them.",
+      "UN Commissions of Inquiry are fact-finding bodies. Their findings inform international accountability processes but are not judicial rulings. The Commission's June 2026 finding that acts constitute genocide, crimes against humanity, and war crimes is attributed to the Commission, not to Arbor Sentinel. The platform reports the Commission's public findings — it does not independently verify or endorse them.",
     correctionUrl: "/corrections",
   },
   {

@@ -22,7 +22,7 @@ export function MissionSection() {
               to navigate, and rarely connected to clear civic action.
             </p>
             <p className="text-lg text-charcoal/70 leading-relaxed">
-              Accountability Atlas is being built to organize that information
+              Arbor Sentinel is being built to organize that information
               into a structured public platform: what happened, who documented
               it, what legal processes exist, how governments responded, which
               organizations are helping, and what lawful pressure citizens can

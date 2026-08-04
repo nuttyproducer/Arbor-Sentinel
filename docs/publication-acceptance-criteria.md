@@ -7,7 +7,7 @@
 
 ## Purpose
 
-Before any content record is published on Accountability Atlas, it must
+Before any content record is published on Arbor Sentinel, it must
 satisfy the criteria defined in this document. These criteria are the gates
 that separate internal drafts from public-facing content.
 

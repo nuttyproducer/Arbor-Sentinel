@@ -8,7 +8,7 @@
 ## Purpose
 
 This document defines the coordinate precision rules, sensitivity classification
-criteria, and emergency unpublish procedure for the Accountability Atlas map
+criteria, and emergency unpublish procedure for the Arbor Sentinel map
 system. These rules protect vulnerable populations by preventing the publication
 of exact coordinates that could be used to target sensitive locations.
 

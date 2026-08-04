@@ -8,7 +8,7 @@
 ## Purpose
 
 Institutions, organisations, and government bodies referenced on
-Accountability Atlas have a right to respond when they believe they have
+Arbor Sentinel have a right to respond when they believe they have
 been misrepresented, inaccurately summarised, or quoted out of context. This
 policy defines how the platform handles such responses.
 

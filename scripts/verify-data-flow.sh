@@ -46,7 +46,7 @@ command -v npm >/dev/null 2>&1 || { err "npm is required but was not found."; ex
 command -v npx >/dev/null 2>&1 || { err "npx is required but was not found."; exit "$FLAG_TOOLING"; }
 
 echo
-say "Accountability Atlas — data-flow verification"
+say "Arbor Sentinel — data-flow verification"
 echo
 
 # ── 1. TypeScript typecheck ───────────────────────────────────────────────────

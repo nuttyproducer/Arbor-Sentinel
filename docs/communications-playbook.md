@@ -2,13 +2,13 @@
 
 ## Purpose
 
-This playbook helps contributors talk about Accountability Atlas publicly in a way that is credible, lawful, and safe.
+This playbook helps contributors talk about Arbor Sentinel publicly in a way that is credible, lawful, and safe.
 
 ---
 
 ## Core message
 
-Accountability Atlas is an open-source civic-tech project for verified evidence, legal/humanitarian tracking, and lawful citizen action in support of civilian protection and atrocity accountability.
+Arbor Sentinel is an open-source civic-tech project for verified evidence, legal/humanitarian tracking, and lawful citizen action in support of civilian protection and atrocity accountability.
 
 ---
 
@@ -20,7 +20,7 @@ Verified evidence. Lawful pressure. Civilian protection.
 
 ## Short pitch
 
-Accountability Atlas helps citizens, journalists, researchers, and policymakers navigate verified public evidence, legal developments, humanitarian information, and lawful action pathways around atrocity accountability.
+Arbor Sentinel helps citizens, journalists, researchers, and policymakers navigate verified public evidence, legal developments, humanitarian information, and lawful action pathways around atrocity accountability.
 
 ---
 
@@ -63,7 +63,7 @@ Avoid language that sounds like:
 ## Safe social post template
 
 ```text
-We are building Accountability Atlas: an open-source civic-tech project for verified evidence, legal/humanitarian tracking, and lawful citizen action in support of civilian protection and atrocity accountability.
+We are building Arbor Sentinel: an open-source civic-tech project for verified evidence, legal/humanitarian tracking, and lawful citizen action in support of civilian protection and atrocity accountability.
 
 The first MVP will focus on source methodology, legal trackers, country accountability pages, organization directories, and policy/action dossiers.
 
@@ -77,7 +77,7 @@ Repo: [link]
 ## Press description
 
 ```text
-Accountability Atlas is an open-source civic-technology project designed to organize verified public evidence, legal developments, humanitarian information, and lawful action pathways related to alleged atrocity crimes and civilian protection. The project begins with Gaza and the occupied Palestinian territory and is designed as a modular framework for other documented mass-atrocity contexts.
+Arbor Sentinel is an open-source civic-technology project designed to organize verified public evidence, legal developments, humanitarian information, and lawful action pathways related to alleged atrocity crimes and civilian protection. The project begins with Gaza and the occupied Palestinian territory and is designed as a modular framework for other documented mass-atrocity contexts.
 ```
 
 ---

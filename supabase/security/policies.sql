@@ -1,5 +1,5 @@
 -- ============================================================================
--- Accountability Atlas — Security Policies
+-- Arbor Sentinel — Security Policies
 -- ============================================================================
 -- This file documents the security configuration for the Supabase backend.
 -- It is not a migration — it serves as reference documentation and as a source
@@ -82,14 +82,14 @@
 -- Supabase Auth session configuration (in config.toml):
 --
 --   [auth]
---   site_url = "https://accountabilityatlas.org"
+--   site_url = "https://arborsentinel.org"
 --
 --   [auth.session]
 --   cookie_options = {
 --     http_only = true,
 --     secure = true,
 --     same_site = "strict",
---     domain = "accountabilityatlas.org"
+--     domain = "arborsentinel.org"
 --   }
 --   refresh_token_rotation_enabled = true
 --   inactivity_timeout = "3600s"    -- 1 hour

@@ -81,7 +81,7 @@ export function AdminSidebar() {
     >
       <div className="px-3 mb-6">
         <NavLink to="/admin" className="font-serif text-lg font-semibold text-ink hover:text-charcoal/80">
-          Accountability Atlas
+          Arbor Sentinel
         </NavLink>
         <p className="font-mono text-[10px] text-charcoal/40 mt-0.5">Admin</p>
       </div>

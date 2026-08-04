@@ -59,7 +59,7 @@ export function LoginPage() {
             Admin Sign In
           </h1>
           <p className="font-mono text-xs text-charcoal/50 text-center mb-6">
-            Accountability Atlas
+            Arbor Sentinel
           </p>
 
           {error && (

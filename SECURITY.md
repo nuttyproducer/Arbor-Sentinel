@@ -1,6 +1,6 @@
 # Security Policy
 
-Accountability Atlas is a safety-sensitive civic-technology project. Security issues may affect users, contributors, researchers, journalists, humanitarian workers, or people living under dangerous conditions.
+Arbor Sentinel is a safety-sensitive civic-technology project. Security issues may affect users, contributors, researchers, journalists, humanitarian workers, or people living under dangerous conditions.
 
 Do not disclose vulnerabilities publicly.
 
