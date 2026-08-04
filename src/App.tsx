@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { PageShell } from "./components/layout/PageShell";
 import { DocumentHead } from "./components/ui/DocumentHead";
 import { RouteLoadingFallback } from "./components/ui/RouteLoadingFallback";
+import { ProtectedRoute } from "./components/admin/ProtectedRoute";
 import { getRouteMeta } from "./data/routeMetadata";
 import { LocaleProvider } from "./i18n/LocaleProvider";
 import { DisplayPreferenceProvider } from "./contexts/DisplayPreference";
@@ -70,6 +71,10 @@ const InstitutionReviewPage = lazy(() => import("./pages/review/InstitutionRevie
 const LegalReviewPage = lazy(() => import("./pages/review/LegalReviewPage"));
 const TranslationReviewPage = lazy(() => import("./pages/review/TranslationReviewPage"));
 const CorrectionReviewPage = lazy(() => import("./pages/review/CorrectionReviewPage"));
+const BetaWelcome = lazy(() => import("./pages/beta/BetaWelcome").then(m => ({ default: m.BetaWelcome })));
+const BetaQuickStart = lazy(() => import("./pages/beta/BetaQuickStart").then(m => ({ default: m.BetaQuickStart })));
+const BetaFeedbackPage = lazy(() => import("./pages/beta/BetaFeedbackPage").then(m => ({ default: m.BetaFeedbackPage })));
+const BetaBugReportPage = lazy(() => import("./pages/beta/BetaBugReportPage").then(m => ({ default: m.BetaBugReportPage })));
 
 function RouteMeta() {
   const { pathname } = useLocation();
@@ -144,6 +149,14 @@ export default function App() {
           <Route path="/admin/login" element={<LoginPage />} />
           <Route path="/admin/2fa/setup" element={<TwoFactorSetup />} />
           <Route path="/admin/2fa/verify" element={<TwoFactorVerify />} />
+
+          {/* Beta onboarding & feedback — requires an authenticated beta user. */}
+          <Route element={<ProtectedRoute requiredRole="contributor" />}>
+            <Route path="/beta/welcome" element={<BetaWelcome />} />
+            <Route path="/beta/quick-start" element={<BetaQuickStart />} />
+            <Route path="/beta/feedback" element={<BetaFeedbackPage />} />
+            <Route path="/beta/bug-report" element={<BetaBugReportPage />} />
+          </Route>
 
           {/* Admin layout — protected by AuthGuard via AdminShell. */}
           <Route path="/admin" element={<AdminShell />}>

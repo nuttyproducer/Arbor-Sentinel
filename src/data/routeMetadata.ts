@@ -261,6 +261,40 @@ const meta: Record<string, RouteMeta> = {
     robots: "noindex,nofollow",
   },
 
+  // ── Beta onboarding & feedback ─────────────────────────────────────
+  "/beta/welcome": {
+    title: fullTitle("Beta Welcome"),
+    description:
+      "Beta program welcome page — onboarding links to the quick start guide, feedback, and bug reporting. Requires an authenticated beta account.",
+    canonicalPath: "/beta/welcome",
+    robots: "noindex,nofollow",
+    ogType: "website",
+  },
+  "/beta/quick-start": {
+    title: fullTitle("Beta Quick Start"),
+    description:
+      "Quick start guide for beta users — platform overview, key features, finding content, action templates, corrections, and bug reporting.",
+    canonicalPath: "/beta/quick-start",
+    robots: "noindex,nofollow",
+    ogType: "website",
+  },
+  "/beta/feedback": {
+    title: fullTitle("Beta Feedback"),
+    description:
+      "Submit feedback about the Accountability Atlas beta — rating, category, and detailed comments for the maintenance team.",
+    canonicalPath: "/beta/feedback",
+    robots: "noindex,nofollow",
+    ogType: "website",
+  },
+  "/beta/bug-report": {
+    title: fullTitle("Beta Bug Report"),
+    description:
+      "Report a bug in the Accountability Atlas beta — description, reproduction steps, expected vs actual behavior, and severity.",
+    canonicalPath: "/beta/bug-report",
+    robots: "noindex,nofollow",
+    ogType: "website",
+  },
+
   // ── Meta ────────────────────────────────────────────────────────────
   "/changelog": {
     title: fullTitle("Changelog"),
