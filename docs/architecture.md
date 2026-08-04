@@ -163,26 +163,45 @@ See `docs/collector-framework.md` for the detailed usage guide.
 
 ---
 
-## Future backend
+## Backend (Milestone 5)
 
-Only add a backend when needed for:
+The backend is built on Supabase with the following stack:
 
-- admin workflow;
-- structured review;
-- submissions;
-- user accounts;
-- dynamic search;
-- PDF generation at scale;
-- partner dashboards.
+- **Database:** PostgreSQL 15+ with PostGIS extension
+- **Auth:** Supabase Auth (email/password + TOTP 2FA)
+- **Storage:** Supabase Storage (evidence documents, dossier exports)
+- **API:** Supabase Edge Functions (Deno/TypeScript)
+- **Search:** PostgreSQL full-text search with weighted ranking
+- **Spatial:** PostGIS geometry columns with safety-precision enforcement
+- **Audit:** Database-level audit triggers on all CRUD operations
 
-Possible future stack:
+### Schema
 
-- PostgreSQL + PostGIS;
-- OpenSearch/Elasticsearch for search;
-- object storage for media;
-- Redis for caching;
-- queue for report generation;
-- role-based admin app.
+18 tables across 3 groups:
+- **Content (10):** sources, evidence_items, evidence_references, countries, country_positions, actions, organizations, legal_cases, dossiers, corrections
+- **Intelligence (6):** collector_runs, ai_operations, review_queue_items, graph_nodes, graph_edges, map_layers
+- **Infrastructure (2):** content_versions, user_roles
+
+### Row-Level Security
+
+Every table has RLS enabled with role-based policies:
+- Public: SELECT on published/public content only
+- Contributor: +INSERT on corrections
+- Reviewer: +SELECT/UPDATE on assigned review items
+- Admin: full CRUD
+
+### Migrations
+
+All schema changes are versioned in `supabase/migrations/`:
+- `00001` — initial schema (18 tables + extensions)
+- `00002` — RLS policies
+- `00003` — auth schema (sessions, 2FA, audit)
+- `00004` — full-text search
+- `00005` — PostGIS spatial queries
+- `00006` — audit logging triggers
+- `00007` — data retention policies
+
+See `supabase/config.toml` for project configuration.
 
 ---
 
