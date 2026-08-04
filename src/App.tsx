@@ -210,7 +210,7 @@ export default function App() {
         </Routes>
         </Suspense>
       </PageShell>
-    </BrowserRouter>
+    </HashRouter>
     </LocaleProvider>
     </DisplayPreferenceProvider>
   );

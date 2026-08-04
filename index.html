@@ -53,6 +53,28 @@
       }
     </script>
 
+    <!--
+      Backward-compatible redirect: the app uses hash-based routing
+      (#/admin/login), but users may arrive with old-style query-string
+      URLs (?/admin/login) from bookmarks, links, or the GitHub Pages
+      404 fallback. Convert ?/path → #/path before React mounts so
+      HashRouter reads the correct route.
+    -->
+    <script>
+      (function () {
+        var s = window.location.search;
+        if (!s) return;
+        // Match ?/path or ?/path&other=value patterns
+        var m = s.match(/^\?(\/[^&]*)/);
+        if (!m) return;
+        var route = m[1];
+        // Preserve trailing query params that aren't part of the route
+        var rest = s.slice(m[0].length); // e.g. &return=foo
+        window.location.replace(
+          window.location.pathname + '#' + route + rest + window.location.hash
+        );
+      })();
+    </script>
     <!-- Fonts are self-hosted via @fontsource — no external font requests. -->
   </head>
   <body>

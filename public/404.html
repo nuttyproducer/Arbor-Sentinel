@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Redirecting…</title>
+  <script>
+    // GitHub Pages SPA redirect: convert path → hash route.
+    // When a user navigates directly to /Arbor-Sentinel/admin/login,
+    // GitHub Pages serves this 404.html. We extract the route and
+    // redirect to the hash-based URL that HashRouter understands.
+    (function () {
+      var repo = '/Arbor-Sentinel';
+      var path = window.location.pathname;
+
+      if (path.indexOf(repo) === 0) {
+        var route = path.slice(repo.length); // e.g. /admin/login
+        // Preserve any original query string and hash
+        var qs = window.location.search;
+        var hash = window.location.hash;
+        window.location.replace(repo + '/#' + route + qs + hash);
+      } else {
+        // Fallback — shouldn't happen on GitHub Pages
+        window.location.replace(repo + '/');
+      }
+    })();
+  </script>
+</head>
+<body>
+  <p>Redirecting to <a id="target" href="/Arbor-Sentinel/">Arbor Sentinel</a>…</p>
+  <script>
+    document.getElementById('target').href =
+      '/Arbor-Sentinel/#' + window.location.pathname.replace(/^\/Arbor-Sentinel/, '');
+  </script>
+</body>
+</html>
