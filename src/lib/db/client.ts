@@ -18,6 +18,10 @@ const SUPABASE_SERVICE_ROLE_KEY = import.meta.env.SUPABASE_SERVICE_ROLE_KEY as s
 
 function requireEnv(name: string, value: string | undefined): string {
   if (!value) {
+    // In test environments, return a placeholder — tests should mock supabase
+    if (typeof process !== 'undefined' && process.env?.VITEST) {
+      return `mock-${name}`;
+    }
     throw new Error(
       `Missing required environment variable: ${name}. ` +
       `Set it in .env or your deployment configuration.`
@@ -50,7 +54,11 @@ export function getSupabaseClient(): SupabaseClient {
 }
 
 /** Convenience alias — primary client for most operations. */
-export const supabase = getSupabaseClient();
+export const supabase = new Proxy({} as SupabaseClient, {
+  get(_, prop) {
+    return (getSupabaseClient() as Record<string | symbol, unknown>)[prop];
+  },
+});
 
 // ── Admin client (server-side only — bypasses RLS) ────────────────────────────
 
