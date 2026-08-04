@@ -1,0 +1,160 @@
+-- ============================================================================
+-- Accountability Atlas — Security Policies
+-- ============================================================================
+-- This file documents the security configuration for the Supabase backend.
+-- It is not a migration — it serves as reference documentation and as a source
+-- for applied policies that can be audited and updated independently.
+--
+-- Last reviewed: 2026-08-04 — M7-03 Security Hardening
+-- ============================================================================
+
+-- ----------------------------------------------------------------------------
+-- 1. Rate Limiting Configuration
+-- ----------------------------------------------------------------------------
+-- Supabase rate limiting is configured via the Dashboard or config.toml.
+-- The following limits are enforced at the API gateway / PostgREST level:
+--
+-- Public endpoints:     100 requests/minute/IP
+--   - GET  /api/v1/evidence/*
+--   - GET  /api/v1/countries/*
+--   - GET  /api/v1/organizations/*
+--   - GET  /api/v1/legal-cases/*
+--   - GET  /api/v1/search
+--   - GET  /api/v1/map/*
+--
+-- Admin endpoints:      30 requests/minute/IP  (+ require auth + admin role)
+--   - POST /api/v1/admin/content
+--   - PUT  /api/v1/admin/content/:id
+--   - POST /api/v1/admin/review/*
+--   - POST /api/v1/admin/publish/*
+--
+-- Auth endpoints:       10 requests/minute/IP, 5 failed attempts → 15min lockout
+--   - POST /auth/v1/signup
+--   - POST /auth/v1/token
+--   - POST /auth/v1/verify
+--   - POST /auth/v1/2fa/*
+--
+-- Configuration in config.toml:
+--   [auth.rate_limit]
+--   signups_per_hour = 10
+--   token_refresh_limit = 30
+--   failed_login_lockout = { threshold = 5, duration_seconds = 900 }
+
+-- ----------------------------------------------------------------------------
+-- 2. SQL Injection Prevention
+-- ----------------------------------------------------------------------------
+-- All database queries MUST use parameterized statements.
+-- Supabase PostgREST and the @supabase/supabase-js client auto-parameterize.
+--
+-- When writing raw SQL (RPC functions, migrations):
+--   ✅ CORRECT:   supabase.rpc('search_all', { query: userInput })
+--   ❌ WRONG:     supabase.rpc('search_all', { query: `'${userInput}'` })
+--
+-- All existing RPC functions in migrations/00004_search.sql use
+-- parameterized queries via PL/pgSQL format() with %L placeholders.
+
+-- ----------------------------------------------------------------------------
+-- 3. WAF / XSS Protection
+-- ----------------------------------------------------------------------------
+-- Content-Security-Policy headers are set via public/_headers and index.html.
+-- Additional WAF protection (Cloudflare, AWS WAF, or equivalent) should be
+-- configured at the deployment level:
+--
+--   - Block requests containing SQL injection patterns in query params
+--   - Block requests containing XSS patterns (<script>, onerror=, etc.)
+--   - Rate limit by IP with exponential backoff
+--   - Geo-blocking: optional, limit to expected user regions
+--   - IP blocklist: maintain a list of known malicious IPs
+--
+-- IP Blocklist table (for reference — create via migration if needed):
+--
+--   CREATE TABLE IF NOT EXISTS security.ip_blocklist (
+--     ip_address inet PRIMARY KEY,
+--     reason text NOT NULL,
+--     blocked_at timestamptz NOT NULL DEFAULT now(),
+--     expires_at timestamptz,
+--     blocked_by uuid REFERENCES auth.users(id)
+--   );
+
+-- ----------------------------------------------------------------------------
+-- 4. Session Security
+-- ----------------------------------------------------------------------------
+-- Supabase Auth session configuration (in config.toml):
+--
+--   [auth]
+--   site_url = "https://accountabilityatlas.org"
+--
+--   [auth.session]
+--   cookie_options = {
+--     http_only = true,
+--     secure = true,
+--     same_site = "strict",
+--     domain = "accountabilityatlas.org"
+--   }
+--   refresh_token_rotation_enabled = true
+--   inactivity_timeout = "3600s"    -- 1 hour
+--   absolute_timeout = "86400s"     -- 24 hours
+--
+-- Session validation in src/lib/auth/session.ts enforces:
+--   - Token expiry check before every admin operation
+--   - Refresh token rotation on each use
+--   - Session invalidation on role change or password reset
+
+-- ----------------------------------------------------------------------------
+-- 5. 2FA Enforcement
+-- ----------------------------------------------------------------------------
+-- All non-public roles (admin, editor, reviewer, contributor) MUST have
+-- 2FA enabled before accessing non-public endpoints.
+--
+-- Enforcement is at two levels:
+--   1. Database (via RLS): auth.two_factor_setups.verified = true check
+--   2. Application (via src/lib/auth/2fa.ts): requires2FA() check before
+--      rendering admin routes
+--
+-- No opt-out is permitted for non-public roles.
+-- See migrations/00003_auth.sql for the two_factor_setups table.
+--
+-- Verification flow:
+--   1. User registers / is assigned a non-public role
+--   2. On first admin login, redirected to /admin/2fa/setup
+--   3. User scans QR code with authenticator app
+--   4. User verifies with TOTP code → two_factor_setups.verified = true
+--   5. Subsequent logins require TOTP at /admin/2fa/verify
+
+-- ----------------------------------------------------------------------------
+-- 6. Input Validation
+-- ----------------------------------------------------------------------------
+-- All API inputs are validated against Zod schemas in src/schemas/.
+-- Database-level constraints complement application-level validation:
+--
+--   - Text fields: length limits via CHECK constraints
+--   - Numeric fields: range validation via CHECK constraints
+--   - Enum fields: CHECK (value IN (...)) or foreign key to lookup tables
+--   - JSON fields: validated against JSON Schema in application layer
+--   - File uploads: type whitelist, size limits, malware scan (external)
+--
+-- SQL injection prevention: all user-supplied values are passed as
+-- parameters, never interpolated into SQL strings.
+
+-- ----------------------------------------------------------------------------
+-- 7. Audit Logging
+-- ----------------------------------------------------------------------------
+-- Every data mutation is audited via triggers (migrations/00006_audit.sql):
+--
+--   - audit.log: records table, operation, old/new values, user, timestamp
+--   - Immutable: audit log rows cannot be modified or deleted
+--   - Retention: audit logs retained for 7 years (configurable)
+--
+-- Query audit logs via src/lib/audit/queries.ts.
+
+-- ----------------------------------------------------------------------------
+-- 8. Backup and Recovery
+-- ----------------------------------------------------------------------------
+-- Backup schedule:
+--   - Supabase managed daily backups (automatic)
+--   - Weekly manual pg_dump via scripts/backup.sh
+--   - Pre-migration backup before every schema change
+--
+-- Recovery testing: monthly restore to staging via scripts/restore-test.sh
+-- Recovery Time Objective (RTO): < 4 hours
+-- Recovery Point Objective (RPO): < 24 hours

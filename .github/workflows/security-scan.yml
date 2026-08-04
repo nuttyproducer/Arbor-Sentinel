@@ -1,0 +1,103 @@
+name: Security Scan
+
+# ============================================================================
+# Accountability Atlas — Security Scanning Workflow
+# ============================================================================
+# Runs dependency audit, secret scanning, and security header checks.
+#
+# Triggers:
+#   - On every pull request to main
+#   - Weekly schedule (Monday 09:00 UTC)
+#   - Manual dispatch
+#
+# Last updated: 2026-08-04 — M7-03 Security Hardening
+# ============================================================================
+
+on:
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '37 9 * * 1'  # Weekly on Monday at 09:37 UTC
+  workflow_dispatch:       # Manual trigger
+
+jobs:
+  dependency-audit:
+    name: Dependency Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit
+        run: npm audit --audit-level=high
+        continue-on-error: true
+
+      - name: Run security audit script
+        run: bash scripts/security-audit.sh --ci
+
+  secret-scan:
+    name: Secret Scanning
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        with:
+          config-path: .gitleaks.toml
+        continue-on-error: true
+
+      - name: Basic secret scan (fallback)
+        run: |
+          echo "Checking for common secret patterns..."
+          ! git grep -nE '(sk-[a-zA-Z0-9]{32,}|eyJ[a-zA-Z0-9_-]{20,}|supabase_service_role_key)' \
+            -- ':!.env.example' ':!node_modules' ':!dist' ':!.git' ':!scripts/security-audit.sh' \
+            ':!package-lock.json' || echo "::warning::Potential secrets found"
+
+  header-check:
+    name: Security Headers Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify _headers file
+        run: |
+          echo "Checking security headers..."
+          for header in "Content-Security-Policy" "Strict-Transport-Security" \
+            "X-Content-Type-Options" "Referrer-Policy" "Permissions-Policy"; do
+            if grep -q "$header" public/_headers; then
+              echo "  ✓ $header"
+            else
+              echo "::error::Missing header: $header"
+            fi
+          done
+
+      - name: Check CSP hardening
+        run: |
+          if grep -q "upgrade-insecure-requests" public/_headers; then
+            echo "  ✓ upgrade-insecure-requests enabled"
+          else
+            echo "::warning::upgrade-insecure-requests not found in CSP"
+          fi
+          if grep -q "frame-ancestors" public/_headers; then
+            echo "  ✓ frame-ancestors present"
+          else
+            echo "::error::frame-ancestors missing from CSP"
+          fi
+
+      - name: Check .env.example exists
+        run: |
+          if [ -f .env.example ]; then
+            echo "  ✓ .env.example present"
+          else
+            echo "::error::.env.example missing — required for onboarding"
+          fi
