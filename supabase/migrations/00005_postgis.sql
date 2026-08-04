@@ -77,10 +77,10 @@ AS $$
   SELECT CASE
     WHEN precision_level = 'exact' AND (public.is_admin() OR public.has_role('security_admin'))
     THEN geom
-    ELSE ST_SetSRID(
-      ST_MakePoint(
-        safe_coordinate(ST_X(geom), precision_level),
-        safe_coordinate(ST_Y(geom), precision_level)
+    ELSE public.ST_SetSRID(
+      public.ST_MakePoint(
+        public.safe_coordinate(public.ST_X(geom), precision_level),
+        public.safe_coordinate(public.ST_Y(geom), precision_level)
       ),
       4326
     )
@@ -114,19 +114,19 @@ AS $$
     ei.title,
     ei.slug,
     ei.category,
-    ST_Y(ei.location_geom) AS lat,
-    ST_X(ei.location_geom) AS lng,
-    ST_Distance(
+    public.ST_Y(ei.location_geom) AS lat,
+    public.ST_X(ei.location_geom) AS lng,
+    public.ST_Distance(
       ei.location_geom::geography,
-      ST_SetSRID(ST_MakePoint(center_lng, center_lat), 4326)::geography
+      public.ST_SetSRID(public.ST_MakePoint(center_lng, center_lat), 4326)::geography
     ) / 1000.0 AS distance_km
   FROM public.evidence_items ei
   WHERE ei.location_geom IS NOT NULL
     AND ei.review_status = 'published'
     AND ei.visibility = 'public'
-    AND ST_DWithin(
+    AND public.ST_DWithin(
       ei.location_geom::geography,
-      ST_SetSRID(ST_MakePoint(center_lng, center_lat), 4326)::geography,
+      public.ST_SetSRID(public.ST_MakePoint(center_lng, center_lat), 4326)::geography,
       radius_km * 1000
     )
   ORDER BY distance_km
@@ -158,13 +158,13 @@ AS $$
     ei.title,
     ei.slug,
     ei.category,
-    ST_Y(ei.location_geom) AS lat,
-    ST_X(ei.location_geom) AS lng
+    public.ST_Y(ei.location_geom) AS lat,
+    public.ST_X(ei.location_geom) AS lng
   FROM public.evidence_items ei
   WHERE ei.location_geom IS NOT NULL
     AND ei.review_status = 'published'
     AND ei.visibility = 'public'
-    AND ei.location_geom && ST_MakeEnvelope(bbox_west, bbox_south, bbox_east, bbox_north, 4326)
+    AND ei.location_geom && public.ST_MakeEnvelope(bbox_west, bbox_south, bbox_east, bbox_north, 4326)
   ORDER BY ei.created_at DESC
   LIMIT max_results;
 $$;
@@ -181,7 +181,7 @@ AS $$
     'features', COALESCE(jsonb_agg(
       jsonb_build_object(
         'type', 'Feature',
-        'geometry', ST_AsGeoJSON(
+        'geometry', public.ST_AsGeoJSON(
           public.safe_location(ei.location_geom, ei.location_precision)
         )::jsonb,
         'properties', jsonb_build_object(
