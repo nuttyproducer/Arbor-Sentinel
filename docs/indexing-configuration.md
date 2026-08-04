@@ -1,76 +1,52 @@
 # Indexing Configuration
 
-**Status:** Public Static Beta — indexing is disabled by default.  
-**Last reviewed:** 2026-07-12
+**Status:** Public launch preparation — indexing enabled for public content (M7-06).  
+**Last reviewed:** 2026-08-04
 
 ## Current state
 
-During the public static beta, search-engine indexing is turned off across
-every route. This is enforced in two places:
+Search-engine indexing is **enabled for public content routes** and disabled
+for admin, beta, and error routes. Enforced in three places:
 
 | Layer | Location | Setting |
 |---|---|---|
-| `robots.txt` | `public/robots.txt` | `Disallow: /` |
-| `<meta>` tag | `src/data/routeMetadata.ts` → `DEFAULT_ROBOTS` | `"noindex,nofollow"` |
-| Per-route override | `src/data/routeMetadata.ts` → per-route `robots` field | Inherits `DEFAULT_ROBOTS` |
+| `robots.txt` | `public/robots.txt` | `Allow: /` (with `Disallow: /admin/`, `Disallow: /beta/`) |
+| Default directive | `src/data/routeMetadata.ts` → `DEFAULT_ROBOTS` | `"index,follow"` |
+| Per-route override | `src/data/routeMetadata.ts` → per-route `robots` field | Admin, beta, and 404 routes set `"noindex,nofollow"` |
+| Static fallback | `index.html` | `<meta name="robots" content="index,follow">` |
 
 The `<meta name="robots">` tag is managed by `src/components/ui/DocumentHead.tsx`
-and updates on every client-side navigation. Every route gets a robots directive.
+and updates on every client-side navigation. Public routes inherit
+`DEFAULT_ROBOTS`; admin, beta, and error routes pass an explicit
+`noindex,nofollow` override.
 
-## How to enable indexing for production
+## How to verify indexing after deployment
 
-When the platform is ready for public indexing (Public Static Beta v0.1 or
-later), make these three changes:
-
-### 1. Update `robots.txt`
-
-In `public/robots.txt`, change:
-
-```
-Disallow: /
-```
-
-to:
-
-```
-Allow: /
-```
-
-### 2. Update the default robots directive
-
-In `src/data/routeMetadata.ts`, change:
-
-```ts
-export const DEFAULT_ROBOTS = "noindex,nofollow";
-```
-
-to:
-
-```ts
-export const DEFAULT_ROBOTS = "index,follow";
-```
-
-### 3. Set the canonical base URL
-
-In your application entry point or a bootstrap module, call:
+1. Check `https://[domain]/robots.txt` returns `Allow: /` (and the admin/beta disallows).
+2. Open page source on a public route — `<meta name="robots" content="index,follow">`.
+3. Open an admin or beta route — `<meta name="robots" content="noindex,nofollow">`.
+4. Canonical URLs use the production domain. Set it at runtime by calling:
 
 ```ts
 import { setCanonicalBase } from "./data/routeMetadata";
 setCanonicalBase("https://accountabilityatlas.org");
 ```
 
-Without this call, the canonical base falls back to `window.location.origin`,
-which is correct for preview deployments but should be pinned for production.
+   Without this call, canonical URLs fall back to `window.location.origin`,
+   which is correct for preview deployments but should be pinned for production.
+   Add this to the launch checklist (`docs/launch-checklist.md` §7).
 
-### 4. Verify
+5. Open Graph and Twitter card metadata render correctly (test with
+   [opie.link](https://opie.link) or the target platform's sharing debugger).
+   The OG image is now the PNG (`/social-preview.png`).
 
-After deployment, check:
+## How to revert to noindex (e.g., pre-launch preview or emergency)
 
-- `https://[domain]/robots.txt` returns `Allow: /`
-- Page source on any route shows `<meta name="robots" content="index,follow">`
-- Canonical URLs use the production domain
-- Open Graph and Twitter card metadata render correctly (test with
-  [opie.link](https://opie.link) or similar OG debugger)
+1. In `src/data/routeMetadata.ts`, change `DEFAULT_ROBOTS` back to `"noindex,nofollow"`.
+2. In `public/robots.txt`, change `Allow: /` back to `Disallow: /`.
+3. In `index.html`, change the static robots meta back to `content="noindex,nofollow"`.
+4. See `docs/incident-response-plan.md` (content error class) for when this is
+   appropriate.
 
 ## Per-route robots override
 
@@ -84,40 +60,23 @@ Individual routes can override the default robots directive by setting
 },
 ```
 
-The 404 page always uses `noindex,nofollow` regardless of the default.
+The 404 page always uses `noindex,nofollow` regardless of the default. Admin
+(`/admin/*`), beta (`/beta/*`), and 404 routes carry explicit overrides.
 
 ## Social preview image
 
-### Current state
+The Open Graph image is `/social-preview.png` (in `public/`), a 1,200 × 630 px
+PNG generated from `public/social-preview.svg`. The PNG is the supported
+format for Facebook, Twitter/X, LinkedIn, Discord, and Telegram. The SVG
+source is kept as the editable master. Regenerate with:
 
-The Open Graph image is `/social-preview.svg` (in `public/`). This is a
-1,200 × 630 px SVG designed for the brand visual identity.
-
-### Known limitation
-
-SVG is not reliably supported as an OG image by all platforms:
-
-| Platform | SVG support |
-|---|---|
-| Facebook | Limited — may not render |
-| Twitter / X | Not supported — falls back to no image |
-| LinkedIn | Not supported |
-| Discord | Supported |
-| Telegram | Supported |
-
-### Recommended action before public launch
-
-Generate a PNG or JPEG version at 1,200 × 630 px from the SVG source
-(`public/social-preview.svg`). Then:
-
-1. Save as `public/social-preview.png`
-2. Update `DEFAULT_OG_IMAGE` in `src/data/routeMetadata.ts`:
-
-```ts
-const DEFAULT_OG_IMAGE = "/social-preview.png";
+```bash
+npm install --no-save sharp
+node scripts/generate-images.mjs
 ```
 
-3. Test with [opie.link](https://opie.link) or the target platform's sharing
-   debugger before launch.
+## Related
 
-The SVG can be kept as a fallback or removed once the PNG is in place.
+- `docs/launch-checklist.md` — §7 indexing/SEO gate
+- `src/data/routeMetadata.ts` — `DEFAULT_ROBOTS`, `DEFAULT_OG_IMAGE`
+- `public/robots.txt` — crawl rules

@@ -1,5 +1,9 @@
 import { useEffect } from "react";
-import { getCanonicalBase } from "../../data/routeMetadata";
+import {
+  getCanonicalBase,
+  DEFAULT_ROBOTS,
+  DEFAULT_OG_IMAGE,
+} from "../../data/routeMetadata";
 
 interface DocumentHeadProps {
   title: string;
@@ -29,7 +33,7 @@ export function DocumentHead({
   title,
   description,
   canonicalPath,
-  ogImage = "/social-preview.svg",
+  ogImage = DEFAULT_OG_IMAGE,
   robots,
   ogType = "website",
 }: DocumentHeadProps) {
@@ -88,7 +92,9 @@ export function DocumentHead({
     setMeta("name", "twitter:image", ogImage);
 
     // ── Robots ──────────────────────────────────────────────────────
-    setMeta("name", "robots", robots ?? "noindex,nofollow");
+    // Public routes inherit DEFAULT_ROBOTS ("index,follow"). Admin, beta,
+    // and error routes pass an explicit "noindex,nofollow" override.
+    setMeta("name", "robots", robots ?? DEFAULT_ROBOTS);
 
     // ── Canonical URL ───────────────────────────────────────────────
     setLink("canonical", canonicalUrl);

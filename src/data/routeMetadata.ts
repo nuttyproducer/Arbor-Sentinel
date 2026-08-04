@@ -15,9 +15,10 @@
  *
  * INDEXING
  * --------
- * During the public static beta, every route defaults to "noindex,nofollow".
- * To enable indexing for production, change the DEFAULT_ROBOTS constant
- * below and update public/robots.txt. See docs/indexing-configuration.md.
+ * Public content routes default to "index,follow" and are crawlable.
+ * Admin, beta, and error routes override with "noindex,nofollow".
+ * Keep public/robots.txt and index.html in sync. See
+ * docs/indexing-configuration.md and docs/launch-checklist.md.
  */
 
 let canonicalBase: string =
@@ -31,8 +32,17 @@ export function getCanonicalBase(): string {
   return canonicalBase;
 }
 
-/** Change this to "index,follow" when the platform is ready for production indexing. */
-export const DEFAULT_ROBOTS = "noindex,nofollow";
+/**
+ * Default robots directive for public content routes.
+ *
+ * Public static content is fully reviewed (M7-02) and ready for indexing.
+ * Admin, beta, and error routes carry an explicit per-route override that
+ * keeps them out of search engines. See docs/indexing-configuration.md.
+ */
+export const DEFAULT_ROBOTS = "index,follow";
+
+/** Default Open Graph / Twitter image for public pages. */
+export const DEFAULT_OG_IMAGE = "/social-preview.png";
 
 export interface RouteMeta {
   /** Unique document title. Appended to base title. */
