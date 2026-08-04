@@ -1675,6 +1675,732 @@ Thank you for your work covering these issues.
     active: true,
     correctionUrl: "/corrections",
   },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // NL translations — MEP and EU templates (M7-02)
+  // ═══════════════════════════════════════════════════════════════════════════
+  {
+    id: "mep-humanitarian-access-nl",
+    slug: "mep-humanitarian-access-nl",
+    title: "[NL] Contacteer een Europarlementariër — humanitaire toegang en EU-beleid over Gaza",
+    actionType: "humanitarian_access",
+    jurisdiction: "Europese Unie — Europees Parlement",
+    intendedAudience:
+      "EU-burgers die hun lid van het Europees Parlement (Europarlementariër) willen contacteren over het humanitaire beleid, de financiering en de diplomatieke actie van de EU betreffende Gaza.",
+    purpose:
+      "Europarlementariërs zetelen in commissies zoals Buitenlandse Zaken (AFET), Ontwikkeling (DEVE) en Mensenrechten (DROI). Ze kunnen parlementaire vragen stellen aan de Europese Commissie en de hoge vertegenwoordiger, resoluties voorstellen en het humanitaire en buitenlandse beleid van de EU controleren. Deze actie biedt een sjabloon voor EU-burgers om hun Europarlementariërs te vragen aan te dringen op sterker EU-optreden voor humanitaire toegang in Gaza.",
+    policyAsk:
+      "Europarlementariërs kunnen: schriftelijke parlementaire vragen indienen bij de Commissie en de EDEO over humanitaire toegang, de uitvoering van financiering en belemmering van hulp; aandringen op resoluties in de commissies AFET en DEVE; oproepen om de humanitaire financiering van DG ECHO te handhaven en obstakels aan te pakken; naleving van het IHR aan de orde stellen in parlementaire debatten; en overleggen met humanitaire organisaties om hun parlementaire werk te onderbouwen.",
+    sourceBasis:
+      "Verdrag betreffende de Europese Unie, artikel 36 (de hoge vertegenwoordiger brengt verslag uit aan het EP). Verdrag betreffende de werking van de EU, artikelen 209–214 (humanitaire hulp). Humanitair uitvoeringsplan 2026 van DG ECHO voor Palestina (indicatieve toewijzing van €124,4 miljoen). Reglement van het Europees Parlement, regel 136 (schriftelijke vragen) en regel 143 (resoluties).",
+    instructions: `1. Zoek uw Europarlementariërs. Elke EU-lidstaat kiest een vast aantal Europarlementariërs. Vind de uwe op de website van het Europees Parlement (europarl.europa.eu).
+2. Vind de officiële contactgegevens van uw Europarlementariër op hun EP-profielpagina. Gebruik het officiële e-mailadres of contactformulier van het Europees Parlement.
+3. Pas het onderstaande sjabloon aan. Europarlementariërs reageren eerder wanneer kiezers verwijzen naar specifiek commissiewerk, recente resoluties of aankomende stemmingen.
+4. Verstuur vanaf uw eigen e-mailadres. Vermeld uw naam en land/regio zodat de Europarlementariër kan verifiëren dat u een EU-kiezer bent.
+5. Een antwoord kan twee tot vier weken duren. Europarlementariërs ontvangen veel correspondentie.`,
+    templateBody: `[Je naam]
+[Je EU-lidstaat en regio — vereist zodat de Europarlementariër kan verifiëren dat u een kiezer bent]
+
+Geachte mevrouw [Naam], / Geachte heer [Naam],
+
+Ik schrijf u als kiezer uit [lidstaat, regio] over het humanitaire EU-beleid betreffende Gaza.
+
+De Europese Unie is 's werelds grootste humanitaire donor. In 2026 heeft DG ECHO een indicatieve €124,4 miljoen voor Palestina toegewezen. Toch blijft de humanitaire toegang tot en binnen Gaza ernstig beperkt. In juni 2026 waarschuwde het ICRC dat de humanitaire respons in Gaza "op de rand van totale instorting" stond. UN OCHA documenteert een waterlevering van 17.000 kubieke meter per dag — een daling van 15–20% door financieringstekorten. De hele Gazastrook is geclassificeerd als IPC Fase 3 (Crisis).
+
+De resolutie van het Europees Parlement van september 2025 veroordeelde de belemmering van humanitaire hulp en eiste ongehinderde humanitaire bijstand. Ik verwelkom die resolutie en verzoek u te helpen ervoor te zorgen dat de woorden van het Parlement worden vertaald naar duurzame actie.
+
+Ik verzoek u:
+- Een schriftelijke vraag in te dienen bij de hoge vertegenwoordiger en de Commissie over welke stappen de EU neemt om ervoor te zorgen dat de humanitaire toegang tot Gaza niet wordt belemmerd en dat EU-gefinancierde hulp de beoogde ontvangers bereikt
+- Aan te dringen op een hoorzitting in de commissie AFET of DEVE met DG ECHO en humanitaire partners over obstakels voor hulplevering in Gaza
+- Resoluties en parlementaire acties te steunen die EU-handels- en associatieakkoorden koppelen aan naleving van het IHR, inclusief humanitaire-toegangsverplichtingen
+
+Ik vraag dit omdat [korte persoonlijke reden — één zin].
+
+Dank u voor uw tijd en voor het vertegenwoordigen van onze gemeenschap in het Europees Parlement.
+
+Met vriendelijke groet,
+[Je naam]`,
+    templateReviewStatus: "draft",
+    jurisdictionReviewStatus: "draft",
+    languageReviewStatus: "draft",
+    language: "nl",
+    translationStatus: "draft",
+    translationOf: "mep-humanitarian-access-en",
+    contentStatus: "review_pending",
+    sourceIds: [
+      "eu-parliament",
+      "eu-echo-hip-2026",
+      "eu-parliament-resolution-2025-09",
+      "icrc-gaza-collapse-2026-06",
+      "ocha-opt-main",
+    ],
+    lastChangedDate: "2026-07-28",
+    version: 1,
+    relatedRoutes: [
+      "/institutions/european-union",
+      "/gaza-dossier",
+      "/organizations",
+      "/methodology",
+    ],
+    warnings: [
+      "Deze pagina zoekt uw Europarlementariër niet op. Gebruik de website van het Europees Parlement (europarl.europa.eu).",
+      "Er wordt geen bericht verzonden via dit platform. Kopieer en verstuur zelf.",
+      "Vermeld uw naam en EU-lidstaat — Europarlementariërs verifiëren het kiesdistrict. Anonieme berichten worden zelden beantwoord.",
+      "Verstuur geen bedreigingen, beledigingen of intimiderende berichten. Enkel wettige burgerbetrokkenheid.",
+      "Dit sjabloon is een conceptvertaling en werd niet beoordeeld door een expert in de procedures van het Europees Parlement.",
+    ],
+    active: true,
+    correctionUrl: "/corrections",
+  },
+  {
+    id: "mep-humanitarian-access-fr",
+    slug: "mep-humanitarian-access-fr",
+    title: "[FR] Contacter un député européen — accès humanitaire et politique de l'UE sur Gaza",
+    actionType: "humanitarian_access",
+    jurisdiction: "Union européenne — Parlement européen",
+    intendedAudience:
+      "Citoyens de l'UE souhaitant contacter leur député européen au sujet de la politique humanitaire de l'UE, de son financement et de son action diplomatique concernant Gaza.",
+    purpose:
+      "Les députés européens siègent dans des commissions telles que les Affaires étrangères (AFET), le Développement (DEVE) et les Droits de l'homme (DROI). Ils peuvent poser des questions parlementaires à la Commission européenne et au Haut Représentant, proposer des résolutions et contrôler la politique humanitaire et étrangère de l'UE. Cette action fournit un modèle pour que les citoyens de l'UE demandent à leurs députés d'insister sur une action européenne plus forte en faveur de l'accès humanitaire à Gaza.",
+    policyAsk:
+      "Les députés européens peuvent : poser des questions parlementaires écrites à la Commission et au SEAE sur l'accès humanitaire, la livraison du financement et l'obstruction de l'aide ; insister pour des résolutions dans les commissions AFET et DEVE ; demander le maintien du financement humanitaire de DG ECHO et la résolution des obstacles ; soulever le respect du DIH dans les débats parlementaires ; et rencontrer des organisations humanitaires pour éclairer leur travail parlementaire.",
+    sourceBasis:
+      "Traité sur l'Union européenne, article 36 (le Haut Représentant informe le PE). Traité sur le fonctionnement de l'UE, articles 209–214 (aide humanitaire). Plan de mise en œuvre humanitaire 2026 de DG ECHO pour la Palestine (allocation indicative de 124,4 millions d'euros). Règlement intérieur du Parlement européen, règle 136 (questions écrites) et règle 143 (résolutions).",
+    instructions: `1. Identifiez vos députés européens. Chaque État membre de l'UE élit un nombre fixe de députés. Trouvez les vôtres sur le site du Parlement européen (europarl.europa.eu).
+2. Trouvez les coordonnées officielles de votre député européen sur sa page de profil du PE. Utilisez l'adresse e-mail ou le formulaire de contact officiel du Parlement européen.
+3. Adaptez le modèle ci-dessous. Les députés répondent davantage lorsque les électeurs font référence à des travaux de commission spécifiques, à des résolutions récentes ou à des votes à venir.
+4. Envoyez depuis votre propre adresse e-mail. Indiquez votre nom et votre pays/région afin que le député puisse vérifier que vous êtes un électeur de l'UE.
+5. Une réponse peut prendre deux à quatre semaines. Les députés reçoivent un volume élevé de courrier.`,
+    templateBody: `[Votre nom]
+[Votre État membre de l'UE et votre région — requis pour que le député vérifie votre qualité d'électeur]
+
+Madame la Députée, / Monsieur le Député,
+
+Je vous écris en tant qu'électeur·rice de [État membre, région] au sujet de la politique humanitaire de l'UE concernant Gaza.
+
+L'Union européenne est le plus grand donateur humanitaire au monde. En 2026, DG ECHO a alloué une enveloppe indicative de 124,4 millions d'euros pour la Palestine. Pourtant, l'accès humanitaire vers et à l'intérieur de Gaza reste gravement restreint. En juin 2026, le CICR a averti que la réponse humanitaire à Gaza était « au bord de l'effondrement total ». UN OCHA documente une distribution d'eau de 17 000 mètres cubes par jour — en baisse de 15 à 20 % en raison de déficits de financement. L'ensemble de la bande de Gaza est classé en IPC Phase 3 (Crise).
+
+La résolution du Parlement européen de septembre 2025 a condamné l'obstruction de l'aide humanitaire et exigé une assistance humanitaire sans entrave. Je salue cette résolution et vous demande d'aider à garantir que les paroles du Parlement se traduisent en actions durables.
+
+Je vous demande de bien vouloir :
+- Poser une question écrite au Haut Représentant et à la Commission pour savoir quelles mesures l'UE prend afin que l'accès humanitaire à Gaza ne soit pas entravé et que l'aide financée par l'UE parvienne aux bénéficiaires prévus
+- Insister pour que la commission AFET ou DEVE organise une audition avec DG ECHO et les partenaires humanitaires sur les obstacles à la livraison de l'aide à Gaza
+- Soutenir les résolutions et actions parlementaires qui lient les accords commerciaux et d'association de l'UE au respect du DIH, y compris les obligations d'accès humanitaire
+
+Je vous en fais la demande parce que [brève raison personnelle — une phrase].
+
+Je vous remercie pour votre temps et pour représenter notre communauté au Parlement européen.
+
+Cordialement,
+[Votre nom]`,
+    templateReviewStatus: "draft",
+    jurisdictionReviewStatus: "draft",
+    languageReviewStatus: "draft",
+    language: "fr",
+    translationStatus: "draft",
+    translationOf: "mep-humanitarian-access-en",
+    contentStatus: "review_pending",
+    sourceIds: [
+      "eu-parliament",
+      "eu-echo-hip-2026",
+      "eu-parliament-resolution-2025-09",
+      "icrc-gaza-collapse-2026-06",
+      "ocha-opt-main",
+    ],
+    lastChangedDate: "2026-07-28",
+    version: 1,
+    relatedRoutes: [
+      "/institutions/european-union",
+      "/gaza-dossier",
+      "/organizations",
+      "/methodology",
+    ],
+    warnings: [
+      "Cette page ne recherche pas votre député européen. Utilisez le site du Parlement européen (europarl.europa.eu).",
+      "Aucun message n'est envoyé via cette plateforme. Copiez et envoyez vous-même.",
+      "Indiquez votre nom et votre État membre de l'UE — les députés vérifient la circonscription. Les messages anonymes reçoivent rarement une réponse.",
+      "N'envoyez pas de menaces, d'injures ou de messages intimidants. Engagement civique légal uniquement.",
+      "Ce modèle est une traduction provisoire et n'a pas été examiné par un·e expert·e des procédures du Parlement européen.",
+    ],
+    active: true,
+    correctionUrl: "/corrections",
+  },
+  {
+    id: "mep-association-agreement-nl",
+    slug: "mep-association-agreement-nl",
+    title: "[NL] Contacteer een Europarlementariër — herziening van het EU-Israël Associatieakkoord",
+    actionType: "contact_representative",
+    jurisdiction: "Europese Unie — Europees Parlement",
+    intendedAudience:
+      "EU-burgers die hun Europarlementariër willen vragen de gedeeltelijke opschorting van het EU-Israël Associatieakkoord te steunen en EU-handelsakkoorden te koppelen aan naleving van het IHR.",
+    purpose:
+      "In juni 2025 stelde de hoge vertegenwoordiger vast dat er aanwijzingen waren dat Israël artikel 2 van het EU-Israël Associatieakkoord schond. In september 2025 stelde de Commissie voor de handelsgerelateerde bepalingen gedeeltelijk op te schorten. Het Europees Parlement nam een resolutie aan die de opschorting steunt. Het voorstel vereist een gekwalificeerde meerderheid in de Raad. Europarlementariërs kunnen hun nationale regeringen aandringen om de opschorting te steunen of te blokkeren, en vragen en resoluties indienen om het onderwerp levend te houden.",
+    policyAsk:
+      "Europarlementariërs kunnen: schriftelijke vragen indienen bij de Commissie en de Raad over de stand van het herzieningsproces van het Associatieakkoord; via hun politieke fractie hun nationale regering vragen de gedeeltelijke opschorting in de Raad te steunen; parlementaire resoluties steunen die het verband tussen EU-handelsvoorkeuren en IHR-naleving bevestigen; en het onderwerp aan de orde stellen in de commissies AFET en INTA.",
+    sourceBasis:
+      "EU-Israël Associatieakkoord (2000), artikel 2 (essentiële-elementenclausule). Herziening door de hoge vertegenwoordiger (juni 2025). Voorstel van de Europese Commissie (17 september 2025) om de handelsbepalingen gedeeltelijk op te schorten. Resolutie van het Europees Parlement RC-B10-0372/2025 (september 2025).",
+    instructions: `1. Zoek uw Europarlementariërs op de website van het Europees Parlement (europarl.europa.eu). Zoek op land en regio.
+2. Vind de officiële EP-contactgegevens van uw Europarlementariër. Gebruik het officiële e-mailadres of contactformulier van het Europees Parlement.
+3. De herziening van het Associatieakkoord is een specifiek, actueel EU-beleidsproces. Verwijs naar de herziening van juni 2025 en het voorstel van de Commissie van september 2025.
+4. Pas het sjabloon aan. Voeg uw eigen perspectief toe — Europarlementariërs waarderen het te horen waarom een specifieke EU-beleidskwestie een kiezer persoonlijk raakt.
+5. Verstuur vanaf uw eigen e-mailadres. Vermeld uw naam en lidstaat.`,
+    templateBody: `[Je naam]
+[Je EU-lidstaat en regio]
+
+Geachte mevrouw [Naam], / Geachte heer [Naam],
+
+Ik schrijf u als kiezer uit [lidstaat, regio] over het EU-Israël Associatieakkoord en zijn mensenrechtenclausule.
+
+In juni 2025 beoordeelde de hoge vertegenwoordiger van de EU de naleving door Israël van artikel 2 van het Associatieakkoord — dat respect voor mensenrechten en democratische beginselen tot een essentieel element maakt — en vond aanwijzingen van schending. De herziening verwees naar de verslechterende humanitaire situatie in Gaza, de blokkade van humanitaire hulp, militaire operaties en nederzettingenuitbreiding.
+
+In september 2025 stelde de Europese Commissie voor de handelsgerelateerde bepalingen van het Akkoord gedeeltelijk op te schorten. De resolutie van het Europees Parlement van september 2025 (RC-B10-0372/2025) steunde deze opschorting.
+
+Ik steun het voorstel van de Commissie en de resolutie van het Parlement. De essentiële-elementenclausule van het Associatieakkoord is geen decoratie — het is een bindende verdragsverplichting. Een geloofwaardig EU-buitenlands beleid vereist dat handelsvoorkeuren afhankelijk zijn van respect voor mensenrechten en internationaal recht.
+
+Ik verzoek u:
+- Een schriftelijke vraag in te dienen bij de Commissie en de Raad over de stand van het herzieningsproces van het Associatieakkoord en de status van het voorstel tot gedeeltelijke opschorting
+- Via uw politieke fractie en uw nationale regering aan te dringen op steun voor de opschorting in de Raad
+- Voortgezette parlementaire controle van de EU-Israël handelsbetrekkingen in de commissies AFET en INTA te steunen
+
+Ik vraag dit omdat [korte persoonlijke reden].
+
+Dank u voor uw tijd en voor het vertegenwoordigen van onze gemeenschap in het Europees Parlement.
+
+Met vriendelijke groet,
+[Je naam]`,
+    templateReviewStatus: "draft",
+    jurisdictionReviewStatus: "draft",
+    languageReviewStatus: "draft",
+    language: "nl",
+    translationStatus: "draft",
+    translationOf: "mep-association-agreement-en",
+    contentStatus: "review_pending",
+    sourceIds: [
+      "eu-israel-association-agreement",
+      "eu-commission-association-review-2025-06",
+      "eu-commission-sanctions-proposal-2025-09",
+      "eu-parliament-resolution-2025-09",
+      "eu-parliament",
+    ],
+    lastChangedDate: "2026-07-28",
+    version: 1,
+    relatedRoutes: [
+      "/institutions/european-union",
+      "/legal-tracker",
+      "/methodology",
+    ],
+    warnings: [
+      "Deze pagina zoekt uw Europarlementariër niet op. Gebruik de website van het Europees Parlement.",
+      "Er wordt geen bericht verzonden via dit platform. Kopieer en verstuur zelf.",
+      "De herziening van het Associatieakkoord is een lopend beleidsproces. Verwijs naar data en documenten om te tonen dat u geïnformeerd bent.",
+      "Verstuur geen bedreigingen, beledigingen of intimiderende berichten. Enkel wettige burgerbetrokkenheid.",
+      "Dit sjabloon is een conceptvertaling en werd niet beoordeeld door een expert in EU-handelsrecht of parlementaire procedures.",
+    ],
+    active: true,
+    correctionUrl: "/corrections",
+  },
+  {
+    id: "mep-association-agreement-fr",
+    slug: "mep-association-agreement-fr",
+    title: "[FR] Contacter un député européen — révision de l'accord d'association UE-Israël",
+    actionType: "contact_representative",
+    jurisdiction: "Union européenne — Parlement européen",
+    intendedAudience:
+      "Citoyens de l'UE souhaitant demander à leur député européen de soutenir la suspension partielle de l'accord d'association UE-Israël et de lier les accords commerciaux de l'UE au respect du DIH.",
+    purpose:
+      "En juin 2025, le Haut Représentant a constaté des indices de violation de l'article 2 de l'accord d'association UE-Israël. En septembre 2025, la Commission a proposé la suspension partielle des dispositions commerciales. Le Parlement européen a adopté une résolution soutenant la suspension. La proposition exige une majorité qualifiée au Conseil. Les députés européens peuvent presser leurs gouvernements nationaux de soutenir ou de bloquer les décisions du Conseil, et poser des questions et adopter des résolutions pour maintenir le sujet dans le débat parlementaire.",
+    policyAsk:
+      "Les députés européens peuvent : poser des questions écrites demandant à la Commission et au Conseil des mises à jour sur le processus de révision de l'accord d'association ; presser leur gouvernement national (via leur groupe politique) de soutenir la suspension partielle au Conseil ; soutenir les résolutions parlementaires renforçant le lien entre les préférences commerciales de l'UE et le respect du DIH ; et soulever la question dans les commissions AFET et INTA.",
+    sourceBasis:
+      "Accord d'association UE-Israël (2000), article 2 (clause des éléments essentiels). Révision du Haut Représentant (juin 2025) constatant des indices de violation. Proposition de la Commission européenne (17 septembre 2025) de suspendre partiellement les dispositions commerciales. Résolution du Parlement européen RC-B10-0372/2025 (septembre 2025).",
+    instructions: `1. Identifiez vos députés européens sur le site du Parlement européen (europarl.europa.eu). Recherchez par pays et région.
+2. Trouvez les coordonnées officielles de votre député européen. Utilisez l'adresse e-mail ou le formulaire de contact officiel du Parlement européen.
+3. La révision de l'accord d'association est un processus de politique européenne spécifique et actif. Référencez la révision de juin 2025 et la proposition de la Commission de septembre 2025.
+4. Adaptez le modèle. Ajoutez votre propre perspective — les députés apprécient d'entendre pourquoi une question de politique européenne spécifique touche personnellement un électeur.
+5. Envoyez depuis votre propre adresse e-mail. Indiquez votre nom et votre État membre.`,
+    templateBody: `[Votre nom]
+[Votre État membre de l'UE et votre région]
+
+Madame la Députée, / Monsieur le Député,
+
+Je vous écris en tant qu'électeur·rice de [État membre, région] au sujet de l'accord d'association UE-Israël et de sa clause sur les droits humains.
+
+En juin 2025, le Haut Représentant de l'UE a examiné le respect par Israël de l'article 2 de l'accord d'association — qui fait du respect des droits de l'homme et des principes démocratiques un élément essentiel — et a constaté des indices de violation. La révision a cité la détérioration de la situation humanitaire à Gaza, le blocus de l'aide humanitaire, les opérations militaires et l'expansion des colonies.
+
+En septembre 2025, la Commission européenne a proposé de suspendre partiellement les dispositions commerciales de l'accord. La résolution du Parlement européen de septembre 2025 (RC-B10-0372/2025) a soutenu cette suspension.
+
+Je soutiens la proposition de la Commission et la résolution du Parlement. La clause des éléments essentiels de l'accord d'association n'est pas décorative — c'est une obligation conventionnelle contraignante. Une politique étrangère européenne crédible exige que les préférences commerciales soient conditionnées au respect des droits humains et du droit international.
+
+Je vous demande de bien vouloir :
+- Poser une question écrite à la Commission et au Conseil pour obtenir une mise à jour sur le processus de révision de l'accord d'association et le statut de la proposition de suspension partielle
+- Presser votre groupe politique et votre gouvernement national de soutenir la suspension au Conseil
+- Soutenir le contrôle parlementaire continu des relations commerciales UE-Israël dans les commissions AFET et INTA
+
+Je vous en fais la demande parce que [brève raison personnelle].
+
+Je vous remercie pour votre temps et pour représenter notre communauté au Parlement européen.
+
+Cordialement,
+[Votre nom]`,
+    templateReviewStatus: "draft",
+    jurisdictionReviewStatus: "draft",
+    languageReviewStatus: "draft",
+    language: "fr",
+    translationStatus: "draft",
+    translationOf: "mep-association-agreement-en",
+    contentStatus: "review_pending",
+    sourceIds: [
+      "eu-israel-association-agreement",
+      "eu-commission-association-review-2025-06",
+      "eu-commission-sanctions-proposal-2025-09",
+      "eu-parliament-resolution-2025-09",
+      "eu-parliament",
+    ],
+    lastChangedDate: "2026-07-28",
+    version: 1,
+    relatedRoutes: [
+      "/institutions/european-union",
+      "/legal-tracker",
+      "/methodology",
+    ],
+    warnings: [
+      "Cette page ne recherche pas votre député européen. Utilisez le site du Parlement européen.",
+      "Aucun message n'est envoyé via cette plateforme. Copiez et envoyez vous-même.",
+      "La révision de l'accord d'association est un processus politique en cours. Référencez les dates et les documents pour montrer que vous êtes informé·e.",
+      "N'envoyez pas de menaces, d'injures ou de messages intimidants. Engagement civique légal uniquement.",
+      "Ce modèle est une traduction provisoire et n'a pas été examiné par un·e expert·e du droit commercial de l'UE ou des procédures parlementaires.",
+    ],
+    active: true,
+    correctionUrl: "/corrections",
+  },
+  {
+    id: "eu-petition-guidance-nl",
+    slug: "eu-petition-guidance-nl",
+    title: "[NL] Een petitie indienen bij het Europees Parlement — Gaza-verantwoordingskwesties",
+    actionType: "contact_representative",
+    jurisdiction: "Europese Unie — Petitiescommissie van het Europees Parlement (PETI)",
+    intendedAudience:
+      "EU-burgers en -ingezetenen die het Europees Parlement willen verzoeken over kwesties die verband houden met Gaza-verantwoording, humanitaire toegang, wapenuitvoercontrole of naleving van internationale rechtsverplichtingen door de EU-instellingen.",
+    purpose:
+      "Elke EU-burger of -ingezetene kan het Europees Parlement verzoeken over een aangelegenheid binnen de werkterreinen van de EU die hem of haar rechtstreeks raakt. De Commissie verzoekschriften (PETI) onderzoekt petities en kan de Commissie om informatie vragen, petities doorverwijzen naar andere commissies of actie aanbevelen. Deze actie legt uit hoe u een petitie voorbereidt en indient — zij genereert geen petitie automatisch.",
+    policyAsk:
+      "De PETI-commissie kan: de Europese Commissie verzoeken het aangekaarte onderwerp te onderzoeken en informatie te verstrekken; de petitie doorverwijzen naar andere parlementaire commissies (AFET, DROI, DEVE); aanbevelen dat het Parlement een resolutie aanneemt; waar passend onderzoeksbezoeken afleggen; en haar aanbevelingen aan de indiener meedelen.",
+    sourceBasis:
+      "Verdrag betreffende de werking van de Europese Unie, artikelen 24 en 227 (petitierecht). Handvest van de grondrechten van de Europese Unie, artikel 44 (petitierecht). Reglement van het Europees Parlement, regels 226–230 (Commissie verzoekschriften).",
+    instructions: `1. Bevestig dat uw petitie binnen de werkterreinen van de EU valt: humanitaire hulp, handelsbeleid, extern optreden, mensenrechten of institutionele naleving.
+2. Bezoek het portaal voor petities van het Europees Parlement (europarl.europa.eu/petitions).
+3. Bekijk de ontvankelijkheidscriteria: u moet EU-burger of -ingezetene zijn, de petitie moet een aangelegenheid binnen de EU-werkterreinen betreffen die u rechtstreeks raakt, en zij mag niet kennelijk niet-ontvankelijk zijn (misbruik, buiten de EU-bevoegdheid, of reeds door juridische procedures over dezelfde zaak behandeld).
+4. Stel uw petitie op als een duidelijk, feitelijk document: wat de kwestie is, hoe zij binnen de EU-bevoegdheid valt, hoe zij u rechtstreeks raakt, en wat u het Parlement vraagt te doen.
+5. Dien in via het portaal. U heeft een EU Login-account nodig indien u er geen heeft.
+6. Petities zijn openbare documenten — zij worden op de PETI-website gepubliceerd tenzij u vertrouwelijkheid vraagt. Vermeld geen persoonlijke informatie die u niet openbaar wilt maken.`,
+    templateReviewStatus: "draft",
+    jurisdictionReviewStatus: "draft",
+    languageReviewStatus: "draft",
+    language: "nl",
+    translationStatus: "draft",
+    translationOf: "eu-petition-guidance-en",
+    contentStatus: "review_pending",
+    sourceIds: [
+      "eu-petitions-portal",
+      "eu-parliament",
+      "eu-common-position-2008-944",
+      "eu-israel-association-agreement",
+    ],
+    lastChangedDate: "2026-07-28",
+    version: 1,
+    relatedRoutes: [
+      "/institutions/european-union",
+      "/methodology",
+    ],
+    warnings: [
+      "Dit is een handleiding over hoe u een petitie indient — het platform dient geen petities in uw naam in.",
+      "Petities moeten een aangelegenheid binnen de EU-bevoegdheid betreffen. De PETI-commissie verklaart elke petitie buiten de werkterreinen van de EU niet-ontvankelijk.",
+      "Petities zijn openbare documenten. Vermeld geen persoonlijke of gevoelige informatie.",
+      "Het petitieproces kost tijd. Tussen indiening en een beslissing over ontvankelijkheid kunnen enkele maanden verstrijken.",
+      "Een petitie is geen rechtsklacht of beroep. Zij vervangt gerechtelijke procedures niet.",
+      "Deze handleiding is een conceptvertaling en werd niet beoordeeld door een expert in de petitieprocedure van de EU.",
+    ],
+    active: true,
+    correctionUrl: "/corrections",
+  },
+  {
+    id: "eu-petition-guidance-fr",
+    slug: "eu-petition-guidance-fr",
+    title: "[FR] Soumettre une pétition au Parlement européen — questions de responsabilité concernant Gaza",
+    actionType: "contact_representative",
+    jurisdiction: "Union européenne — Commission des pétitions du Parlement européen (PETI)",
+    intendedAudience:
+      "Citoyens et résidents de l'UE souhaitant présenter une pétition au Parlement européen sur des questions liées à la responsabilité à Gaza, à l'accès humanitaire, au contrôle des exportations d'armes ou au respect par les institutions de l'UE de leurs obligations de droit international.",
+    purpose:
+      "Tout citoyen ou résident de l'UE peut présenter une pétition au Parlement européen sur un sujet relevant des domaines d'activité de l'UE qui l'affecte directement. La commission des pétitions (PETI) examine les pétitions et peut demander des informations à la Commission, renvoyer les pétitions à d'autres commissions ou recommander une action. Cette action explique comment préparer et soumettre une pétition — elle ne génère pas automatiquement une pétition.",
+    policyAsk:
+      "La commission PETI peut : demander à la Commission européenne d'enquêter et de fournir des informations sur la question soulevée ; renvoyer la pétition à d'autres commissions parlementaires (AFET, DROI, DEVE) ; recommander que le Parlement adopte une résolution ; effectuer des visites de constatation le cas échéant ; et communiquer ses recommandations au pétitionnaire.",
+    sourceBasis:
+      "Traité sur le fonctionnement de l'Union européenne, articles 24 et 227 (droit de pétition). Charte des droits fondamentaux de l'Union européenne, article 44 (droit de pétition). Règlement intérieur du Parlement européen, règles 226 à 230 (commission des pétitions).",
+    instructions: `1. Confirmez que votre pétition relève des domaines d'activité de l'UE : aide humanitaire, politique commerciale, action extérieure, droits de l'homme ou conformité institutionnelle.
+2. Visitez le portail des pétitions du Parlement européen (europarl.europa.eu/petitions).
+3. Examinez les critères de recevabilité : vous devez être citoyen ou résident de l'UE, la pétition doit concerner un sujet relevant de l'activité de l'UE qui vous affecte directement, et elle ne doit pas être manifestement irrecevable (abusive, hors de la compétence de l'UE, ou déjà traitée par une procédure judiciaire sur la même question).
+4. Rédigez votre pétition comme un document clair et factuel : quel est le problème, comment relève-t-il de la compétence de l'UE, comment vous affecte-t-il directement, et que demandez-vous au Parlement de faire.
+5. Soumettez via le portail. Vous devrez créer un compte EU Login si vous n'en avez pas.
+6. Les pétitions sont des documents publics — elles sont publiées sur le site de la PETI sauf si vous demandez la confidentialité. N'incluez pas d'informations personnelles que vous ne souhaitez pas voir publiées.`,
+    templateReviewStatus: "draft",
+    jurisdictionReviewStatus: "draft",
+    languageReviewStatus: "draft",
+    language: "fr",
+    translationStatus: "draft",
+    translationOf: "eu-petition-guidance-en",
+    contentStatus: "review_pending",
+    sourceIds: [
+      "eu-petitions-portal",
+      "eu-parliament",
+      "eu-common-position-2008-944",
+      "eu-israel-association-agreement",
+    ],
+    lastChangedDate: "2026-07-28",
+    version: 1,
+    relatedRoutes: [
+      "/institutions/european-union",
+      "/methodology",
+    ],
+    warnings: [
+      "Ceci est un guide sur la façon de pétitionner — la plateforme ne soumet pas de pétitions en votre nom.",
+      "Les pétitions doivent concerner un sujet relevant de la compétence de l'UE. La commission PETI déclarera irrecevable toute pétition hors des domaines d'activité de l'UE.",
+      "Les pétitions sont des documents publics. N'incluez pas d'informations personnelles ou sensibles.",
+      "Le processus de pétition prend du temps. Plusieurs mois peuvent s'écouler entre la soumission et une décision sur la recevabilité.",
+      "Une pétition n'est pas une plainte juridique ou un recours. Elle ne remplace pas les procédures judiciaires.",
+      "Ce guide est une traduction provisoire et n'a pas été examiné par un·e expert·e de la procédure de pétition de l'UE.",
+    ],
+    active: true,
+    correctionUrl: "/corrections",
+  },
+  {
+    id: "journalist-briefing-be-nl",
+    slug: "journalist-briefing-be-nl",
+    title: "[NL] Een journalistenbriefing sturen — België/EU Gaza-verantwoording",
+    actionType: "send_dossier",
+    jurisdiction: "België en Europese Unie — journalisten die EU-zaken, Belgische politiek en verantwoording volgen",
+    intendedAudience:
+      "Mensen die openbare, gebronde informatie hebben verzameld over het Belgische en EU-beleid, juridische samenwerking, wapenuitvoerbeslissingen of humanitaire verbintenissen betreffende Gaza en deze verantwoordelijk willen delen met journalisten die deze onderwerpen volgen.",
+    purpose:
+      "Journalisten die EU-zaken en Belgische politiek volgen, spelen een cruciale rol bij het toegankelijk maken van complexe verantwoordingsinformatie voor het publiek. Het op verantwoorde en wettige wijze sturen van goed georganiseerde, gebronde openbare documentatie aan journalisten kan helpen om onderbelichte institutionele verantwoordingskwesties onder de aandacht te brengen.",
+    policyAsk:
+      "Journalisten kunnen: openbare documentatie over het Belgische en EU-beleid, juridische standpunten en hulp onderzoeken en verifiëren; rapporten over verantwoordingskwesties publiceren; verzoeken om toegang tot informatie indienen bij Belgische en EU-instellingen; en experts en functionarissen interviewen binnen hun redactionele normen.",
+    sourceBasis:
+      "Artikel 19, Universele Verklaring van de Rechten van de Mens. Artikel 11, Handvest van de grondrechten van de EU (vrijheid van meningsuiting en informatie). Belgische Grondwet, artikel 25 (persvrijheid). Verordening (EG) nr. 1049/2001 van de EU (openbare toegang tot documenten).",
+    instructions: `1. Organiseer uw documentatie. Nuttig materiaal omvat: officiële Belgische parlementaire vragen en regeringsantwoorden; conclusies van de Raad Buitenlandse Zaken van de EU; resoluties van het Europees Parlement; Belgische en EU-wapenuitvoerrapporten; financieringsgegevens van DG ECHO; ICJ- en ICC-documenten met betrekking tot België of de EU; en verklaringen van Belgische of EU-functionarissen. Groepeer per instelling en datum.
+2. Identificeer journalisten die EU-buitenlandbeleid, Belgische politiek of internationale justitie volgen.
+3. Schrijf een korte, feitelijke samenvatting. Vermeld wat de documentatie aantoont, waarom het nu van belang is en wat onduidelijk blijft. Geen editorialisering of privé-informatie.
+4. Respecteer de redactionele onafhankelijkheid van de journalist. Zij mogen al dan niet opvolgen — dat is hun professionele beslissing.`,
+    templateBody: `Onderwerp: Openbare documentatie — België/EU-verantwoording betreffende [specifieke kwestie, periode]
+
+Geachte [Naam van de journalist / redactie],
+
+Ik deel openbare documentatie over [korte feitelijke beschrijving — bv. "de Belgische wapenuitvoervergunning en handhavingsmaatregelen, 2025–2026"].
+
+De bijgevoegde documenten omvatten:
+- [Type, bron, datum, URL]
+- [Type, bron, datum, URL]
+- [Type, bron, datum, URL]
+
+Belangrijkste punten die de documentatie ondersteunt:
+- [Feitelijk punt 1, met bronverwijzing]
+- [Feitelijk punt 2, met bronverwijzing]
+- [Feitelijk punt 3, met bronverwijzing]
+
+Alle bronnen zijn openbaar beschikbaar. Ik heb URL's en raadpleegdata toegevoegd. [Optioneel: "Ik ben geen vertegenwoordiger van een genoemde organisatie — ik deel openbare documentatie als [onderzoeker / bezorgde burger / enz.]."]
+
+Dank u voor uw werk over deze kwesties.
+
+[Je naam]
+[Optioneel: contactmethode als u wenst te worden bereikt]`,
+    templateReviewStatus: "draft",
+    jurisdictionReviewStatus: "draft",
+    languageReviewStatus: "draft",
+    language: "nl",
+    translationStatus: "draft",
+    translationOf: "journalist-briefing-be-en",
+    contentStatus: "review_pending",
+    sourceIds: [
+      "belgium-chamber",
+      "eu-parliament",
+      "belgium-fps-foreign-affairs",
+    ],
+    lastChangedDate: "2026-07-28",
+    version: 1,
+    relatedRoutes: [
+      "/countries/belgium",
+      "/institutions/european-union",
+      "/gaza-dossier",
+      "/methodology",
+    ],
+    warnings: [
+      "Deel uitsluitend openbare, geverifieerde documentatie. Deel geen privé-, geclassificeerde of gevoelige persoonlijke informatie.",
+      "Deel geen grafische inhoud zonder inhoudswaarschuwing. Journalisten hebben hun eigen veiligheidsprotocollen.",
+      "Dit is geen klokkenluiderskanaal. Voor veilige indiening gebruikt u de eigen beveiligde kanalen van de journalist.",
+      "Er wordt geen informatie verzonden via dit platform. U verzendt het materiaal zelf.",
+      "Journalisten ontvangen veel tips. Zij mogen al dan niet opvolgen. Stuur geen herhaalde ongevraagde berichten.",
+      "Dit sjabloon is een conceptvertaling en werd niet beoordeeld door een expert in mediarecht of journalistieke veiligheid.",
+    ],
+    active: true,
+    correctionUrl: "/corrections",
+  },
+  {
+    id: "journalist-briefing-be-fr",
+    slug: "journalist-briefing-be-fr",
+    title: "[FR] Envoyer un dossier de presse — responsabilité à Gaza, Belgique/UE",
+    actionType: "send_dossier",
+    jurisdiction: "Belgique et Union européenne — journalistes couvrant les affaires européennes, la politique belge et la responsabilité",
+    intendedAudience:
+      "Personnes ayant rassemblé des informations publiques sourcées sur la politique belge et européenne, la coopération juridique, les décisions d'exportation d'armes ou les engagements humanitaires concernant Gaza et souhaitant les partager de manière responsable avec des journalistes couvrant ces sujets.",
+    purpose:
+      "Les journalistes couvrant les affaires européennes et la politique belge jouent un rôle essentiel pour rendre accessibles au public des informations complexes sur la responsabilité. Envoyer de manière responsable et licite une documentation publique bien organisée et sourcée à des journalistes peut contribuer à attirer l'attention sur des questions de responsabilité institutionnelle sous-couvertes.",
+    policyAsk:
+      "Les journalistes peuvent : enquêter et vérifier la documentation publique sur la politique, les positions juridiques et l'aide belges et européennes ; publier des rapports sur les questions de responsabilité ; déposer des demandes d'accès à l'information auprès des institutions belges et européennes ; et interviewer des experts et des responsables dans le cadre de leurs normes éditoriales.",
+    sourceBasis:
+      "Article 19 de la Déclaration universelle des droits de l'homme. Article 11 de la Charte des droits fondamentaux de l'UE (liberté d'expression et d'information). Article 25 de la Constitution belge (liberté de la presse). Règlement (CE) n° 1049/2001 de l'UE (accès du public aux documents).",
+    instructions: `1. Organisez votre documentation. Pour les sujets de responsabilité Belgique/UE, les documents utiles comprennent : les questions parlementaires belges officielles et les réponses du gouvernement ; les conclusions du Conseil des Affaires étrangères de l'UE ; les résolutions du Parlement européen ; les rapports belges et européens sur les exportations d'armes ; les données de financement humanitaire de DG ECHO ; les documents de la CIJ et de la CPI impliquant la Belgique ou l'UE ; et les déclarations de responsables belges ou européens. Classez par institution et par date.
+2. Identifiez les journalistes couvrant la politique étrangère européenne, la politique belge ou la justice internationale.
+3. Rédigez un résumé bref et factuel. Indiquez ce que montre la documentation, pourquoi elle importe maintenant et ce qui reste flou. Pas de prise de position ni d'informations privées.
+4. Respectez l'indépendance éditoriale du journaliste. Il ou elle peut ne pas donner suite — c'est une décision professionnelle.`,
+    templateBody: `Objet : Documentation publique — responsabilité Belgique/UE concernant [sujet spécifique, période]
+
+Chère [Nom du/de la journaliste / rédaction], / Cher [Nom du/de la journaliste / rédaction],
+
+Je partage une documentation publique concernant [brève description factuelle — ex. "les licences d'exportation d'armes et les mesures d'exécution de la Belgique, 2025–2026"].
+
+Les documents joints comprennent :
+- [Type, source, date, URL]
+- [Type, source, date, URL]
+- [Type, source, date, URL]
+
+Principaux points que la documentation étaye :
+- [Point factuel 1, avec référence de source]
+- [Point factuel 2, avec référence de source]
+- [Point factuel 3, avec référence de source]
+
+Toutes les sources sont publiquement disponibles. J'ai inclus les URL et les dates de consultation. [Facultatif : « Je ne suis pas un représentant d'une organisation citée — je partage une documentation publique en tant que [chercheur·se / citoyen·ne concerné·e / etc.]. »]
+
+Merci pour votre travail sur ces questions.
+
+[Votre nom]
+[Facultatif : moyen de contact si vous souhaitez être joint·e]`,
+    templateReviewStatus: "draft",
+    jurisdictionReviewStatus: "draft",
+    languageReviewStatus: "draft",
+    language: "fr",
+    translationStatus: "draft",
+    translationOf: "journalist-briefing-be-en",
+    contentStatus: "review_pending",
+    sourceIds: [
+      "belgium-chamber",
+      "eu-parliament",
+      "belgium-fps-foreign-affairs",
+    ],
+    lastChangedDate: "2026-07-28",
+    version: 1,
+    relatedRoutes: [
+      "/countries/belgium",
+      "/institutions/european-union",
+      "/gaza-dossier",
+      "/methodology",
+    ],
+    warnings: [
+      "Ne partagez que de la documentation publique et vérifiée. Ne partagez pas d'informations privées, classifiées ou sensibles.",
+      "Ne partagez pas de contenu graphique sans avertissement. Les journalistes ont leurs propres protocoles de sécurité.",
+      "Ce n'est pas un canal de lancement d'alerte. Pour une soumission sécurisée, utilisez les canaux sécurisés du journaliste.",
+      "Aucune information n'est envoyée via cette plateforme. Vous envoyez le matériel vous-même.",
+      "Les journalistes reçoivent de nombreuses informations. Ils peuvent ne pas donner suite. N'envoyez pas de messages non sollicités répétés.",
+      "Ce modèle est une traduction provisoire et n'a pas été examiné par un·e expert·e du droit des médias ou de la sécurité journalistique.",
+    ],
+    active: true,
+    correctionUrl: "/corrections",
+  },
+  {
+    id: "correction-source-be-nl",
+    slug: "correction-source-be-nl",
+    title: "[NL] Een correctie of publieke bron indienen — België- en EU-verantwoordingsarchieven",
+    actionType: "submit_correction",
+    jurisdiction: "Platformbreed — België- en EU-focus tijdens de statische bèta",
+    intendedAudience:
+      "Iedereen — inwoners van België en de EU, onderzoekers, institutioneel personeel, journalisten en maatschappelijk werkers — die een fout, verouderde informatie of een ontbrekende publieke bron heeft vastgesteld op de België- of EU-verantwoordingspagina's van het platform, en die een correctie of bronvoorstel wenst in te dienen.",
+    purpose:
+      "België- en EU-verantwoordingsarchieven zijn complex: zij omvatten meerdere bestuursniveaus (federale, regionale, gemeenschaps-, EU-), snel evoluerende beleidsstandpunten en meertalige officiële documentatie. Fouten en omissies kunnen voorkomen. Correcties en bronvoorstellen van mensen die vertrouwd zijn met het Belgische en EU-bestuur zijn bijzonder waardevol tijdens de statische bèta.",
+    policyAsk:
+      "De platformbeheerders kunnen: ingediende correcties en bronvoorstellen toetsen aan de methodologie; België- en EU-verantwoordingsarchieven bijwerken met beoordeelde correcties; correct gedocumenteerde bronnen toevoegen aan het bronregister; en grote correcties openbaar loggen.",
+    sourceBasis:
+      "Platformmethodologie op /methodology. Correctieproces op /corrections. Bijdragegids in de GitHub-repository. Belgische en EU-officiële websites, parlementaire archieven en institutionele publicaties als bronmateriaal.",
+    instructions: `1. Lees de correctierichtlijnen op /corrections vóór indiening.
+2. Identificeer de specifieke pagina, sectie of het record dat correctie of bronvermelding nodig heeft.
+3. Verstrek: de specifieke bewering of het datapunt, waarom het onjuist of verouderd is, de juiste informatie en een publieke bron die de correctie ondersteunt.
+4. Voor België-specifieke records: verstrek indien mogelijk de bron in de oorspronkelijke taal (Nederlands, Frans of Duits) met een korte Engelse samenvatting.
+5. Voor EU-institutionele records: verwijs naar het specifieke document, de resolutie of het besluit met het officiële referentienummer indien beschikbaar.
+6. Dien in via GitHub Issues (voorkeur) of via de projectcontactroute op de Bijdragen-pagina.
+7. Verstuur geen gevoelige persoonlijke informatie, geclassificeerd materiaal of privécorrespondentie via openbare kanalen.`,
+    templateReviewStatus: "not_applicable",
+    jurisdictionReviewStatus: "not_applicable",
+    languageReviewStatus: "draft",
+    language: "nl",
+    translationStatus: "draft",
+    translationOf: "correction-source-be-en",
+    contentStatus: "review_pending",
+    sourceIds: [],
+    lastChangedDate: "2026-07-28",
+    version: 1,
+    relatedRoutes: [
+      "/corrections",
+      "/methodology",
+      "/contribute",
+      "/countries/belgium",
+      "/institutions/european-union",
+    ],
+    warnings: [
+      "Verstuur geen gevoelige getuigeninformatie, privégegevens of vertrouwelijk materiaal via openbare GitHub-issues.",
+      "Correcties worden verwerkt tijdens de statische bèta, maar kunnen vertraging oplopen. Een antwoord kan één tot vier weken duren.",
+      "Niet elke correctie of bronvoorstel wordt onmiddellijk toegepast — sommige vereisen deskundige toetsing of kruisverwijzing naar primaire bronnen.",
+      "Als u niet zeker weet of informatie openbaar is, verstuur deze dan niet. Gebruik bij twijfel de projectcontactroute in plaats van een openbaar GitHub-issue.",
+    ],
+    active: true,
+    correctionUrl: "/corrections",
+  },
+  {
+    id: "correction-source-be-fr",
+    slug: "correction-source-be-fr",
+    title: "[FR] Soumettre une correction ou une source publique — archives de responsabilité Belgique/UE",
+    actionType: "submit_correction",
+    jurisdiction: "Plateforme entière — focus Belgique/UE pendant la bêta statique",
+    intendedAudience:
+      "Toute personne — résidents belges et européens, chercheurs, personnel institutionnel, journalistes et travailleurs de la société civile — ayant identifié une erreur, une information obsolète ou une source publique manquante sur les pages de responsabilité Belgique/UE de la plateforme et souhaitant soumettre une correction ou une suggestion de source.",
+    purpose:
+      "Les archives de responsabilité Belgique/UE sont complexes : elles impliquent plusieurs niveaux de gouvernement (fédéral, régional, communautaire, UE), des positions politiques en évolution rapide et une documentation officielle multilingue. Des erreurs et des omissions peuvent survenir. Les corrections et suggestions de sources de personnes familières avec la gouvernance belge et européenne sont particulièrement précieuses pendant la bêta statique.",
+    policyAsk:
+      "Les responsables de la plateforme peuvent : examiner les corrections et suggestions de sources soumises par rapport à la méthodologie ; mettre à jour les archives de responsabilité Belgique/UE avec des corrections examinées ; ajouter des sources correctement documentées au registre des sources ; et consigner publiquement les corrections majeures.",
+    sourceBasis:
+      "Méthodologie de la plateforme sur /methodology. Processus de correction sur /corrections. Guide de contribution dans le dépôt GitHub. Sites officiels belges et européens, archives parlementaires et publications institutionnelles comme matériel source.",
+    instructions: `1. Lisez les directives de correction sur /corrections avant de soumettre.
+2. Identifiez la page, la section ou le dossier spécifique nécessitant une correction ou une source.
+3. Fournissez : l'affirmation ou la donnée spécifique, pourquoi elle est inexacte ou obsolète, l'information correcte et une source publique qui étaye la correction.
+4. Pour les dossiers spécifiques à la Belgique : fournissez si possible la source dans sa langue d'origine (néerlandais, français ou allemand) avec un bref résumé en anglais.
+5. Pour les dossiers institutionnels de l'UE : référencez le document, la résolution ou la décision spécifique avec son numéro de référence officiel si disponible.
+6. Soumettez via GitHub Issues (préféré) ou la route de contact du projet sur la page Contribuer.
+7. Ne soumettez pas d'informations personnelles sensibles, de matériel classifié ou de correspondance privée via des canaux publics.`,
+    templateReviewStatus: "not_applicable",
+    jurisdictionReviewStatus: "not_applicable",
+    languageReviewStatus: "draft",
+    language: "fr",
+    translationStatus: "draft",
+    translationOf: "correction-source-be-en",
+    contentStatus: "review_pending",
+    sourceIds: [],
+    lastChangedDate: "2026-07-28",
+    version: 1,
+    relatedRoutes: [
+      "/corrections",
+      "/methodology",
+      "/contribute",
+      "/countries/belgium",
+      "/institutions/european-union",
+    ],
+    warnings: [
+      "Ne soumettez pas d'informations sensibles de témoins, de données personnelles privées ou de matériel confidentiel via des issues GitHub publiques.",
+      "Les corrections sont traitées pendant la bêta statique mais peuvent être retardées. Une réponse peut prendre une à quatre semaines.",
+      "Toutes les corrections ou suggestions ne seront pas appliquées immédiatement — certaines exigent un examen expert ou une recoupement avec les sources primaires.",
+      "Si vous n'êtes pas certain·e que l'information est publique, ne la soumettez pas. En cas de doute, utilisez la route de contact du projet plutôt qu'une issue GitHub publique.",
+    ],
+    active: true,
+    correctionUrl: "/corrections",
+  },
+  {
+    id: "volunteer-reviewer-be-nl",
+    slug: "volunteer-reviewer-be-nl",
+    title: "[NL] Vrijwilliger worden als reviewer — België- en EU-verantwoordingsexpertise",
+    actionType: "volunteer",
+    jurisdiction: "Elk land — expertise in Belgisch of EU-bestuur, recht of beleid vereist",
+    intendedAudience:
+      "Mensen met expertise in het Belgische federale of regionale bestuur, EU-institutioneel recht en beleid, internationaal humanitair recht, wapenuitvoercontrole, parlementaire procedure of humanitaire coördinatie — die hun expertise willen inzetten om de België- en EU-verantwoordingsarchieven van het platform te beoordelen.",
+    purpose:
+      "Accountability Atlas heeft reviewers nodig met specifieke België- en EU-expertise. Het Belgische bestuur omvat complexe federale-regionale bevoegdheidsverdelingen. De EU-besluitvorming omvat meerdere instellingen met verschillende procedures. Reviewers die deze systemen begrijpen, kunnen helpen ervoor te zorgen dat de België- en EU-archieven accuraat, actueel en correct afgestemd zijn op elk bestuursniveau.",
+    policyAsk:
+      "Vrijwillige reviewers kunnen: Belgische landverantwoordingsarchieven beoordelen op juistheid (federale, regionale en gemeenschapsniveau); EU-institutionele archieven verifiëren op procedurele correctheid; controleren dat wapenuitvoer-, humanitaire hulp- en juridische samenwerkingsrecords acties correct toeschrijven aan het bevoegde bestuursniveau; Nederlandse en Franse vertalingen van actiesjablonen beoordelen; en verouderde of achterhaalde beleidsstandpunten signaleren.",
+    sourceBasis:
+      "Platformmethodologie op /methodology. Contentreviewworkflow op docs/content-review-workflow.md. Bijdragegids in de GitHub-repository. Opensourcelicentie (AGPL-3.0-or-later).",
+    instructions: `1. Lees de Bijdragen-pagina op /contribute voor rolomschrijvingen en voorwaarden.
+2. Lees de contentreviewworkflow op docs/content-review-workflow.md in de repository.
+3. Bekijk de België- en EU-verantwoordingspagina's op het platform om de huidige reikwijdte en structuur te begrijpen: /countries/belgium en /institutions/european-union.
+4. Als u een domein identificeert waar uw expertise kan helpen — bijvoorbeeld Vlaamse wapenuitvoervergunning, Waalse parlementaire procedure, besluitvorming van de Raad Buitenlandse Zaken van de EU of Belgische ontwikkelingssamenwerking — vermeld dit specifiek wanneer u zich voorstelt.
+5. Stel u voor op GitHub door een issue te openen of deel te nemen aan een bijdragediscussie. Vermeld uw expertisegebied, uw interesse in het project en wat voor review u kunt bieden.
+6. Elke bijdrage wordt beoordeeld. Begin met één gerichte review — een enkele pagina, enkele records of één vertaalcontrole — in plaats van alles tegelijk te willen beoordelen.`,
+    templateReviewStatus: "not_applicable",
+    jurisdictionReviewStatus: "not_applicable",
+    languageReviewStatus: "draft",
+    language: "nl",
+    translationStatus: "draft",
+    translationOf: "volunteer-reviewer-be-en",
+    contentStatus: "review_pending",
+    sourceIds: [],
+    lastChangedDate: "2026-07-28",
+    version: 1,
+    relatedRoutes: [
+      "/contribute",
+      "/countries/belgium",
+      "/institutions/european-union",
+      "/methodology",
+    ],
+    warnings: [
+      "Lees de Gedragscode en de Bijdragegids vóór u bijdraagt.",
+      "Reviewers worden geïdentificeerd per rol, niet per naam, tenzij zij uitdrukkelijk instemmen met publieke naamsvermelding.",
+      "Deel geen gevoelige of vertrouwelijke informatie in openbare bijdragediscussies.",
+      "Dit is een vrijwilligersrol. Reviewers zijn geen projectmedewerkers en vertegenwoordigen het project niet zonder toestemming.",
+      "Als u werkzaam bent bij of verbonden aan een instelling waarvan de standpunten op het platform worden gevolgd, vermeld dit dan wanneer u zich aanmeldt — het is geen belemmering, maar transparantie is belangrijk.",
+    ],
+    active: true,
+    correctionUrl: "/corrections",
+  },
+  {
+    id: "volunteer-reviewer-be-fr",
+    slug: "volunteer-reviewer-be-fr",
+    title: "[FR] Devenir bénévole comme relecteur·rice — expertise Belgique/UE en matière de responsabilité",
+    actionType: "volunteer",
+    jurisdiction: "Tout pays — expertise requise en gouvernance, droit ou politique belge ou européenne",
+    intendedAudience:
+      "Personnes ayant une expertise en gouvernance fédérale ou régionale belge, en droit et politique institutionnels de l'UE, en droit international humanitaire, en contrôle des exportations d'armes, en procédure parlementaire ou en coordination humanitaire — souhaitant mettre leur expertise au service de l'examen des archives de responsabilité Belgique/UE de la plateforme.",
+    purpose:
+      "Accountability Atlas a besoin de relecteurs·rices possédant une expertise spécifique Belgique/UE. La gouvernance belge implique des répartitions de compétences fédérales-régionales complexes. La prise de décision de l'UE implique plusieurs institutions aux procédures distinctes. Les relecteurs·rices qui comprennent ces systèmes peuvent aider à garantir que les archives Belgique/UE sont exactes, actuelles et correctement rattachées à chaque niveau de gouvernement.",
+    policyAsk:
+      "Les relecteurs·rices bénévoles peuvent : examiner l'exactitude des archives de responsabilité du pays belge (niveaux fédéral, régional et communautaire) ; vérifier l'exactitude procédurale des archives institutionnelles de l'UE ; vérifier que les archives sur les exportations d'armes, l'aide humanitaire et la coopération juridique attribuent correctement les actions au niveau de gouvernement compétent ; examiner les traductions néerlandaises et françaises des modèles d'action ; et signaler les positions politiques obsolètes.",
+    sourceBasis:
+      "Méthodologie de la plateforme sur /methodology. Workflow de relecture de contenu sur docs/content-review-workflow.md. Guide de contribution dans le dépôt GitHub. Licence open source (AGPL-3.0-or-later).",
+    instructions: `1. Lisez la page Contribuer sur /contribute pour les descriptions de rôles et les conditions préalables.
+2. Lisez le workflow de relecture de contenu sur docs/content-review-workflow.md dans le dépôt.
+3. Examinez les pages de responsabilité Belgique/UE de la plateforme pour comprendre la portée et la structure actuelles : /countries/belgium et /institutions/european-union.
+4. Si vous identifiez un domaine où votre expertise peut aider — par exemple les licences d'exportation d'armes flamandes, la procédure parlementaire wallonne, la prise de décision du Conseil des Affaires étrangères de l'UE ou la coopération au développement belge — mentionnez-le spécifiquement lorsque vous vous présentez.
+5. Présentez-vous sur GitHub en ouvrant une issue ou en rejoignant une discussion de contribution. Indiquez votre domaine d'expertise, votre intérêt pour le projet et le type de relecture que vous pouvez offrir.
+6. Chaque contribution est examinée. Commencez par une relecture ciblée — une seule page, quelques dossiers ou une vérification de traduction — plutôt que de proposer de tout examiner à la fois.`,
+    templateReviewStatus: "not_applicable",
+    jurisdictionReviewStatus: "not_applicable",
+    languageReviewStatus: "draft",
+    language: "fr",
+    translationStatus: "draft",
+    translationOf: "volunteer-reviewer-be-en",
+    contentStatus: "review_pending",
+    sourceIds: [],
+    lastChangedDate: "2026-07-28",
+    version: 1,
+    relatedRoutes: [
+      "/contribute",
+      "/countries/belgium",
+      "/institutions/european-union",
+      "/methodology",
+    ],
+    warnings: [
+      "Lisez le Code de conduite et le Guide de contribution avant de contribuer.",
+      "Les relecteurs·rices sont identifié·e·s par leur rôle, pas par leur nom, sauf consentement explicite à l'attribution publique.",
+      "Ne partagez pas d'informations sensibles ou confidentielles dans les discussions publiques de contribution.",
+      "C'est un rôle bénévole. Les relecteurs·rices ne sont pas membres du personnel du projet et ne représentent pas le projet sans autorisation.",
+      "Si vous êtes employé·e ou affilié·e à une institution dont les positions sont suivies sur la plateforme, veuillez le signaler en vous portant volontaire — ce n'est pas un obstacle, mais la transparence est importante.",
+    ],
+    active: true,
+    correctionUrl: "/corrections",
+  },
 ];
 
 /** Convenience: active templates only. */

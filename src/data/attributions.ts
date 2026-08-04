@@ -72,6 +72,44 @@ export const attributionRecords: AttributionRecord[] = [
     accessedAt: "2026-07-08",
     status: "complete",
   },
+  {
+    id: "hero-gaza-displacement-webp",
+    title:
+      "Forced Displacement of Gaza Strip Residents During the Gaza-Israel War 23-25 (WebP performance variant)",
+    author: "Jaber Jehad Badwan",
+    sourceName: "Wikimedia Commons",
+    sourceUrl: "",
+    licenseName: "CC BY-SA 4.0",
+    licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0/",
+    whereUsed: "Hero section background image on the landing page (WebP variant)",
+    filePath: "src/assets/images/hero-gaza-displacement.webp",
+    modifications:
+      "Converted from the JPG master to WebP for performance; same crop and CSS overlay as the JPG variant",
+    dateAdded: "2026-07-28",
+    accessedAt: "2026-07-28",
+    status: "complete",
+    statusNote:
+      "WebP performance variant of the existing hero image. Same author, source, and license as the JPG master.",
+  },
+  {
+    id: "destruction-of-gaza-dossier-library",
+    title: "Destruction of Gaza 1 (Dossier Library use)",
+    author: "gloucester2gaza",
+    sourceName: "Flickr / Wikimedia Commons",
+    sourceUrl:
+      "https://commons.wikimedia.org/wiki/File:Destruction_of_Gaza_1.jpg",
+    licenseName: "CC BY-SA 2.0",
+    licenseUrl: "https://creativecommons.org/licenses/by-sa/2.0/",
+    whereUsed: "Dossier Library index and Gaza Accountability five-page memo preview card",
+    filePath: "src/assets/images/Destruction_of_Gaza_1.jpg",
+    modifications:
+      "Cropped, compressed, dark overlay applied in UI for text readability",
+    dateAdded: "2026-07-28",
+    accessedAt: "2026-07-28",
+    status: "complete",
+    statusNote:
+      "Reuse of the existing image asset on the Dossier Library and the Gaza Accountability five-page memo preview card. Attribution unchanged.",
+  },
 ];
 
 /** Convenience lookup by record id. */
