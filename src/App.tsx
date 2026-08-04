@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect } from "react";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { HashRouter, Route, Routes, useLocation } from "react-router-dom";
 import { PageShell } from "./components/layout/PageShell";
 import { DocumentHead } from "./components/ui/DocumentHead";
 import { RouteLoadingFallback } from "./components/ui/RouteLoadingFallback";
@@ -106,7 +106,7 @@ export default function App() {
   return (
     <DisplayPreferenceProvider>
     <LocaleProvider>
-      <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+      <HashRouter>
         <RouteMeta />
         <ScrollToTop />
         <PageShell>
