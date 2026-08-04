@@ -26,3 +26,17 @@ Thumbs.db
 # Superpowers
 .superpowers/
 docs/superpowers/
+
+# Internal working documents — kept local, not published to the public repo
+# (M7-06 launch shareability review). See .superpowers/.../shareability-review.md
+/IMPLEMENTATION-GUIDE.md
+/AI-INTELLIGENCE-PRD.md
+/AI_Intelligence_Architecture_Addendum.md
+/PROMPT-PACK-v2.md
+/src/accountability-atlas-landing-page-implementation-plan.md
+/docs/Accountability-Atlas-Current-Build-and-Launch-Plan.md
+/docs/overnight-implementation.md
+/docs/implementation-mode-prompt.md
+/docs/CURRENT-IMPLEMENTATION-STATE.md
+/docs/first-sprint-backlog.md
+/docs/review-packets/
