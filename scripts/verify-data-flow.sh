@@ -15,12 +15,11 @@
 # Usage:
 #   scripts/verify-data-flow.sh
 #
-# Exit codes:
+# Exit codes (bitmask — multiple failures accumulate):
 #   0 — all checks passed
-#   1 — typecheck failed
 #   2 — contract verification failed
-#   3 — integration test failed
-#   4 — tooling missing (npm/npx)
+#   4 — integration test failed
+#   8 — tooling missing (npm/npx)
 #
 
 set -uo pipefail
@@ -28,7 +27,13 @@ set -uo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
+# Failure bitmask — each step contributes its own bit so a later failure does
+# not overwrite an earlier one. `npm run typecheck` is a reporting step and
+# does not contribute.
 FAILURES=0
+FLAG_CONTRACT=2
+FLAG_INTEGRATION=4
+FLAG_TOOLING=8
 
 say()  { printf '\033[1;34m%s\033[0m\n' "$*"; }
 ok()   { printf '\033[1;32m  ✔ %s\033[0m\n' "$*"; }
@@ -37,8 +42,8 @@ err()  { printf '\033[1;31m  ✖ %s\033[0m\n' "$*"; }
 
 # ── Tooling check ─────────────────────────────────────────────────────────────
 
-command -v npm >/dev/null 2>&1 || { err "npm is required but was not found."; exit 4; }
-command -v npx >/dev/null 2>&1 || { err "npx is required but was not found."; exit 4; }
+command -v npm >/dev/null 2>&1 || { err "npm is required but was not found."; exit "$FLAG_TOOLING"; }
+command -v npx >/dev/null 2>&1 || { err "npx is required but was not found."; exit "$FLAG_TOOLING"; }
 
 echo
 say "Accountability Atlas — data-flow verification"
@@ -78,7 +83,7 @@ else
   echo
   cat /tmp/aa-dataflow.log
   echo
-  if [ "$FAILURES" -eq 0 ]; then FAILURES=2; fi
+  FAILURES=$((FAILURES | FLAG_CONTRACT))
 fi
 
 # ── 3. Full-system integration test ───────────────────────────────────────────
@@ -93,7 +98,7 @@ else
   echo
   tail -n 60 /tmp/aa-fullsystem.log
   echo
-  if [ "$FAILURES" -eq 0 ]; then FAILURES=3; fi
+  FAILURES=$((FAILURES | FLAG_INTEGRATION))
 fi
 
 # ── Summary ───────────────────────────────────────────────────────────────────
@@ -104,5 +109,7 @@ if [ "$FAILURES" -eq 0 ]; then
   exit 0
 else
   err "DATA-FLOW VERIFICATION FAILED (exit ${FAILURES})"
+  if [ $((FAILURES & FLAG_CONTRACT)) -ne 0 ]; then err "  - contract checks failed"; fi
+  if [ $((FAILURES & FLAG_INTEGRATION)) -ne 0 ]; then err "  - integration test failed"; fi
   exit "$FAILURES"
 fi

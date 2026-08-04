@@ -16,11 +16,9 @@ import type { ReviewItem, ReviewerProfile, ReviewType } from "../src/lib/review/
 import type { PublishState, PublishAction } from "../src/lib/workflow/types";
 import type { SearchableRecord, SearchableRecordType } from "../src/lib/search/types";
 import type { SafeCoordinate, MapFeature, LocationPrecision } from "../src/lib/map/types";
-import type { GraphNode, GraphEdge } from "../src/lib/graph/types";
 import type { SourceRecord, VerificationLevel } from "../src/types/content";
 import { VALID_TRANSITIONS, isValidTransition, nextState } from "../src/lib/workflow/types";
 import { EDGE_TYPE_ALLOWED_PAIRS, NODE_TYPE_LABELS } from "../src/lib/graph/types";
-import type { SafeCoordinate, MapFeature, LocationPrecision } from "../src/lib/map/types";
 
 // Note: `safeCoordinate()` itself is exercised under Vite in the integration
 // tests (fullSystem.test.ts, mapDataSafety.test.ts). This script validates the
@@ -300,6 +298,7 @@ const stageOrder = [
   "source registry → collector",
   "collector → AI",
   "AI → review queue",
+  "review queue",
   "review → publish",
   "publish → API/search",
   "publish → map",
