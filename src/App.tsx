@@ -106,7 +106,7 @@ export default function App() {
   return (
     <DisplayPreferenceProvider>
     <LocaleProvider>
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
         <RouteMeta />
         <ScrollToTop />
         <PageShell>
