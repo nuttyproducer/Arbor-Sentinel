@@ -142,7 +142,7 @@ export const ROLES: Record<Role, RoleDefinition> = {
     role: 'admin',
     label: 'Admin',
     description: 'Full system access — all permissions',
-    requires2FA: true,
+    requires2FA: false, // TODO: re-enable after 2FA setup is complete
     permissions: [
       'content:read',
       'content:read_draft',
