@@ -31,6 +31,11 @@ enabled = true
 [studio]
 port = 54323
 
+[inbucket]
+port = 54324
+smtp_port = 54325
+pop3_port = 54326
+
 [storage]
 file_size_limit = "50MiB"
 
