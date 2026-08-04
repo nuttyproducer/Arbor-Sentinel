@@ -15,10 +15,10 @@ Thumbs.db
 # Vite cache
 .vite/
 
-# Environment
+# Environment — ignore ALL env files except the committed template
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
 
 # TypeScript
 *.tsbuildinfo
