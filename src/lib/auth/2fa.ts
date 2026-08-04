@@ -82,7 +82,7 @@ function generateRandomBytes(length: number): Uint8Array {
 
 async function generateTOTP(secretBytes: Uint8Array, timestamp?: number): Promise<string> {
   const time = timestamp ?? Math.floor(Date.now() / 1000);
-  const counter = Math.floor(time / TOTP_PERIOD);
+  let counter = Math.floor(time / TOTP_PERIOD);
 
   // Create counter buffer (8 bytes, big-endian)
   const counterBytes = new Uint8Array(8);
