@@ -17,6 +17,7 @@
     "@fontsource/ibm-plex-mono": "^5.2.7",
     "@fontsource/ibm-plex-serif": "^5.2.7",
     "@fontsource/inter": "^5.2.8",
+    "@supabase/supabase-js": "^2.112.0",
     "cytoscape": "^3.34.0",
     "framer-motion": "^12.7.0",
     "i18next": "^26.3.6",
