@@ -9,10 +9,9 @@ import { DisplayPreferenceProvider } from "./contexts/DisplayPreference";
 // Import i18n config to ensure initialization before first render
 import "./i18n/config";
 
-// ── Eager-loaded pages (critical for first paint / error handling) ──────────
+// ── Eager-loaded pages (critical for first paint) ───────────────────────────
 import { HomePage } from "./pages/HomePage";
-import { NotFoundPage } from "./pages/NotFoundPage";
-import { AdminShell } from "./components/admin/AdminShell";
+// Static data used as props by lazy routes — small, safe to keep in the entry
 import { graphNodes, graphEdges } from "./data/graphData";
 import { CONTENT_TYPES } from "./pages/admin/contentConfig";
 
@@ -20,6 +19,8 @@ import { CONTENT_TYPES } from "./pages/admin/contentConfig";
 // Pages with default exports: import directly.
 // Pages with named exports: wrap via .then(m => ({ default: m.Name })).
 
+const NotFoundPage = lazy(() => import("./pages/NotFoundPage").then(m => ({ default: m.NotFoundPage })));
+const AdminShell = lazy(() => import("./components/admin/AdminShell").then(m => ({ default: m.AdminShell })));
 const MethodologyPage = lazy(() => import("./pages/MethodologyPage").then(m => ({ default: m.MethodologyPage })));
 const ContributePage = lazy(() => import("./pages/ContributePage").then(m => ({ default: m.ContributePage })));
 const ChangelogPage = lazy(() => import("./pages/ChangelogPage").then(m => ({ default: m.ChangelogPage })));

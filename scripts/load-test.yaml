@@ -1,0 +1,69 @@
+# ============================================================================
+# Accountability Atlas — k6 Load Test Configuration
+# ============================================================================
+# Targets (M7-04 acceptance criteria):
+#   home page   < 2 s   (p95)
+#   API         < 500 ms (p95)
+#   map         < 3 s   (p95)
+#   capacity:   1000 concurrent users
+#
+# Scenarios sum to 1000 VUs: home (400) + api (400) + map (200).
+#
+# Usage:
+#   1. Point BASE_URL at the staging/isolated environment (never production).
+#      k6 run --config scripts/load-test.yaml --env BASE_URL=https://staging.example.com scripts/load-test.js
+#   2. The companion JS script (scripts/load-test.js) exports homePage(),
+#      apiRequests(), and mapPage() which perform the HTTP requests below.
+#
+# Guardrails:
+#   - Target staging or an isolated environment, never production.
+#   - Run from a machine/region representative of real users.
+#   - Run on a schedule (e.g. pre-release) — not ad-hoc during peak load.
+#
+# Last reviewed: 2026-08-04 — M7-04 Performance Optimization
+# ============================================================================
+
+# Base URL is read from the k6 env var BASE_URL in the companion JS script.
+# scenario:
+#   constant-vus:   fixed concurrency for the full duration
+#   exec:           exported function in scripts/load-test.js
+#   tags:           applied to every request inside the scenario so
+#                   thresholds can target each flow independently
+scenarios:
+  home_page:
+    executor: constant-vus
+    vus: 400
+    duration: 5m
+    exec: homePage
+    tags:
+      scenario: home
+  api:
+    executor: constant-vus
+    vus: 400
+    duration: 5m
+    exec: apiRequests
+    tags:
+      scenario: api
+  map:
+    executor: constant-vus
+    vus: 200
+    duration: 5m
+    exec: mapPage
+    tags:
+      scenario: map
+
+# Thresholds — fail the run when a budget is exceeded.
+# The {scenario:...} tag filter lets each flow enforce its own SLO.
+thresholds:
+  http_req_duration:
+    - "p(95)<2000"                              # home default (and overall)
+    - "p(95)<500{scenario:api}"                 # API SLO
+    - "p(95)<3000{scenario:map}"                # map SLO
+  http_req_failed:
+    - "rate<0.01"                               # <1% error rate
+  iteration_duration:
+    - "p(95)<5000"                              # guard against slow iterations
+
+# Consistent hashing keeps VUs on a stable distribution across instances.
+# (Optional — enable when running distributed in the cloud.)
+#executionSegment: "0:1"

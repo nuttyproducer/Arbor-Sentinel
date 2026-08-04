@@ -187,3 +187,13 @@ export async function updatePassword(newPassword: string): Promise<void> {
     throw new Error(`Password update failed: ${error.message}`);
   }
 }
+
+// ── Sign out ─────────────────────────────────────────────────────────────────
+
+export async function signOut(): Promise<void> {
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    throw new Error(`Sign out failed: ${error.message}`);
+  }
+}
