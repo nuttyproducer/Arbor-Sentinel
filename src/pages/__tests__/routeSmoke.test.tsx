@@ -20,6 +20,9 @@ import DossiersPage from "../DossiersPage";
 import DossierDetailPage from "../DossierDetailPage";
 import SearchPage from "../SearchPage";
 import MapPage from "../MapPage";
+import { GraphExplorerPage } from "../explore/GraphExplorerPage";
+import { EntityDetailPage } from "../explore/EntityDetailPage";
+import { graphNodes, graphEdges } from "../../data/graphData";
 
 // Mock framer-motion — jsdom doesn't support animation APIs.
 // Components using Reveal will render children without animation.
@@ -42,6 +45,40 @@ vi.mock("framer-motion", () => ({
   useTransform: () => 0,
   useReducedMotion: () => true,
 }));
+
+// Mock cytoscape — jsdom has no canvas/DOM layout. Used by GraphExplorer,
+// which renders inside GraphExplorerPage and EntityDetailPage.
+vi.mock("cytoscape", () => {
+  const mockCy = {
+    on: vi.fn().mockReturnThis(),
+    destroy: vi.fn(),
+    layout: vi.fn(() => ({ run: vi.fn() })),
+    elements: vi.fn(() => ({ style: vi.fn().mockReturnThis() })),
+    nodes: vi.fn(() => ({
+      forEach: vi.fn(),
+      addClass: vi.fn().mockReturnThis(),
+      removeClass: vi.fn().mockReturnThis(),
+      filter: vi.fn(() => ({ removeClass: vi.fn(), addClass: vi.fn() })),
+      style: vi.fn().mockReturnThis(),
+    })),
+    edges: vi.fn(() => ({
+      forEach: vi.fn(),
+      addClass: vi.fn().mockReturnThis(),
+      removeClass: vi.fn().mockReturnThis(),
+      style: vi.fn().mockReturnThis(),
+      filter: vi.fn(() => ({ removeClass: vi.fn(), addClass: vi.fn() })),
+    })),
+    getElementById: vi.fn(() => ({ length: 0, emit: vi.fn() })),
+    fit: vi.fn(),
+    center: vi.fn(),
+    zoom: vi.fn(() => 1),
+    style: vi.fn(),
+  };
+  return {
+    default: vi.fn(() => mockCy),
+    __esModule: true,
+  };
+});
 
 // Mock maplibre-gl — jsdom has no WebGL/canvas context. The Map mock fires the
 // "load" event synchronously so MapContainer exposes a map instance, and the
@@ -307,6 +344,48 @@ describe("Route rendering smoke tests", () => {
     ).toBeInTheDocument();
     expect(
       screen.getByLabelText("Map filters"),
+    ).toBeInTheDocument();
+  });
+
+  it("renders GraphExplorerPage with seeded graph data", () => {
+    render(
+      <MemoryRouter initialEntries={["/explore/graph"]}>
+        <Routes>
+          <Route path="/explore/graph" element={<GraphExplorerPage nodes={graphNodes} edges={graphEdges} />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+    expect(
+      screen.getByRole("heading", { name: "Knowledge Graph Explorer" }),
+    ).toBeInTheDocument();
+  });
+
+  it("renders EntityDetailPage for a known entity", () => {
+    const firstNode = graphNodes[0];
+    render(
+      <MemoryRouter initialEntries={[`/explore/entity/${encodeURIComponent(firstNode.id)}`]}>
+        <Routes>
+          <Route path="/explore/entity/:entityId" element={<EntityDetailPage nodes={graphNodes} edges={graphEdges} />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+    // The entity page renders the entity label as its primary heading.
+    expect(
+      screen.getByRole("heading", { name: firstNode.label }),
+    ).toBeInTheDocument();
+    expect(screen.queryByText("Entity Not Found")).not.toBeInTheDocument();
+  });
+
+  it("renders EntityDetailPage not-found state for an unknown entity", () => {
+    render(
+      <MemoryRouter initialEntries={["/explore/entity/nonexistent"]}>
+        <Routes>
+          <Route path="/explore/entity/:entityId" element={<EntityDetailPage nodes={graphNodes} edges={graphEdges} />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+    expect(
+      screen.getByText("Entity Not Found"),
     ).toBeInTheDocument();
   });
 });

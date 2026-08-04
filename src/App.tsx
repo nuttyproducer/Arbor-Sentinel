@@ -12,6 +12,9 @@ import "./i18n/config";
 // ── Eager-loaded pages (critical for first paint / error handling) ──────────
 import { HomePage } from "./pages/HomePage";
 import { NotFoundPage } from "./pages/NotFoundPage";
+import { AdminShell } from "./components/admin/AdminShell";
+import { graphNodes, graphEdges } from "./data/graphData";
+import { CONTENT_TYPES } from "./pages/admin/contentConfig";
 
 // ── Lazy-loaded routes — split at the page level ────────────────────────────
 // Pages with default exports: import directly.
@@ -49,6 +52,23 @@ const PipelineDashboard = lazy(() => import("./pages/admin/PipelineDashboard"));
 const ReviewMetricsDashboard = lazy(() => import("./pages/admin/ReviewMetricsDashboard"));
 const DataQualityDashboard = lazy(() => import("./pages/admin/DataQualityDashboard"));
 const MapPage = lazy(() => import("./pages/MapPage"));
+const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard").then(m => ({ default: m.AdminDashboard })));
+const ContentList = lazy(() => import("./pages/admin/ContentList").then(m => ({ default: m.ContentList })));
+const ContentEditor = lazy(() => import("./pages/admin/ContentEditor").then(m => ({ default: m.ContentEditor })));
+const CorrectionQueuePage = lazy(() => import("./pages/admin/CorrectionQueuePage").then(m => ({ default: m.CorrectionQueuePage })));
+const ReviewQueuePage = lazy(() => import("./pages/admin/ReviewQueuePage").then(m => ({ default: m.ReviewQueuePage })));
+const EditorialAnalyticsPage = lazy(() => import("./pages/admin/EditorialAnalyticsPage").then(m => ({ default: m.EditorialAnalyticsPage })));
+const LoginPage = lazy(() => import("./pages/admin/LoginPage").then(m => ({ default: m.LoginPage })));
+const TwoFactorSetup = lazy(() => import("./pages/admin/TwoFactorSetup").then(m => ({ default: m.TwoFactorSetup })));
+const TwoFactorVerify = lazy(() => import("./pages/admin/TwoFactorVerify").then(m => ({ default: m.TwoFactorVerify })));
+const GraphExplorerPage = lazy(() => import("./pages/explore/GraphExplorerPage").then(m => ({ default: m.GraphExplorerPage })));
+const EntityDetailPage = lazy(() => import("./pages/explore/EntityDetailPage").then(m => ({ default: m.EntityDetailPage })));
+const CountryReviewPage = lazy(() => import("./pages/review/CountryReviewPage"));
+const EditorialReviewPage = lazy(() => import("./pages/review/EditorialReviewPage"));
+const InstitutionReviewPage = lazy(() => import("./pages/review/InstitutionReviewPage"));
+const LegalReviewPage = lazy(() => import("./pages/review/LegalReviewPage"));
+const TranslationReviewPage = lazy(() => import("./pages/review/TranslationReviewPage"));
+const CorrectionReviewPage = lazy(() => import("./pages/review/CorrectionReviewPage"));
 
 function RouteMeta() {
   const { pathname } = useLocation();
@@ -114,11 +134,64 @@ export default function App() {
           <Route path="/dossiers" element={<DossiersPage />} />
           <Route path="/dossiers/:slug" element={<DossierDetailPage />} />
           <Route path="/search" element={<SearchPage />} />
-          <Route path="/admin/monitoring" element={<MonitoringDashboard />} />
-          <Route path="/admin/pipeline" element={<PipelineDashboard />} />
-          <Route path="/admin/review-metrics" element={<ReviewMetricsDashboard />} />
-          <Route path="/admin/data-quality" element={<DataQualityDashboard />} />
           <Route path="/map" element={<MapPage />} />
+          <Route path="/explore/graph" element={<GraphExplorerPage nodes={graphNodes} edges={graphEdges} />} />
+          <Route path="/explore/entity/:entityId" element={<EntityDetailPage nodes={graphNodes} edges={graphEdges} />} />
+
+          {/* Admin auth entry points — outside AdminShell so the AuthGuard
+              redirect does not loop back through the guarded layout. */}
+          <Route path="/admin/login" element={<LoginPage />} />
+          <Route path="/admin/2fa/setup" element={<TwoFactorSetup />} />
+          <Route path="/admin/2fa/verify" element={<TwoFactorVerify />} />
+
+          {/* Admin layout — protected by AuthGuard via AdminShell. */}
+          <Route path="/admin" element={<AdminShell />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="monitoring" element={<MonitoringDashboard />} />
+            <Route path="pipeline" element={<PipelineDashboard />} />
+            <Route path="review-metrics" element={<ReviewMetricsDashboard />} />
+            <Route path="data-quality" element={<DataQualityDashboard />} />
+            <Route path="editorial-analytics" element={<EditorialAnalyticsPage />} />
+            <Route path="corrections" element={<CorrectionQueuePage />} />
+            <Route path="review-queue" element={<ReviewQueuePage />} />
+            <Route path="review/country/:id" element={<CountryReviewPage />} />
+            <Route path="review/editorial/:id" element={<EditorialReviewPage />} />
+            <Route path="review/institution/:id" element={<InstitutionReviewPage />} />
+            <Route path="review/legal/:id" element={<LegalReviewPage />} />
+            <Route path="review/translation/:id" element={<TranslationReviewPage />} />
+            <Route path="review/correction/:id" element={<CorrectionReviewPage />} />
+
+            {CONTENT_TYPES.map((config) => (
+              <Route key={config.contentType} path={config.listPath.replace("/admin/", "")}>
+                <Route index element={
+                  <ContentList
+                    contentType={config.contentType as never}
+                    title={config.title}
+                    newItemPath={`${config.listPath}/new`}
+                    columns={config.columns as never}
+                    statusFilter={config.statusFilter}
+                  />
+                } />
+                <Route path="new" element={
+                  <ContentEditor
+                    contentType={config.contentType as never}
+                    title={config.title}
+                    listPath={config.listPath}
+                    fields={config.fields}
+                  />
+                } />
+                <Route path=":id" element={
+                  <ContentEditor
+                    contentType={config.contentType as never}
+                    title={config.title}
+                    listPath={config.listPath}
+                    fields={config.fields}
+                  />
+                } />
+              </Route>
+            ))}
+          </Route>
+
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
         </Suspense>

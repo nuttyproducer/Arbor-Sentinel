@@ -353,6 +353,28 @@ export function getRouteMeta(pathname: string): RouteMeta {
     };
   }
 
+  // Knowledge graph explorer
+  if (key === "/explore/graph") {
+    return {
+      title: fullTitle("Knowledge Graph Explorer"),
+      description:
+        "Explore the Accountability Atlas knowledge graph — entities, documents, sources, locations, and their relationships. Populated from AI-processed evidence as it is reviewed.",
+      canonicalPath: key,
+      ogType: "website",
+    };
+  }
+
+  // Dynamic routes: /explore/entity/:id
+  if (key.startsWith("/explore/entity/")) {
+    return {
+      title: fullTitle("Entity Detail"),
+      description:
+        "Knowledge graph entity detail — entity properties, connected nodes, relationships, and a mini graph view.",
+      canonicalPath: key,
+      ogType: "article",
+    };
+  }
+
   return meta[key] ?? meta["/404"];
 }
 
