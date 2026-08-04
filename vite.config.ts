@@ -4,6 +4,7 @@ import react from "@vitejs/plugin-react";
 import { visualizer } from "rollup-plugin-visualizer";
 
 export default defineConfig({
+  base: "/Arbor-Sentinel/",
   plugins: [
     react(),
     // Bundle analysis — writes dist/stats.html after each production build.
