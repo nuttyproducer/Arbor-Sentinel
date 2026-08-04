@@ -1,0 +1,138 @@
+{
+  "contentStatus": {
+    "draft": "Brouillon",
+    "static_preview": "Aperçu statique",
+    "review_pending": "Révision en attente",
+    "reviewed": "Vérifié",
+    "disputed": "Contesté",
+    "corrected": "Corrigé",
+    "archived": "Archivé"
+  },
+  "legalStatus": {
+    "court_proceeding_active": "Procédure judiciaire en cours",
+    "provisional_measures_issued": "Mesures conservatoires prononcées",
+    "arrest_warrant_issued": "Mandat d'arrêt émis",
+    "allegation_under_investigation": "Allégation sous enquête",
+    "un_finding": "Constatation de l'ONU",
+    "ngo_legal_determination": "Détermination juridique d'une ONG",
+    "not_judicially_determined": "Pas encore déterminé judiciairement",
+    "contested_claim": "Affirmation contestée",
+    "requires_further_verification": "Nécessite une vérification supplémentaire"
+  },
+  "verificationLevel": {
+    "0": "Piste non examinée",
+    "1": "Piste préservée",
+    "2": "Source vérifiée",
+    "3": "Corroboré",
+    "4": "Vérifié par une organisation de confiance",
+    "5": "Document juridique/institutionnel"
+  },
+  "verificationLevelShort": {
+    "level": "Niveau {{level}}",
+    "levelLabel": "Niveau {{level}} — {{label}}"
+  },
+  "sourceType": {
+    "court": "Document judiciaire / juridique",
+    "un": "ONU / organisme international",
+    "government": "Document gouvernemental / parlementaire",
+    "humanitarian": "Organisation humanitaire",
+    "ngo": "Organisation de défense des droits humains",
+    "academic": "Recherche académique",
+    "journalism": "Journalisme d'investigation",
+    "osint": "OSINT / groupe de documentation"
+  },
+  "sourceStatus": {
+    "active": "Actif",
+    "broken": "Lien brisé",
+    "archived": "Archivé",
+    "superseded": "Remplacé"
+  },
+  "evidenceCategory": {
+    "court record": "Document judiciaire",
+    "official UN document": "Document officiel de l'ONU",
+    "humanitarian update": "Mise à jour humanitaire",
+    "human-rights report": "Rapport sur les droits humains",
+    "parliamentary document": "Document parlementaire",
+    "verified investigative report": "Rapport d'enquête vérifié"
+  },
+  "legalTimelineEvent": {
+    "filing": "Dépôt",
+    "jurisdiction_decision": "Décision de compétence",
+    "investigation_opened": "Enquête ouverte",
+    "provisional_measure": "Mesure conservatoire",
+    "arrest_warrant_application": "Demande de mandat d'arrêt",
+    "arrest_warrant_issued": "Mandat d'arrêt émis",
+    "hearing": "Audience",
+    "order": "Ordonnance",
+    "judgment": "Jugement",
+    "intervention": "Intervention",
+    "official_report_update": "Rapport officiel / mise à jour"
+  },
+  "dossierType": {
+    "one_page_brief": "Note de synthèse d'une page",
+    "five_page_memo": "Note politique de cinq pages",
+    "full_dossier": "Dossier de preuves complet",
+    "journalist_briefing": "Briefing pour journalistes",
+    "council_motion_pack": "Dossier de motion pour conseil local",
+    "mp_contact_pack": "Dossier de contact pour député/eurodéputé",
+    "humanitarian_access_brief": "Briefing sur l'accès humanitaire",
+    "arms_transfer_brief": "Briefing sur l'examen des transferts d'armes",
+    "legal_accountability_brief": "Briefing sur la redevabilité juridique"
+  },
+  "dossierAudience": {
+    "citizen": "Citoyens concernés",
+    "journalist": "Journalistes et chercheurs",
+    "researcher": "Chercheurs académiques",
+    "policymaker": "Décideurs politiques et collaborateurs",
+    "ngo": "ONG et organisations humanitaires",
+    "legal_professional": "Professionnels du droit et défenseurs des droits humains"
+  },
+  "dossierGenerationStatus": {
+    "manual_static_preview": "Aperçu statique — constitué manuellement",
+    "generation_inactive": "Génération automatique pas encore active"
+  },
+  "actionType": {
+    "contact_representative": "Contacter un représentant",
+    "arms_transfer_review": "Demander un examen des transferts d'armes",
+    "humanitarian_access": "Soutenir l'accès humanitaire",
+    "send_dossier": "Envoyer un dossier à un journaliste",
+    "submit_correction": "Soumettre une correction ou une source publique",
+    "volunteer": "Devenir bénévole pour le projet"
+  },
+  "reviewStatus": {
+    "draft": "Brouillon — pas encore révisé",
+    "reviewed": "Révisé",
+    "not_applicable": "Non applicable"
+  },
+  "organizationCategory": {
+    "UN and humanitarian": "ONU et humanitaire",
+    "Red Cross / Red Crescent": "Croix-Rouge / Croissant-Rouge",
+    "medical": "Médical",
+    "legal and human rights": "Juridique et droits humains",
+    "documentation and data": "Documentation et données",
+    "journalism and press freedom": "Journalisme et liberté de la presse",
+    "academic and research": "Académique et recherche"
+  },
+  "relationshipStatus": {
+    "public_resource": "Ressource publique"
+  },
+  "translationStatus": {
+    "not_started": "Non commencé",
+    "draft": "Traduction provisoire",
+    "review_pending": "Révision de la traduction en attente",
+    "reviewed": "Traduction révisée",
+    "outdated": "Traduction obsolète",
+    "archived": "Traduction archivée"
+  },
+  "searchableRecordType": {
+    "source": "Source",
+    "evidence": "Élément de preuve",
+    "legal_case": "Affaire juridique",
+    "organization": "Organisation",
+    "action": "Modèle d'action",
+    "country": "Pays",
+    "institution": "Institution",
+    "dossier": "Dossier",
+    "trust_page": "Page de confiance / méthodologie"
+  }
+}

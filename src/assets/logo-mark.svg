@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" role="img" aria-label="Accountability Atlas logo mark">
+  <!-- Protective outer ring with gap at top-right -->
+  <circle cx="24" cy="24" r="22" stroke="#101828" stroke-width="1.5" stroke-dasharray="138 140" stroke-dashoffset="35" />
+  <!-- Longitude arcs -->
+  <ellipse cx="24" cy="24" rx="10" ry="22" stroke="#101828" stroke-width="0.75" opacity="0.6" />
+  <ellipse cx="24" cy="24" rx="18" ry="22" stroke="#101828" stroke-width="0.5" opacity="0.35" />
+  <!-- Latitude arcs -->
+  <path d="M6 24 Q24 10 42 24" stroke="#101828" stroke-width="0.75" opacity="0.5" />
+  <path d="M8 30 Q24 40 40 30" stroke="#101828" stroke-width="0.5" opacity="0.35" />
+  <path d="M8 18 Q24 8 40 18" stroke="#101828" stroke-width="0.5" opacity="0.35" />
+  <!-- Central vertical line -->
+  <line x1="24" y1="2" x2="24" y2="46" stroke="#101828" stroke-width="0.5" opacity="0.3" />
+  <!-- Illuminated coordinate point -->
+  <circle cx="32" cy="20" r="2.5" fill="#D99A2B" />
+  <circle cx="32" cy="20" r="5" fill="#D99A2B" opacity="0.15" />
+</svg>

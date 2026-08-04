@@ -101,13 +101,13 @@ This repository contains:
 | File | Purpose |
 |---|---|
 | `README.md` | Project overview |
-| `PRD.md` | Product requirements and platform vision |
-| `CONTRIBUTING.md` | How to contribute |
-| `CODE_OF_CONDUCT.md` | Community behavior rules |
-| `SECURITY.md` | Responsible security reporting |
-| `GOVERNANCE.md` | Decision-making and maintainer structure |
-| `ROADMAP.md` | Planned phases |
-| `NOTICE.md` | License and material-usage notice |
+| `PRD-v2.md` | Canonical product requirements — intelligence pipeline architecture |
+| `ROADMAP-v2.md` | Milestone-based roadmap (M1–M8) |
+| `PROJECT-ARCHITECTURE.md` | Complete technical architecture and data flow |
+| `AI-INTELLIGENCE-PRD.md` | AI, collectors, review workflows, maps, knowledge graph |
+| `IMPLEMENTATION-GUIDE.md` | Golden rules — coding standards, design system, review gates |
+| `PRD-v1-archive.md` | Archived V1 PRD — detailed page specs and data models |
+| `ROADMAP-v1-archive.md` | Archived V1 roadmap |
 
 ---
 
@@ -293,13 +293,18 @@ Withdrawn
 
 If you are new to the project, start here:
 
-1. `PRD.md`
-2. `docs/methodology.md`
-3. `docs/source-policy.md`
-4. `docs/legal-language-policy.md`
-5. `docs/ethics-and-safety.md`
-6. `CONTRIBUTING.md`
-7. `ROADMAP.md`
+1. `PRD-v2.md` — Product vision, principles, and architecture
+2. `PROJECT-ARCHITECTURE.md` — Technical architecture and data flow
+3. `ROADMAP-v2.md` — Current milestones and progress
+4. `AI-INTELLIGENCE-PRD.md` — AI/collector/review/maps specification
+5. `IMPLEMENTATION-GUIDE.md` — How we build (coding standards, review gates)
+6. `docs/methodology.md`
+7. `docs/source-policy.md`
+8. `docs/legal-language-policy.md`
+9. `docs/ethics-and-safety.md`
+10. `CONTRIBUTING.md`
+
+For detailed page specs, SQL schemas, and the risk register, see `PRD-v1-archive.md`.
 
 ---
 

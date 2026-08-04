@@ -1,0 +1,109 @@
+{
+  "site": {
+    "name": "Accountability Atlas",
+    "tagline": "Civic Accountability Platform",
+    "description": "Bewijs voor bescherming. Actie voor verantwoording."
+  },
+  "skipToContent": "Naar de inhoud gaan",
+  "buttons": {
+    "close": "Sluiten",
+    "menu": "Menu",
+    "search": "Zoeken",
+    "clear": "Wissen",
+    "print": "Afdrukken / Opslaan als PDF",
+    "readMore": "Lees meer",
+    "back": "Terug",
+    "submit": "Versturen",
+    "cancel": "Annuleren",
+    "viewAll": "Alles bekijken",
+    "learnMore": "Meer informatie",
+    "contribute": "Bijdragen",
+    "reportIssue": "Probleem melden",
+    "correctionRequest": "Correctie aanvragen"
+  },
+  "labels": {
+    "lastUpdated": "Pagina voor het laatst bijgewerkt",
+    "dossierAssembled": "Dossier samengesteld",
+    "staticPreview": "Statisch voorbeeld",
+    "publicStaticBeta": "Openbare statische bèta",
+    "previewLabel": "Statisch voorbeeld",
+    "version": "Versie",
+    "language": "Taal",
+    "jurisdiction": "Rechtsgebied",
+    "source": "Bron",
+    "sources": "Bronnen",
+    "published": "Gepubliceerd",
+    "accessed": "Geraadpleegd",
+    "created": "Aangemaakt",
+    "reviewed": "Beoordeeld",
+    "lastReviewed": "Laatst beoordeeld",
+    "corrections": "Correcties",
+    "methodology": "Methodologie",
+    "generationInactive": "Generatie inactief",
+    "active": "Actief",
+    "inactive": "Inactief"
+  },
+  "search": {
+    "placeholder": "Zoek in bronnen, bewijsstukken, rechtszaken, organisaties…",
+    "noResults": "Geen resultaten gevonden",
+    "resultCount": "{{count}} resultaat",
+    "resultCount_plural": "{{count}} resultaten",
+    "forQuery": "voor \"{{query}}\"",
+    "searchedRecords": "{{total}} records doorzocht in {{time}}ms",
+    "enterTerm": "Voer een zoekterm in om alle platformrecords te doorzoeken.",
+    "suggestions": "Probeer: \"ICJ\", \"Gaza\", \"België\", \"humanitaire toegang\", \"arrestatiebevel\", \"wapenhandel\", of \"voorlopige maatregelen\".",
+    "noMatch": "Geen records gevonden voor \"{{query}}\".",
+    "typeFilterHelp": "Je hebt typefilters actief. Probeer ze te wissen om je zoekopdracht te verbreden.",
+    "suggestionsLabel": "Suggesties:",
+    "checkSpelling": "Controleer spelling",
+    "tryFewerKeywords": "Probeer minder of andere zoekwoorden",
+    "clearFilters": "Filters wissen",
+    "filterByType": "Filteren op type",
+    "matched": "Overeenkomst",
+    "localSearchOnly": "Deze zoekopdracht dekt alleen de huidige platformrecords — niet alle openbare documentatie over wreedheden. Het wordt volledig in je browser uitgevoerd. Er worden geen zoekopdrachten naar een server verzonden, gelogd of geanalyseerd. Er wordt geen gebruikersprofiel opgebouwd."
+  },
+  "related": {
+    "references": "Verwijzingen",
+    "referencedBy": "Verwezen door",
+    "relatedPage": "gerelateerde pagina",
+    "referencesThisSource": "verwijst naar deze bron",
+    "includesThisSource": "bevat deze bron",
+    "includesThisEvidence": "bevat dit bewijsstuk",
+    "includesThisLegalCase": "bevat deze rechtszaak",
+    "includesThisCountry": "bevat deze landcontext",
+    "includesThisInstitution": "bevat deze institutionele context"
+  },
+  "languageSwitcher": {
+    "label": "Taal selecteren",
+    "currentLanguage": "Huidige taal: {{language}}"
+  },
+  "emptyStates": {
+    "noSources": "Geen bronnen beschikbaar.",
+    "noEvidence": "Geen bewijsstukken beschikbaar.",
+    "noLegalCases": "Geen rechtszaken beschikbaar.",
+    "noOrganizations": "Geen organisaties beschikbaar.",
+    "noActions": "Geen actiesjablonen beschikbaar.",
+    "noDossiers": "Geen dossiers beschikbaar.",
+    "noRelated": "Geen gerelateerde records gevonden.",
+    "notFound": "Pagina niet gevonden.",
+    "dossierNotFound": "Dossier niet gevonden",
+    "backToDossiers": "← Terug naar Dossierbibliotheek",
+    "evidenceNotFound": "Bewijsstuk niet gevonden",
+    "actionNotFound": "Actiesjabloon niet gevonden",
+    "sourceNotFound": "Bronrecord niet gevonden",
+    "legalCaseNotFound": "Rechtszaak niet gevonden",
+    "organizationNotFound": "Organisatie niet gevonden"
+  },
+  "translationNotice": {
+    "englishAuthoritative": "De Engelse versie is de gezaghebbende tekst. Vertalingen worden aangeboden voor het gemak en weerspiegelen mogelijk niet de laatste updates.",
+    "unreviewedTranslation": "Dit is een niet-beoordeelde vertaling. De Engelse brontekst is gezaghebbend.",
+    "draftTranslation": "Dit is een conceptvertaling — nog niet beoordeeld.",
+    "translationPending": "Vertaling in afwachting — inhoud wordt in het Engels weergegeven."
+  },
+  "footer": {
+    "codeLicense": "Code gelicentieerd onder",
+    "contentLicense": "Inhoud gelicentieerd onder",
+    "noLegalAdvice": "Dit project verstrekt geen juridisch advies. Dit is geen geregistreerde ngo of liefdadigheidsinstelling. Geen partnerschap met vermelde organisaties wordt geïmpliceerd.",
+    "copyright": "© {{year}} Accountability Atlas medewerkers."
+  }
+}

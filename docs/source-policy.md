@@ -103,6 +103,48 @@ user-submitted-pending
 
 ---
 
+## Trust levels
+
+Trust levels are assigned through human review and must never be
+auto-assigned from source type alone. All sources default to 0 (unreviewed).
+
+| Level | Label | Criteria |
+|---|---|---|
+| 0 | Unreviewed | No trust assessment has been performed. All sources start here. |
+| 1 | Low confidence | Initial review performed; limited corroboration available. |
+| 2 | Moderate confidence | Source has been reviewed; some corroborating evidence exists. |
+| 3 | High confidence | Source has been reviewed and found reliable with corroborating evidence from multiple independent sources. |
+| 4 | Trusted source | Consistently reliable over time; clear methodology and provenance. |
+| 5 | Authoritative | Definitive institutional record with a clear chain of provenance (e.g. court order, official gazette, UN resolution). |
+
+**Guardrails:**
+- Never mark a source as trusted (level 4+) based on source type alone.
+- A court record is not automatically level 5 — it must be the actual order/judgment, not a press summary.
+- Trust levels may be downgraded if a source is found to contain errors or misrepresentations.
+- Trust levels are public and subject to correction through the corrections process.
+
+---
+
+## Verification methods
+
+Each source may be assigned a verification method describing how its content
+was verified:
+
+| Method | Description |
+|---|---|
+| `official` | Official institutional record — verified against the issuing body's own publication. |
+| `ngo` | NGO / humanitarian report — verified against the organisation's published methodology and findings. |
+| `journalism` | Investigative journalism — verified against the outlet's editorial standards and sourcing. |
+| `academic` | Academic research — verified against the publication's peer review and citation record. |
+| `osint` | OSINT / open-source documentation — verified through disclosed methods (geolocation, chronolocation, cross-source verification). |
+
+**Guardrails:**
+- Verification method is optional — leave unset if the verification approach is not yet determined.
+- A source may have a trust level without a verification method, or vice versa.
+- The verification method describes how the source was checked, not what the source claims.
+
+---
+
 ## Citation fields
 
 Every source entry should include:

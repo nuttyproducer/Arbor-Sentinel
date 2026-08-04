@@ -7,20 +7,54 @@ This document defines early data structures. The MVP can use YAML/JSON/Markdown 
 ## Source
 
 ```yaml
+# ── Core identity ──
 id: icj-case-192
-source_type: court-record
+slug: icj-provisional-measures-jan-2024
 title: "Application of the Convention on the Prevention and Punishment of the Crime of Genocide in the Gaza Strip"
 publisher: "International Court of Justice"
-author: null
-published_date: "YYYY-MM-DD"
-accessed_date: "YYYY-MM-DD"
+sourceType: court
+documentType: "Provisional measures order"
 url: "https://..."
-archive_url: null
+archiveUrl: "https://web.archive.org/..."
+publicationDate: "2024-01-26"
+accessedAt: "2026-07-24"
+lastCheckedAt: "2026-07-24"
 language: "en"
-summary: "Short neutral summary."
-relevance: "Why this source matters."
-reliability_note: "Primary court source."
-license_note: "Link only; do not reproduce full document unless permitted."
+jurisdiction: "International — United Nations principal judicial organ"
+authors:
+  - "International Court of Justice"
+official: true
+status: active
+version: 1
+correctionUrl: "/corrections"
+notes: "..."
+
+# ── Trust & Verification ──
+trustLevel: 0  # 0–5; default 0 (unreviewed); human-assigned only — never auto-assigned
+verificationMethod: official  # official | ngo | journalism | academic | osint (optional)
+
+# ── API / RSS Automation Config ──
+apiEndpoint: null  # optional; API endpoint URL for programmatic access
+apiKeyRef: null    # optional; reference to stored key name — NEVER the actual key
+rssFeedUrl: null   # optional; RSS feed URL for automated polling
+feedConfig:        # optional
+  pollingIntervalMinutes: 60
+  lastFetched: "2026-07-30"
+
+# ── Licensing & Classification ──
+license: "CC BY 4.0"     # optional
+licenseUrl: "https://..." # optional
+region: "International"   # optional; geographic region for filtering
+category: "legal"         # optional; topical category for filtering
+reliabilityNotes: "Primary court source."
+
+# ── Health & Monitoring ──
+healthStatus: unknown       # unknown | active | degraded | failed; default unknown
+automationStatus: manual     # manual | scheduled | real-time; default manual
+lastSuccessfulFetch: null    # optional; ISO date of last successful automated fetch
+lastFailedFetch: null        # optional; ISO date of last failed fetch attempt
+failureCount: 0              # consecutive failure count since last success
+monitoringEnabled: false     # whether automated health monitoring is enabled
 ```
 
 ---

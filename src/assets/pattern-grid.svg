@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="none" aria-hidden="true">
+  <!-- Cell border -->
+  <rect x="0.5" y="0.5" width="59" height="59" stroke="#D8D6D0" stroke-width="0.5" />
+  <!-- Crosshair at intersection -->
+  <circle cx="30" cy="30" r="0.5" fill="#D8D6D0" opacity="0.6" />
+  <!-- Subtle cross lines within cell -->
+  <line x1="30" y1="0" x2="30" y2="60" stroke="#D8D6D0" stroke-width="0.25" opacity="0.3" />
+  <line x1="0" y1="30" x2="60" y2="30" stroke="#D8D6D0" stroke-width="0.25" opacity="0.3" />
+</svg>

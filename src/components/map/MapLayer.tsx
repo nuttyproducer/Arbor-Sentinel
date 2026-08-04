@@ -1,0 +1,106 @@
+// src/components/map/MapLayer.tsx
+import { useEffect, useRef } from "react";
+import type { Map, GeoJSONSource } from "maplibre-gl";
+import { useMapContext } from "./MapContext";
+import type { MapLayerConfig } from "../../lib/map/types";
+import { createGeoJSONSource } from "../../lib/map/sources";
+import { createLayerSpec } from "../../lib/map/layers";
+
+interface MapLayerProps {
+  config: MapLayerConfig;
+  visible?: boolean;
+  beforeId?: string;
+}
+
+/**
+ * Apply config.style to an existing MapLibre layer via setPaintProperty.
+ * Circle and fill layers expose different paint properties, so the layer
+ * kind is read from the live MapLibre layer (falling back to a point layer).
+ */
+function applyStyle(map: Map, config: MapLayerConfig): void {
+  const layer = map.getLayer(config.id);
+  const isFill = layer?.type === "fill";
+  const { style } = config;
+
+  if (isFill) {
+    if (style.color) {
+      map.setPaintProperty(config.id, "fill-color", style.color);
+    }
+    if (style.fillOpacity !== undefined) {
+      map.setPaintProperty(config.id, "fill-opacity", style.fillOpacity);
+    }
+  } else {
+    if (style.color) {
+      map.setPaintProperty(config.id, "circle-color", style.color);
+    }
+    if (style.radius !== undefined) {
+      map.setPaintProperty(config.id, "circle-radius", style.radius);
+    }
+    if (style.strokeWidth !== undefined) {
+      map.setPaintProperty(config.id, "circle-stroke-width", style.strokeWidth);
+    }
+  }
+}
+
+/**
+ * Zero-render component. Adds a GeoJSON source + layer to the MapLibre map
+ * on mount, updates visibility/reactivity via native MapLibre API on prop
+ * changes, and cleans up on unmount. Returns null — no DOM output.
+ *
+ * The mount effect depends on `map` (not `[]`) because MapContainer exposes
+ * `map: null` until the map's "load" event fires; with `[]` deps the effect
+ * would run once against `null` and never attach the source/layer. `addedRef`
+ * guards against double-adding when the map reference is stable.
+ */
+export function MapLayer({ config, visible = true, beforeId }: MapLayerProps): null {
+  const { map, layerVisibility } = useMapContext();
+  const addedRef = useRef(false);
+  const sourceId = `${config.id}--source`;
+  // LayerGroupControl / setLayerVisibility in context take precedence; the
+  // `visible` prop (defaultVisible) is the fallback for the initial state.
+  const effectiveVisible = layerVisibility[config.id] ?? visible;
+
+  // Add source + layer on mount (or once the map becomes available)
+  useEffect(() => {
+    if (!map || addedRef.current) return;
+
+    const source = createGeoJSONSource(config.features);
+    map.addSource(sourceId, source);
+    const layerSpec = createLayerSpec(config, sourceId);
+    map.addLayer(layerSpec, beforeId);
+    addedRef.current = true;
+
+    return () => {
+      if (map.getLayer(config.id)) {
+        map.removeLayer(config.id);
+      }
+      if (map.getSource(sourceId)) {
+        map.removeSource(sourceId);
+      }
+      addedRef.current = false;
+    };
+  }, [map]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Update source data + style when the config changes (timeline drag,
+  // filter change). The mount effect above runs once, so a new `config`
+  // object (new features / style) must push updates into the live layer here.
+  useEffect(() => {
+    if (!map || !addedRef.current) return;
+    if (map.getSource(sourceId)) {
+      const geoJSONSource = map.getSource(sourceId) as GeoJSONSource;
+      geoJSONSource.setData(createGeoJSONSource(config.features).data);
+    }
+    if (map.getLayer(config.id)) {
+      applyStyle(map, config);
+    }
+  }, [map, config, sourceId]);
+
+  // Update visibility
+  useEffect(() => {
+    if (!map || !addedRef.current) return;
+    const visibility = effectiveVisible ? "visible" : "none";
+    map.setLayoutProperty(config.id, "visibility", visibility);
+  }, [map, effectiveVisible, config.id]);
+
+  return null;
+}

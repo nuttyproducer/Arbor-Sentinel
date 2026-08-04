@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" role="img" aria-label="Accountability Atlas favicon">
+  <!-- Protective outer ring -->
+  <circle cx="16" cy="16" r="14.5" stroke="#101828" stroke-width="2" stroke-dasharray="90 94" stroke-dashoffset="22" />
+  <!-- Simplified cross lines -->
+  <line x1="16" y1="2" x2="16" y2="30" stroke="#101828" stroke-width="1" opacity="0.5" />
+  <line x1="2" y1="16" x2="30" y2="16" stroke="#101828" stroke-width="1" opacity="0.5" />
+  <!-- Diagonal grid lines -->
+  <line x1="5" y1="5" x2="27" y2="27" stroke="#101828" stroke-width="0.5" opacity="0.3" />
+  <line x1="27" y1="5" x2="5" y2="27" stroke="#101828" stroke-width="0.5" opacity="0.3" />
+  <!-- Illuminated coordinate -->
+  <circle cx="21" cy="13" r="2" fill="#D99A2B" />
+</svg>

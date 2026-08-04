@@ -1,0 +1,138 @@
+{
+  "contentStatus": {
+    "draft": "Concept",
+    "static_preview": "Statisch voorbeeld",
+    "review_pending": "Beoordeling in afwachting",
+    "reviewed": "Beoordeeld",
+    "disputed": "Betwist",
+    "corrected": "Gecorrigeerd",
+    "archived": "Gearchiveerd"
+  },
+  "legalStatus": {
+    "court_proceeding_active": "Gerechtelijke procedure actief",
+    "provisional_measures_issued": "Voorlopige maatregelen uitgevaardigd",
+    "arrest_warrant_issued": "Arrestatiebevel uitgevaardigd",
+    "allegation_under_investigation": "Beschuldiging in onderzoek",
+    "un_finding": "VN-bevinding",
+    "ngo_legal_determination": "Juridische vaststelling door ngo",
+    "not_judicially_determined": "Nog niet gerechtelijk vastgesteld",
+    "contested_claim": "Betwiste bewering",
+    "requires_further_verification": "Vereist verdere verificatie"
+  },
+  "verificationLevel": {
+    "0": "Niet-beoordeelde aanwijzing",
+    "1": "Bewaarde aanwijzing",
+    "2": "Bron gecontroleerd",
+    "3": "Bevestigd",
+    "4": "Geverifieerd door vertrouwde organisatie",
+    "5": "Juridisch/institutioneel document"
+  },
+  "verificationLevelShort": {
+    "level": "Niveau {{level}}",
+    "levelLabel": "Niveau {{level}} — {{label}}"
+  },
+  "sourceType": {
+    "court": "Gerechtelijk / juridisch document",
+    "un": "VN / internationale instantie",
+    "government": "Overheids- / parlementair document",
+    "humanitarian": "Humanitaire organisatie",
+    "ngo": "Mensenrechtenorganisatie",
+    "academic": "Academisch onderzoek",
+    "journalism": "Onderzoeksjournalistiek",
+    "osint": "OSINT / documentatiegroep"
+  },
+  "sourceStatus": {
+    "active": "Actief",
+    "broken": "Verbroken link",
+    "archived": "Gearchiveerd",
+    "superseded": "Vervangen"
+  },
+  "evidenceCategory": {
+    "court record": "Gerechtelijk document",
+    "official UN document": "Officieel VN-document",
+    "humanitarian update": "Humanitaire update",
+    "human-rights report": "Mensenrechtenrapport",
+    "parliamentary document": "Parlementair document",
+    "verified investigative report": "Geverifieerd onderzoeksrapport"
+  },
+  "legalTimelineEvent": {
+    "filing": "Indiening",
+    "jurisdiction_decision": "Rechtsmachtbeslissing",
+    "investigation_opened": "Onderzoek geopend",
+    "provisional_measure": "Voorlopige maatregel",
+    "arrest_warrant_application": "Verzoek arrestatiebevel",
+    "arrest_warrant_issued": "Arrestatiebevel uitgevaardigd",
+    "hearing": "Zitting",
+    "order": "Beschikking",
+    "judgment": "Vonnis",
+    "intervention": "Interventie",
+    "official_report_update": "Officieel rapport / update"
+  },
+  "dossierType": {
+    "one_page_brief": "Samenvatting van één pagina",
+    "five_page_memo": "Beleidsmemo van vijf pagina's",
+    "full_dossier": "Volledig bewijsdossier",
+    "journalist_briefing": "Persbriefing",
+    "council_motion_pack": "Gemeenteraadsmotie-pakket",
+    "mp_contact_pack": "Kamerlid/Europarlementariër contactpakket",
+    "humanitarian_access_brief": "Humanitaire toegang briefing",
+    "arms_transfer_brief": "Wapenhandel-beoordelingsbriefing",
+    "legal_accountability_brief": "Juridische verantwoordingsbriefing"
+  },
+  "dossierAudience": {
+    "citizen": "Betrokken burgers",
+    "journalist": "Journalisten en onderzoekers",
+    "researcher": "Academische onderzoekers",
+    "policymaker": "Beleidsmakers en medewerkers",
+    "ngo": "Ngo's en humanitaire organisaties",
+    "legal_professional": "Juridische medewerkers en mensenrechtenverdedigers"
+  },
+  "dossierGenerationStatus": {
+    "manual_static_preview": "Statisch voorbeeld — handmatig samengesteld",
+    "generation_inactive": "Automatische generatie nog niet actief"
+  },
+  "actionType": {
+    "contact_representative": "Contact opnemen met een volksvertegenwoordiger",
+    "arms_transfer_review": "Vragen om beoordeling van wapenhandel",
+    "humanitarian_access": "Humanitaire toegang steunen",
+    "send_dossier": "Een dossier naar een journalist sturen",
+    "submit_correction": "Een correctie of openbare bron indienen",
+    "volunteer": "Vrijwilliger worden voor het project"
+  },
+  "reviewStatus": {
+    "draft": "Concept — nog niet beoordeeld",
+    "reviewed": "Beoordeeld",
+    "not_applicable": "Niet van toepassing"
+  },
+  "organizationCategory": {
+    "UN and humanitarian": "VN en humanitair",
+    "Red Cross / Red Crescent": "Rode Kruis / Rode Halve Maan",
+    "medical": "Medisch",
+    "legal and human rights": "Juridisch en mensenrechten",
+    "documentation and data": "Documentatie en data",
+    "journalism and press freedom": "Journalistiek en persvrijheid",
+    "academic and research": "Academisch en onderzoek"
+  },
+  "relationshipStatus": {
+    "public_resource": "Openbare bron"
+  },
+  "translationStatus": {
+    "not_started": "Niet gestart",
+    "draft": "Conceptvertaling",
+    "review_pending": "Vertalingsbeoordeling in afwachting",
+    "reviewed": "Vertaling beoordeeld",
+    "outdated": "Vertaling verouderd",
+    "archived": "Vertaling gearchiveerd"
+  },
+  "searchableRecordType": {
+    "source": "Bron",
+    "evidence": "Bewijsstuk",
+    "legal_case": "Rechtszaak",
+    "organization": "Organisatie",
+    "action": "Actiesjabloon",
+    "country": "Land",
+    "institution": "Instelling",
+    "dossier": "Dossier",
+    "trust_page": "Vertrouwens- / methodologiepagina"
+  }
+}

@@ -1,0 +1,455 @@
+/* Self-hosted fonts via @fontsource — no external font requests. */
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+@import "@fontsource/ibm-plex-serif/500.css";
+@import "@fontsource/ibm-plex-serif/600.css";
+@import "@fontsource/ibm-plex-serif/700.css";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+@import "@fontsource/inter/800.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color: #101828;
+  background: #f7f1e8;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background:
+    radial-gradient(circle at top left, rgba(217, 154, 43, 0.10), transparent 34rem),
+    linear-gradient(180deg, #f7f1e8 0%, #fafaf7 58%, #f7f1e8 100%);
+  font-family: Inter, system-ui, sans-serif;
+}
+
+::selection {
+  background: rgba(185, 92, 80, 0.24);
+}
+
+/* Subtle map-grid texture — sits between background and content */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("../assets/pattern-grid.svg");
+  background-repeat: repeat;
+  background-size: 60px 60px;
+  opacity: 0.25;
+}
+
+/* Ensure all app content renders above the grid texture */
+#root {
+  position: relative;
+  z-index: 1;
+}
+
+/* Skip-to-content link */
+.skip-to-content {
+  position: absolute;
+  top: -100%;
+  left: 16px;
+  z-index: 100;
+  padding: 8px 16px;
+  background: #101828;
+  color: #fafaf7;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 14px;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+.skip-to-content:focus {
+  top: 16px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Hide scrollbars on mobile roadmap carousel */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Print styles ─────────────────────────────────────────────────────────── */
+/* Covers: evidence detail, legal detail, country/institution page,
+   dossier detail, and methodology.
+   Principles: remove chrome, preserve metadata, avoid clipped cards,
+   print URLs where useful, maintain legibility. */
+
+@media print {
+  /* ── Page setup ─────────────────────────────────────────────────────── */
+  @page {
+    margin: 2cm;
+    size: auto;
+  }
+
+  @page :first {
+    margin-top: 1.5cm;
+  }
+
+  body {
+    background: white !important;
+    color: #101828;
+    font-size: 11pt;
+    line-height: 1.5;
+    min-width: auto;
+    font-family: Inter, system-ui, sans-serif;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  body::before {
+    display: none !important;
+  }
+
+  /* ── Hide chrome ────────────────────────────────────────────────────── */
+  header[role="banner"],
+  footer[role="contentinfo"],
+  .skip-to-content,
+  .print\:hidden,
+  nav,
+  button:not(.print\:keep) {
+    display: none !important;
+  }
+
+  /* ── Keep print-only elements visible ───────────────────────────────── */
+  .hidden.print\:block {
+    display: block !important;
+  }
+
+  .hidden.print\:inline {
+    display: inline !important;
+  }
+
+  .hidden.print\:flex {
+    display: flex !important;
+  }
+
+  .hidden.print\:grid {
+    display: grid !important;
+  }
+
+  /* ── Root and container reset ───────────────────────────────────────── */
+  #root {
+    position: static;
+    z-index: auto;
+  }
+
+  /* Allow content to fill the page */
+  .max-w-7xl {
+    max-width: 100% !important;
+  }
+
+  .max-w-3xl {
+    max-width: 100% !important;
+  }
+
+  /* ── Motion ─────────────────────────────────────────────────────────── */
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  [class*="motion-safe:"] {
+    animation: none !important;
+  }
+
+  /* ── Typography ─────────────────────────────────────────────────────── */
+  h1 {
+    font-size: 20pt !important;
+    page-break-after: avoid;
+  }
+
+  h2 {
+    font-size: 14pt !important;
+    page-break-after: avoid;
+  }
+
+  h3 {
+    font-size: 12pt !important;
+    page-break-after: avoid;
+  }
+
+  p, li, td, th {
+    font-size: 10.5pt;
+    orphans: 3;
+    widows: 3;
+  }
+
+  .font-serif {
+    font-family: "IBM Plex Serif", Georgia, serif !important;
+  }
+
+  .font-sans {
+    font-family: Inter, system-ui, sans-serif !important;
+  }
+
+  .font-mono {
+    font-family: "IBM Plex Mono", monospace !important;
+  }
+
+  /* ── Links ──────────────────────────────────────────────────────────── */
+  /* External links: show URL */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 8pt;
+    color: #555;
+    word-break: break-all;
+  }
+
+  /* Internal links: show path */
+  a[href^="/"]::after {
+    content: " (accountabilityatlas.org" attr(href) ")";
+    font-size: 8pt;
+    color: #555;
+  }
+
+  /* But don't repeat on links in print-only blocks that already show URLs */
+  .print\:no-url a[href^="http"]::after,
+  .print\:no-url a[href^="/"]::after {
+    content: none;
+  }
+
+  /* Skip anchor-only links */
+  a[href^="#"]::after {
+    content: none;
+  }
+
+  a[href^="http"],
+  a[href^="/"] {
+    color: #101828;
+    text-decoration: underline;
+  }
+
+  /* ── Color reset ────────────────────────────────────────────────────── */
+  .text-bone,
+  .text-bone\/90,
+  .text-bone\/85,
+  .text-bone\/80,
+  .text-bone\/75,
+  .text-bone\/70,
+  .text-bone\/60,
+  .text-bone\/50,
+  .text-bone\/45,
+  .text-bone\/40,
+  .text-bone\/35 {
+    color: #101828 !important;
+  }
+
+  .bg-ink,
+  .bg-ink\/90,
+  .bg-ink\/55,
+  .bg-ink\/45,
+  .bg-ink\/35 {
+    background: white !important;
+  }
+
+  .bg-bone,
+  .bg-bone\/60 {
+    background: white !important;
+  }
+
+  /* Dark sections (hero, StartingFocus): reset for print legibility */
+  .bg-ink {
+    background: white !important;
+    color: #101828 !important;
+    min-height: auto !important;
+  }
+
+  section[class*="min-h-"] {
+    min-height: auto !important;
+  }
+
+  /* ── Borders ────────────────────────────────────────────────────────── */
+  .border-border,
+  .border-border\/60,
+  .border-border\/30,
+  .border-ink\/20,
+  .border-bone\/20,
+  .border-bone\/15,
+  .border-charcoal\/30 {
+    border-color: #ccc !important;
+  }
+
+  /* ── Background removal ─────────────────────────────────────────────── */
+  .bg-gradient-to-r,
+  .bg-gradient-to-l,
+  .bg-gradient-to-t,
+  .bg-gradient-to-b {
+    background: none !important;
+  }
+
+  [class*="backdrop-blur"] {
+    backdrop-filter: none !important;
+  }
+
+  .shadow-soft {
+    box-shadow: none !important;
+  }
+
+  /* ── Images ─────────────────────────────────────────────────────────── */
+  /* Hide full-bleed documentary background images */
+  section img[class*="absolute"] {
+    display: none !important;
+  }
+
+  picture[class*="absolute"] {
+    display: none !important;
+  }
+
+  /* Keep logos and inline images */
+  img:not([class*="absolute"]):not(.print\:hidden) {
+    max-width: 100%;
+    page-break-inside: avoid;
+  }
+
+  /* ── Badges ─────────────────────────────────────────────────────────── */
+  /* Simplify all badge-like elements to clean bordered labels */
+  [class*="rounded"][class*="px-"][class*="py-"] {
+    border: 1px solid #999 !important;
+    background: none !important;
+    color: #333 !important;
+  }
+
+  /* ── Cards and sections ─────────────────────────────────────────────── */
+  .rounded-lg,
+  .rounded-md,
+  .rounded-sm {
+    border-radius: 2px !important;
+  }
+
+  section {
+    page-break-inside: avoid;
+    margin-bottom: 1.5rem !important;
+  }
+
+  /* Don't clip content inside cards */
+  .overflow-hidden {
+    overflow: visible !important;
+  }
+
+  /* ── Specific page type optimizations ───────────────────────────────── */
+  /* Detail pages — full width */
+  .dossier-print,
+  .evidence-print,
+  .legal-print,
+  .country-print,
+  .institution-print,
+  .methodology-print {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  /* ── Metadata labels ────────────────────────────────────────────────── */
+  .font-mono.text-\[11px\].uppercase,
+  .font-mono.text-\[10px\].uppercase {
+    color: #555 !important;
+    font-size: 8pt !important;
+  }
+
+  /* ── Print footer ───────────────────────────────────────────────────── */
+  /* Every detail page should include a print footer with correction URL */
+  .print-footer {
+    margin-top: 1.5cm;
+    padding-top: 0.5cm;
+    border-top: 1px solid #999;
+    font-size: 8pt;
+    color: #555;
+  }
+
+  /* ── Spacing ────────────────────────────────────────────────────────── */
+  .py-16 { padding-top: 0.5cm !important; padding-bottom: 0.5cm !important; }
+  .lg\:py-20 { padding-top: 0.5cm !important; padding-bottom: 0.5cm !important; }
+  .py-24 { padding-top: 0.5cm !important; padding-bottom: 0.5cm !important; }
+  .lg\:py-28 { padding-top: 0.5cm !important; padding-bottom: 0.5cm !important; }
+  .lg\:py-32 { padding-top: 0.5cm !important; padding-bottom: 0.5cm !important; }
+  .mb-10 { margin-bottom: 1rem !important; }
+  .mb-14 { margin-bottom: 1.5rem !important; }
+  .mb-16 { margin-bottom: 1.5rem !important; }
+  .mt-10 { margin-top: 1rem !important; }
+  .mt-20 { margin-top: 1rem !important; }
+  .gap-12 { gap: 0.8rem !important; }
+  .space-y-4 > * + * { margin-top: 0.5rem !important; }
+  .space-y-5 > * + * { margin-top: 0.6rem !important; }
+  .space-y-6 > * + * { margin-top: 0.75rem !important; }
+
+  /* ── Grid: never clip in print ──────────────────────────────────────── */
+  .grid {
+    page-break-inside: avoid;
+  }
+
+  /* ── Hero-specific print reset ───────────────────────────────────────── */
+  /* Hero section becomes a simple title block */
+  section[aria-labelledby="hero-title"] {
+    min-height: auto !important;
+    padding: 0 !important;
+    background: white !important;
+  }
+
+  section[aria-labelledby="hero-title"] [class*="max-w-3xl"] {
+    max-width: 100% !important;
+  }
+
+  /* Hide hero overlays */
+  section[aria-labelledby="hero-title"] [class*="absolute"][class*="inset-0"] {
+    display: none !important;
+  }
+
+  /* Hide the evidence-card preview on hero */
+  section[aria-labelledby="hero-title"] [class*="backdrop-blur"] {
+    display: none !important;
+  }
+
+  /* ── Starting Focus print reset ──────────────────────────────────────── */
+  section[aria-labelledby="focus-title"] {
+    min-height: auto !important;
+    padding: 0 !important;
+    background: white !important;
+  }
+
+  section[aria-labelledby="focus-title"] [class*="absolute"] {
+    display: none !important;
+  }
+
+  section[aria-labelledby="focus-title"] .text-bone,
+  section[aria-labelledby="focus-title"] .text-bone\/90,
+  section[aria-labelledby="focus-title"] .text-bone\/70 {
+    color: #101828 !important;
+  }
+
+  /* ── Timeline print ─────────────────────────────────────────────────── */
+  /* Legal timeline: linearize for print */
+  .legal-timeline-print {
+    border-left: 1px solid #999;
+    padding-left: 12px;
+  }
+}
+

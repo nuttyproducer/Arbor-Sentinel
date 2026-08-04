@@ -1,0 +1,14 @@
+# Accountability Atlas — Public Static Beta
+#
+# During the public static beta, indexing is disabled by default.
+# Every page also carries a <meta name="robots" content="noindex,nofollow"> tag.
+#
+# To enable indexing for production:
+#   1. Change "Disallow: /" to "Allow: /" below.
+#   2. Update DEFAULT_ROBOTS in src/data/routeMetadata.ts to "index,follow".
+#   3. See docs/indexing-configuration.md for the full procedure.
+#
+# Last reviewed: 2026-07-12
+
+User-agent: *
+Disallow: /

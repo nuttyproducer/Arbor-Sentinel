@@ -1,0 +1,109 @@
+{
+  "site": {
+    "name": "Accountability Atlas",
+    "tagline": "Civic Accountability Platform",
+    "description": "Evidence for protection. Action for accountability."
+  },
+  "skipToContent": "Skip to content",
+  "buttons": {
+    "close": "Close",
+    "menu": "Menu",
+    "search": "Search",
+    "clear": "Clear",
+    "print": "Print / Save as PDF",
+    "readMore": "Read more",
+    "back": "Back",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "viewAll": "View all",
+    "learnMore": "Learn more",
+    "contribute": "Contribute",
+    "reportIssue": "Report an issue",
+    "correctionRequest": "Request a correction"
+  },
+  "labels": {
+    "lastUpdated": "Page structure last updated",
+    "dossierAssembled": "Dossier assembled",
+    "staticPreview": "Static preview",
+    "publicStaticBeta": "Public Static Beta",
+    "previewLabel": "Static preview",
+    "version": "Version",
+    "language": "Language",
+    "jurisdiction": "Jurisdiction",
+    "source": "Source",
+    "sources": "Sources",
+    "published": "Published",
+    "accessed": "Accessed",
+    "created": "Created",
+    "reviewed": "Reviewed",
+    "lastReviewed": "Last reviewed",
+    "corrections": "Corrections",
+    "methodology": "Methodology",
+    "generationInactive": "Generation inactive",
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "search": {
+    "placeholder": "Search sources, evidence, legal cases, organizations…",
+    "noResults": "No results found",
+    "resultCount": "{{count}} result",
+    "resultCount_plural": "{{count}} results",
+    "forQuery": "for \"{{query}}\"",
+    "searchedRecords": "searched {{total}} records in {{time}}ms",
+    "enterTerm": "Enter a search term above to search across all platform records.",
+    "suggestions": "Try: \"ICJ\", \"Gaza\", \"Belgium\", \"humanitarian access\", \"arrest warrant\", \"arms transfer\", or \"provisional measures\".",
+    "noMatch": "No records match \"{{query}}\".",
+    "typeFilterHelp": "You have type filters active. Try clearing them to broaden your search.",
+    "suggestionsLabel": "Suggestions:",
+    "checkSpelling": "Check spelling",
+    "tryFewerKeywords": "Try fewer or different keywords",
+    "clearFilters": "Clear filters",
+    "filterByType": "Filter by type",
+    "matched": "Matched",
+    "localSearchOnly": "This search covers the current platform records only — not all public atrocity documentation. It runs entirely in your browser. No queries are sent to a server, logged, or analysed. No user profile is built."
+  },
+  "related": {
+    "references": "References",
+    "referencedBy": "Referenced By",
+    "relatedPage": "related page",
+    "referencesThisSource": "references this source",
+    "includesThisSource": "includes this source",
+    "includesThisEvidence": "includes this evidence",
+    "includesThisLegalCase": "includes this legal case",
+    "includesThisCountry": "includes this country context",
+    "includesThisInstitution": "includes this institution context"
+  },
+  "languageSwitcher": {
+    "label": "Select language",
+    "currentLanguage": "Current language: {{language}}"
+  },
+  "emptyStates": {
+    "noSources": "No sources available.",
+    "noEvidence": "No evidence records available.",
+    "noLegalCases": "No legal case records available.",
+    "noOrganizations": "No organizations available.",
+    "noActions": "No action templates available.",
+    "noDossiers": "No dossier records available.",
+    "noRelated": "No related records found.",
+    "notFound": "Page not found.",
+    "dossierNotFound": "Dossier not found",
+    "backToDossiers": "← Back to Dossier Library",
+    "evidenceNotFound": "Evidence record not found",
+    "actionNotFound": "Action template not found",
+    "sourceNotFound": "Source record not found",
+    "legalCaseNotFound": "Legal case not found",
+    "organizationNotFound": "Organization not found"
+  },
+  "translationNotice": {
+    "englishAuthoritative": "The English version is the authoritative text. Translations are provided for convenience and may not reflect the latest updates.",
+    "unreviewedTranslation": "This is an unreviewed translation. The English source text is authoritative.",
+    "draftTranslation": "This is a draft translation — not yet reviewed.",
+    "translationPending": "Translation pending — content shown in English."
+  },
+  "footer": {
+    "codeLicense": "Code licensed under",
+    "contentLicense": "Content licensed under",
+    "noLegalAdvice": "This project does not provide legal advice. This is not a registered NGO or charity. No partnership with listed organizations is implied.",
+    "copyright": "© {{year}} Accountability Atlas contributors."
+  }
+}

@@ -1,0 +1,244 @@
+name: Translation review
+description: Request or submit a translation review for content in a language other than English
+labels: [translation-review, needs-triage]
+title: "[TRANSLATION REVIEW] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Translation review
+
+        Use this template to request a translation review or to submit
+        translation review findings for Accountability Atlas content.
+
+        **This is not a partnership programme.** Submitting a translation
+        review does not create a partnership, endorsement, affiliation,
+        employment, or official representation relationship.
+
+        **Do not submit sensitive, confidential, or private information through
+        this public form.** This includes private testimony, personal data,
+        confidential institutional material, or unreviewed third-party data.
+
+  - type: dropdown
+    id: request_type
+    attributes:
+      label: Request type
+      description: Are you requesting a review or submitting findings?
+      options:
+        - Requesting a translation review
+        - Submitting translation review findings
+    validations:
+      required: true
+
+  - type: input
+    id: content_ids
+    attributes:
+      label: Content record IDs
+      description: Which translated content records need review?
+      placeholder: evidence-0001-fr, belgium-nl
+    validations:
+      required: true
+
+  - type: dropdown
+    id: source_language
+    attributes:
+      label: Source language
+      description: What language was the content originally written in?
+      options:
+        - English (en)
+        - Arabic (ar)
+        - Hebrew (he)
+        - French (fr)
+        - Dutch (nl)
+        - Other (specify in scope)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: target_language
+    attributes:
+      label: Target language
+      description: What language is the translation in?
+      options:
+        - Arabic (ar)
+        - Hebrew (he)
+        - French (fr)
+        - Dutch (nl)
+        - English (en)
+        - Other (specify in scope)
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Review scope
+      description: What specifically needs translation review?
+      placeholder: |
+        - Verify translation accuracy against the source (English) text
+        - Check legal terminology translation is correct in the target language
+        - Confirm institutional names use official/accepted translations
+        - Check tone matches platform standards in the target language
+        - Verify machine-translated passages (if any) have been human-reviewed
+    validations:
+      required: true
+
+  - type: dropdown
+    id: machine_assisted
+    attributes:
+      label: Machine translation used?
+      description: Was machine translation (Google Translate, DeepL, LLM) used in preparing the draft?
+      options:
+        - No — entirely human-translated
+        - Yes — machine translation was used for the initial draft
+        - Unknown — needs confirmation
+    validations:
+      required: true
+
+  - type: textarea
+    id: findings
+    attributes:
+      label: Findings (if submitting a review)
+      description: Report findings for each aspect of the translation. Note specific passages, suggested corrections, and severity.
+      placeholder: |
+        ### Accuracy
+        - [ ] Translation accurately conveys source meaning — [Pass / Needs correction]
+        - [ ] No omissions or additions — [Pass / Needs correction]
+
+        ### Legal terminology
+        - [ ] Legal terms correctly translated — [Pass / Needs correction — list specific terms]
+        - [ ] Procedural posture accurately conveyed — [Pass / Needs correction]
+
+        ### Institutional names
+        - [ ] Official/accepted translations used — [Pass / Needs correction — list specific names]
+
+        ### Tone
+        - [ ] Tone matches platform editorial standards — [Pass / Needs correction]
+        - [ ] Culturally appropriate — [Pass / Needs correction]
+
+        ### Specific passages needing correction
+        | Passage (source) | Current translation | Suggested correction | Severity | Reason |
+        |---|---|---|---|---|
+        | "..." | "..." | "..." | high | Changes legal meaning |
+    validations:
+      required: false
+
+  - type: textarea
+    id: issues
+    attributes:
+      label: Detailed issues
+      description: Describe each issue with severity and suggested fixes.
+      placeholder: |
+        ### Issue 1 (severity: high)
+        **Passage:** [reference or line number]
+        **Source text:** "..."
+        **Current translation:** "..."
+        **Issue:** The translation changes the legal meaning by [explain].
+        **Suggested fix:** "..."
+
+        ### Issue 2 (severity: medium)
+        ...
+    validations:
+      required: false
+
+  - type: dropdown
+    id: outcome
+    attributes:
+      label: Outcome (if submitting findings)
+      description: What is the overall outcome of this review?
+      options:
+        - Not applicable (requesting a review)
+        - Approved — translation is accurate and appropriate
+        - Changes requested — see findings above
+        - Blocked — translation contains critical errors that prevent publication
+    validations:
+      required: true
+
+  - type: textarea
+    id: unresolved_risk
+    attributes:
+      label: Unresolved translation risk
+      description: Are there any translation-related concerns that remain unresolved?
+      placeholder: |
+        - Some legal terms in [target language] have no exact equivalent. Used closest accepted term with translator's note.
+        - Regional dialect differences may affect comprehension in [specific region]. Review by a second speaker from that region recommended.
+    validations:
+      required: false
+
+  - type: input
+    id: reviewer_role
+    attributes:
+      label: Reviewer role (for public metadata)
+      description: How should your role be described publicly? (e.g., "translation reviewer (Arabic)"). Leave blank if you prefer not to be credited.
+      placeholder: translation reviewer (French)
+    validations:
+      required: false
+
+  - type: dropdown
+    id: name_permission
+    attributes:
+      label: Name credit permission
+      description: Do you permit your name to appear in public metadata for this review?
+      options:
+        - No — use role description only
+        - Yes — I will provide my name separately to the maintainer
+    validations:
+      required: true
+
+  - type: dropdown
+    id: visibility
+    attributes:
+      label: Visibility preference
+      description: How much of this review should be publicly visible?
+      options:
+        - Public metadata only (review type, date, outcome, role — no detailed findings)
+        - Full report public (all findings public; name still requires separate permission)
+        - Private (nothing publicly attributed)
+    validations:
+      required: true
+
+  - type: input
+    id: commit_version
+    attributes:
+      label: Source version reviewed
+      description: Which version of the source content was this translation based on?
+      placeholder: version 1.2.0 or commit abc123
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: declarations
+    attributes:
+      label: Reviewer declarations
+      description: Please confirm the following before submitting.
+      options:
+        - label: I am fluent in both the source and target languages
+          required: true
+        - label: I have compared the translation against the source text
+          required: true
+        - label: I have disclosed any conflicts of interest to the maintainer (see reviewer-conflict-of-interest.md)
+          required: true
+        - label: I understand that this review does not create a partnership, endorsement, affiliation, employment, or official representation relationship with Accountability Atlas
+          required: true
+        - label: I understand that I may describe my contribution but may not speak for the project without written authorisation
+          required: true
+        - label: I have not submitted, collected, or stored any private personal data, confidential institutional material, or sensitive evidence as part of this review
+          required: true
+        - label: This submission does not contain private personal information, sensitive evidence, private testimony, or confidential institutional material
+          required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+
+        **Note:** During the static beta, the platform is published in English
+        only. Translation review infrastructure is being developed. See the
+        [Translation Review Policy](../blob/main/docs/translation-review-policy.md)
+        for current status and planned languages.
+
+        **Review evidence:** If this review leads to changes, a review evidence
+        record will be created following the [Review Evidence Format](../blob/main/docs/review-evidence-format.md).
+
+        **Questions?** See the [Reviewer Guide](../blob/main/docs/reviewer-guide.md)
+        and [Translation Review Policy](../blob/main/docs/translation-review-policy.md).

@@ -1,0 +1,28 @@
+# Accountability Atlas — Security Contact
+#
+# This file follows RFC 9116.  If you have found a security vulnerability
+# in the Accountability Atlas platform, please report it privately.
+#
+# Last updated: 2026-07-12
+
+Canonical: https://accountabilityatlas.org/.well-known/security.txt
+
+Contact: https://github.com/nuttyproducer/accountability-atlas/blob/main/SECURITY.md
+
+# A dedicated security email has not yet been configured.
+# Until one is available, use the GitHub private vulnerability reporting
+# route or contact the maintainer through the repository.
+#
+# Once configured, this section will include:
+#   Contact: mailto:security@[domain]
+#   Encryption: [link to PGP key]
+#   Preferred-Languages: en
+
+Expires: 2026-12-31T23:59:59Z
+
+Policy: https://github.com/nuttyproducer/accountability-atlas/blob/main/SECURITY.md
+
+Acknowledgments: https://github.com/nuttyproducer/accountability-atlas/security/advisories
+
+# GitHub enables private vulnerability reporting on this repository.
+# See https://docs.github.com/en/code-security/security-advisories for details.

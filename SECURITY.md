@@ -20,9 +20,20 @@ Older experimental branches may not receive security updates.
 
 ## Reporting a vulnerability
 
-Until a private security contact is created, do not publish vulnerability details in GitHub issues.
+**During the public static beta**, use GitHub's private vulnerability reporting:
 
-Use the repository maintainer’s private contact method once listed. A future version of this file should include:
+1. Go to the repository's Security tab.
+2. Click **"Report a vulnerability"**.
+3. Describe the issue. Do not publish it in a public issue.
+
+If private vulnerability reporting is not enabled on the repository yet,
+open a public issue stating only that you have a security concern and
+request that the maintainer enable private reporting or contact you
+through an alternative channel. Do not include vulnerability details in
+the public issue.
+
+A dedicated security email is not yet configured. Once available, this
+file will be updated with:
 
 ```text
 Security contact: security@[domain]
@@ -162,18 +173,40 @@ We ask security researchers to:
 
 ---
 
-## Future security roadmap
+## Current security posture
 
-Before public launch:
+As of the public static beta (2026-07-12):
 
-- enable GitHub branch protection;
-- require 2FA for maintainers;
-- set up private security contact;
-- configure dependency scanning;
-- configure secret scanning;
-- add Content Security Policy;
-- choose privacy-first analytics;
-- document incident response.
+| Control | Status |
+|---|---|
+| Content Security Policy | ✅ Configured via `_headers` + `<meta>` fallback |
+| Self-hosted fonts | ✅ `@fontsource` — no external font requests |
+| HSTS / X-Content-Type-Options / Referrer-Policy | ✅ Configured in `_headers` |
+| Permissions-Policy | ✅ All sensors disabled by default |
+| Frame-ancestors | ✅ `'none'` — prevents clickjacking |
+| security.txt | ✅ Published at `/.well-known/security.txt` |
+| Dependabot (npm + Actions) | ✅ Weekly npm, monthly Actions |
+| CI pipeline | ✅ Typecheck + lint + test + build |
+| CSP-compatible build | ✅ App loads under the declared CSP |
+| 2FA for maintainers | ⬜ Recommended — enforce via GitHub org settings |
+| Branch protection on `main` | ⬜ Recommended — require PR + passing CI |
+| Secret scanning | ⬜ Enable in GitHub repo Settings → Code security |
+| Private security contact (email) | ⬜ Not yet configured |
+| Incident response plan | ⬜ Template in `docs/static-beta-security-checklist.md` |
+| External security review | ⬜ Before sensitive features launch |
+| Privacy-first analytics | ⬜ Not introduced; none active |
+
+### Recommended next steps for maintainers
+
+1. **Enable branch protection** on `main`: require pull requests, at least
+   one approving review, and passing CI before merge.
+2. **Require 2FA** for all collaborators in GitHub organization settings.
+3. **Enable secret scanning** in repo Settings → Code security → Secret
+   scanning. Push protection is recommended.
+4. **Enable private vulnerability reporting** in repo Settings → Code
+   security → Private vulnerability reporting.
+5. **Set up a security email** and PGP key when the domain is active.
+   Update `security.txt` and this file.
 
 Before sensitive features:
 

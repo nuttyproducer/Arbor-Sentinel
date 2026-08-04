@@ -1,0 +1,109 @@
+{
+  "site": {
+    "name": "Accountability Atlas",
+    "tagline": "Plateforme civique de redevabilité",
+    "description": "Des preuves pour la protection. Des actions pour la redevabilité."
+  },
+  "skipToContent": "Aller au contenu",
+  "buttons": {
+    "close": "Fermer",
+    "menu": "Menu",
+    "search": "Rechercher",
+    "clear": "Effacer",
+    "print": "Imprimer / Enregistrer en PDF",
+    "readMore": "Lire la suite",
+    "back": "Retour",
+    "submit": "Envoyer",
+    "cancel": "Annuler",
+    "viewAll": "Voir tout",
+    "learnMore": "En savoir plus",
+    "contribute": "Contribuer",
+    "reportIssue": "Signaler un problème",
+    "correctionRequest": "Demander une correction"
+  },
+  "labels": {
+    "lastUpdated": "Page mise à jour le",
+    "dossierAssembled": "Dossier constitué le",
+    "staticPreview": "Aperçu statique",
+    "publicStaticBeta": "Bêta statique publique",
+    "previewLabel": "Aperçu statique",
+    "version": "Version",
+    "language": "Langue",
+    "jurisdiction": "Juridiction",
+    "source": "Source",
+    "sources": "Sources",
+    "published": "Publié",
+    "accessed": "Consulté le",
+    "created": "Créé le",
+    "reviewed": "Vérifié",
+    "lastReviewed": "Dernière vérification",
+    "corrections": "Corrections",
+    "methodology": "Méthodologie",
+    "generationInactive": "Génération inactive",
+    "active": "Actif",
+    "inactive": "Inactif"
+  },
+  "search": {
+    "placeholder": "Rechercher dans les sources, preuves, affaires juridiques, organisations…",
+    "noResults": "Aucun résultat trouvé",
+    "resultCount": "{{count}} résultat",
+    "resultCount_plural": "{{count}} résultats",
+    "forQuery": "pour « {{query}} »",
+    "searchedRecords": "{{total}} enregistrements parcourus en {{time}}ms",
+    "enterTerm": "Saisissez un terme de recherche ci-dessus pour explorer tous les enregistrements de la plateforme.",
+    "suggestions": "Essayez : « CIJ », « Gaza », « Belgique », « accès humanitaire », « mandat d'arrêt », « transferts d'armes », ou « mesures conservatoires ».",
+    "noMatch": "Aucun enregistrement ne correspond à « {{query}} ».",
+    "typeFilterHelp": "Vous avez des filtres de type actifs. Essayez de les effacer pour élargir votre recherche.",
+    "suggestionsLabel": "Suggestions :",
+    "checkSpelling": "Vérifier l'orthographe",
+    "tryFewerKeywords": "Essayer moins de mots-clés ou des mots-clés différents",
+    "clearFilters": "Effacer les filtres",
+    "filterByType": "Filtrer par type",
+    "matched": "Correspondance",
+    "localSearchOnly": "Cette recherche couvre uniquement les enregistrements actuels de la plateforme — pas toute la documentation publique sur les atrocités. Elle s'exécute entièrement dans votre navigateur. Aucune requête n'est envoyée à un serveur, journalisée ou analysée. Aucun profil utilisateur n'est construit."
+  },
+  "related": {
+    "references": "Références",
+    "referencedBy": "Référencé par",
+    "relatedPage": "page liée",
+    "referencesThisSource": "fait référence à cette source",
+    "includesThisSource": "inclut cette source",
+    "includesThisEvidence": "inclut cette preuve",
+    "includesThisLegalCase": "inclut cette affaire juridique",
+    "includesThisCountry": "inclut ce contexte national",
+    "includesThisInstitution": "inclut ce contexte institutionnel"
+  },
+  "languageSwitcher": {
+    "label": "Choisir la langue",
+    "currentLanguage": "Langue actuelle : {{language}}"
+  },
+  "emptyStates": {
+    "noSources": "Aucune source disponible.",
+    "noEvidence": "Aucun élément de preuve disponible.",
+    "noLegalCases": "Aucune affaire juridique disponible.",
+    "noOrganizations": "Aucune organisation disponible.",
+    "noActions": "Aucun modèle d'action disponible.",
+    "noDossiers": "Aucun dossier disponible.",
+    "noRelated": "Aucun enregistrement lié trouvé.",
+    "notFound": "Page introuvable.",
+    "dossierNotFound": "Dossier introuvable",
+    "backToDossiers": "← Retour à la bibliothèque de dossiers",
+    "evidenceNotFound": "Élément de preuve introuvable",
+    "actionNotFound": "Modèle d'action introuvable",
+    "sourceNotFound": "Enregistrement source introuvable",
+    "legalCaseNotFound": "Affaire juridique introuvable",
+    "organizationNotFound": "Organisation introuvable"
+  },
+  "translationNotice": {
+    "englishAuthoritative": "La version anglaise fait foi. Les traductions sont fournies à titre indicatif et peuvent ne pas refléter les dernières mises à jour.",
+    "unreviewedTranslation": "Ceci est une traduction non révisée. Le texte source en anglais fait foi.",
+    "draftTranslation": "Ceci est une traduction provisoire — pas encore révisée.",
+    "translationPending": "Traduction en attente — contenu affiché en anglais."
+  },
+  "footer": {
+    "codeLicense": "Code sous licence",
+    "contentLicense": "Contenu sous licence",
+    "noLegalAdvice": "Ce projet ne fournit pas de conseils juridiques. Ce n'est pas une ONG enregistrée ni une organisation caritative. Aucun partenariat avec les organisations répertoriées n'est implicite.",
+    "copyright": "© {{year}} Contributeurs d'Accountability Atlas."
+  }
+}
