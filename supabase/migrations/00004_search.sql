@@ -132,11 +132,11 @@ SET search_path = ''
 AS $$
   SELECT 'evidence' AS result_type, id AS result_id,
     title,
-    ts_headline('arbor_sentinel', summary, plainto_tsquery('arbor_sentinel', search_query), 'MaxWords=30, MinWords=15') AS snippet,
-    ts_rank(search_vector, plainto_tsquery('arbor_sentinel', search_query)) AS rank,
+    ts_headline('public.arbor_sentinel', summary, plainto_tsquery('public.arbor_sentinel', search_query), 'MaxWords=30, MinWords=15') AS snippet,
+    ts_rank(search_vector, plainto_tsquery('public.arbor_sentinel', search_query)) AS rank,
     created_at
   FROM public.evidence_items
-  WHERE search_vector @@ plainto_tsquery('arbor_sentinel', search_query)
+  WHERE search_vector @@ plainto_tsquery('public.arbor_sentinel', search_query)
     AND review_status = 'published' AND visibility = 'public'
     AND (search_types IS NULL OR 'evidence' = ANY(search_types))
 
@@ -144,22 +144,22 @@ AS $$
 
   SELECT 'source' AS result_type, id AS result_id,
     name AS title,
-    ts_headline('arbor_sentinel', COALESCE(notes, ''), plainto_tsquery('arbor_sentinel', search_query), 'MaxWords=30, MinWords=15') AS snippet,
-    ts_rank(search_vector, plainto_tsquery('arbor_sentinel', search_query)) AS rank,
+    ts_headline('public.arbor_sentinel', COALESCE(notes, ''), plainto_tsquery('public.arbor_sentinel', search_query), 'MaxWords=30, MinWords=15') AS snippet,
+    ts_rank(search_vector, plainto_tsquery('public.arbor_sentinel', search_query)) AS rank,
     created_at
   FROM public.sources
-  WHERE search_vector @@ plainto_tsquery('arbor_sentinel', search_query)
+  WHERE search_vector @@ plainto_tsquery('public.arbor_sentinel', search_query)
     AND (search_types IS NULL OR 'source' = ANY(search_types))
 
   UNION ALL
 
   SELECT 'legal_case' AS result_type, id AS result_id,
     title,
-    ts_headline('arbor_sentinel', COALESCE(summary, ''), plainto_tsquery('arbor_sentinel', search_query), 'MaxWords=30, MinWords=15') AS snippet,
-    ts_rank(search_vector, plainto_tsquery('arbor_sentinel', search_query)) AS rank,
+    ts_headline('public.arbor_sentinel', COALESCE(summary, ''), plainto_tsquery('public.arbor_sentinel', search_query), 'MaxWords=30, MinWords=15') AS snippet,
+    ts_rank(search_vector, plainto_tsquery('public.arbor_sentinel', search_query)) AS rank,
     created_at
   FROM public.legal_cases
-  WHERE search_vector @@ plainto_tsquery('arbor_sentinel', search_query)
+  WHERE search_vector @@ plainto_tsquery('public.arbor_sentinel', search_query)
     AND (search_types IS NULL OR 'legal_case' = ANY(search_types))
 
   UNION ALL
@@ -167,21 +167,21 @@ AS $$
   SELECT 'country' AS result_type, id AS result_id,
     name AS title,
     NULL AS snippet,
-    ts_rank(search_vector, plainto_tsquery('arbor_sentinel', search_query)) AS rank,
+    ts_rank(search_vector, plainto_tsquery('public.arbor_sentinel', search_query)) AS rank,
     created_at
   FROM public.countries
-  WHERE search_vector @@ plainto_tsquery('arbor_sentinel', search_query)
+  WHERE search_vector @@ plainto_tsquery('public.arbor_sentinel', search_query)
     AND (search_types IS NULL OR 'country' = ANY(search_types))
 
   UNION ALL
 
   SELECT 'organization' AS result_type, id AS result_id,
     name AS title,
-    ts_headline('arbor_sentinel', COALESCE(notes, ''), plainto_tsquery('arbor_sentinel', search_query), 'MaxWords=30, MinWords=15') AS snippet,
-    ts_rank(search_vector, plainto_tsquery('arbor_sentinel', search_query)) AS rank,
+    ts_headline('public.arbor_sentinel', COALESCE(notes, ''), plainto_tsquery('public.arbor_sentinel', search_query), 'MaxWords=30, MinWords=15') AS snippet,
+    ts_rank(search_vector, plainto_tsquery('public.arbor_sentinel', search_query)) AS rank,
     created_at
   FROM public.organizations
-  WHERE search_vector @@ plainto_tsquery('arbor_sentinel', search_query)
+  WHERE search_vector @@ plainto_tsquery('public.arbor_sentinel', search_query)
     AND (search_types IS NULL OR 'organization' = ANY(search_types))
 
   ORDER BY rank DESC, created_at DESC
