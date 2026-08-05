@@ -1,3 +1,4 @@
+import { useEffect, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Container } from "../components/ui/Container";
 import { Reveal } from "../components/ui/Reveal";
@@ -8,15 +9,46 @@ import { LastUpdated } from "../components/pages/LastUpdated";
 import { PreviewNotice } from "../components/pages/PreviewNotice";
 import { CorrectionLink } from "../components/pages/CorrectionLink";
 import {
-  getOrganizationsByCategory,
   ORGANIZATION_CATEGORIES,
+  type OrganizationCategory,
+  type OrganizationRecord,
 } from "../data/organizations";
+import { useRepository } from "../hooks/useRepository";
 import { OrganizationCard } from "../components/organizations/OrganizationCard";
 import { OrganizationDisclaimer } from "../components/organizations/OrganizationDisclaimer";
 
-const organizationsByCategory = getOrganizationsByCategory();
+/** Group repository records by directory category. */
+function groupOrganizationsByCategory(
+  records: OrganizationRecord[],
+): Record<OrganizationCategory, OrganizationRecord[]> {
+  const grouped = {} as Record<OrganizationCategory, OrganizationRecord[]>;
+  for (const cat of ORGANIZATION_CATEGORIES) grouped[cat] = [];
+  for (const record of records) grouped[record.category].push(record);
+  return grouped;
+}
 
 export default function OrganizationsPage() {
+  const repo = useRepository();
+  const [organizations, setOrganizations] = useState<OrganizationRecord[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    repo.getOrganizations().then((orgs) => {
+      if (cancelled) return;
+      setOrganizations(orgs);
+      setLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [repo]);
+
+  const organizationsByCategory = useMemo(
+    () => groupOrganizationsByCategory(organizations),
+    [organizations],
+  );
+
   return (
     <Container className="py-16 lg:py-20">
       <PageIntro
@@ -84,34 +116,55 @@ export default function OrganizationsPage() {
       </PolicySection>
 
       {/* Category-grouped organisation cards */}
-      {ORGANIZATION_CATEGORIES.map((category, catIdx) => {
-        const orgs = organizationsByCategory[category];
-        if (!orgs || orgs.length === 0) return null;
+      {loading ? (
+        <div
+          className="flex items-center justify-center min-h-[40vh]"
+          role="status"
+          aria-label="Loading organizations"
+        >
+          <div className="flex flex-col items-center gap-4">
+            <div
+              className="w-16 h-[2px] bg-amber rounded-full motion-safe:animate-pulse"
+              aria-hidden="true"
+            />
+            <p className="font-mono text-xs tracking-[0.15em] uppercase text-charcoal/50">
+              Loading
+            </p>
+            <span className="sr-only" aria-live="polite">
+              Organization records are loading.
+            </span>
+          </div>
+        </div>
+      ) : (
+        ORGANIZATION_CATEGORIES.map((category, catIdx) => {
+          const orgs = organizationsByCategory[category];
+          if (!orgs || orgs.length === 0) return null;
 
-        return (
-          <section key={category} aria-labelledby={`cat-${category}`}>
-            <Reveal delay={0.18 + catIdx * 0.04}>
-              <h2
-                id={`cat-${category}`}
-                className="font-serif text-2xl font-semibold text-ink mb-5 mt-12 first:mt-0"
-              >
-                {category}
-              </h2>
-            </Reveal>
+          return (
+            <section key={category} aria-labelledby={`cat-${category}`}>
+              <Reveal delay={0.18 + catIdx * 0.04}>
+                <h2
+                  id={`cat-${category}`}
+                  className="font-serif text-2xl font-semibold text-ink mb-5 mt-12 first:mt-0"
+                >
+                  {category}
+                </h2>
+              </Reveal>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
-              {orgs.map((org, i) => (
-                <OrganizationCard
-                  key={org.id}
-                  org={org}
-                  category={category}
-                  index={catIdx * 10 + i}
-                />
-              ))}
-            </div>
-          </section>
-        );
-      })}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                {orgs.map((org, i) => (
+                  <OrganizationCard
+                    key={org.id}
+                    org={org}
+                    category={category}
+                    index={catIdx * 10 + i}
+                  />
+                ))}
+              </div>
+            </section>
+          );
+        })
+      )}
 
       {/* Relationship status explanation */}
       <PolicySection

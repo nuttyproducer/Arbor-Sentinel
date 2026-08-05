@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Container } from "../components/ui/Container";
 import { Badge } from "../components/ui/Badge";
@@ -7,13 +8,56 @@ import { CorrectionLink } from "../components/pages/CorrectionLink";
 import { ContentStatusBadge } from "../components/pages/ContentStatusBadge";
 import { SourceList } from "../components/pages/SourceList";
 import { OrganizationDisclaimer } from "../components/organizations/OrganizationDisclaimer";
-import { getOrganizationBySlug } from "../data/organizations";
+import {
+  RELATIONSHIP_STATUS_LABEL,
+  type OrganizationRecord,
+} from "../data/organizations";
 import { sources } from "../data/sources";
-import { RELATIONSHIP_STATUS_LABEL } from "../data/organizations";
+import { useRepository } from "../hooks/useRepository";
 
 export default function OrganizationDetailPage() {
   const { slug } = useParams<{ slug: string }>();
-  const org = slug ? getOrganizationBySlug(slug) : undefined;
+  const repo = useRepository();
+  const [org, setOrg] = useState<OrganizationRecord | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!slug) return;
+    let cancelled = false;
+    repo.getOrganizationBySlug(slug).then((result) => {
+      if (cancelled) return;
+      setOrg(result);
+      setLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [repo, slug]);
+
+  if (loading && slug) {
+    return (
+      <Container className="py-16 lg:py-20">
+        <div
+          className="flex items-center justify-center min-h-[40vh]"
+          role="status"
+          aria-label="Loading organization"
+        >
+          <div className="flex flex-col items-center gap-4">
+            <div
+              className="w-16 h-[2px] bg-amber rounded-full motion-safe:animate-pulse"
+              aria-hidden="true"
+            />
+            <p className="font-mono text-xs tracking-[0.15em] uppercase text-charcoal/50">
+              Loading
+            </p>
+            <span className="sr-only" aria-live="polite">
+              Organization record is loading.
+            </span>
+          </div>
+        </div>
+      </Container>
+    );
+  }
 
   if (!org) {
     return (

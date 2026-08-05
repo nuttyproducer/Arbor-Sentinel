@@ -12,10 +12,14 @@ import { ChangelogPage } from "../ChangelogPage";
 import { NotFoundPage } from "../NotFoundPage";
 import PressPage from "../PressPage";
 import SourceRegistryPage from "../SourceRegistryPage";
+import SourceDetailPage from "../SourceDetailPage";
 import EvidenceDetailPage from "../EvidenceDetailPage";
+import ActionHubPage from "../ActionHubPage";
 import ActionDetailPage from "../ActionDetailPage";
 import CountriesIndexPage from "../CountriesIndexPage";
 import InstitutionsIndexPage from "../InstitutionsIndexPage";
+import OrganizationsPage from "../OrganizationsPage";
+import OrganizationDetailPage from "../OrganizationDetailPage";
 import DossiersPage from "../DossiersPage";
 import DossierDetailPage from "../DossierDetailPage";
 import SearchPage from "../SearchPage";
@@ -209,6 +213,32 @@ describe("Route rendering smoke tests", () => {
     ).toBeInTheDocument();
   });
 
+  it("renders SourceDetailPage for a known slug", async () => {
+    render(
+      <MemoryRouter initialEntries={["/sources/icj-provisional-measures-jan-2024"]}>
+        <Routes>
+          <Route path="/sources/:sourceId" element={<SourceDetailPage />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+    expect(
+      await screen.findByRole("heading", { name: /Order of 26 January 2024/ }),
+    ).toBeInTheDocument();
+  });
+
+  it("renders SourceDetailPage not-found state for unknown slug", async () => {
+    render(
+      <MemoryRouter initialEntries={["/sources/nonexistent-source"]}>
+        <Routes>
+          <Route path="/sources/:sourceId" element={<SourceDetailPage />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+    expect(
+      await screen.findByText("Source not found"),
+    ).toBeInTheDocument();
+  });
+
   it("renders EvidenceDetailPage for a known slug", async () => {
     render(
       <MemoryRouter initialEntries={["/evidence/icj-provisional-measures-jan-2024"]}>
@@ -233,6 +263,39 @@ describe("Route rendering smoke tests", () => {
     );
     expect(
       await screen.findByText("Evidence record not found"),
+    ).toBeInTheDocument();
+  });
+
+  it("renders OrganizationsPage", () => {
+    renderPage(OrganizationsPage);
+    expect(
+      screen.getByRole("heading", { name: "Organizations" }),
+    ).toBeInTheDocument();
+  });
+
+  it("renders OrganizationDetailPage for a known slug", async () => {
+    render(
+      <MemoryRouter initialEntries={["/organizations/unrwa"]}>
+        <Routes>
+          <Route path="/organizations/:slug" element={<OrganizationDetailPage />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+    expect(
+      await screen.findByRole("heading", { name: /UNRWA/ }),
+    ).toBeInTheDocument();
+  });
+
+  it("renders OrganizationDetailPage not-found state for unknown slug", async () => {
+    render(
+      <MemoryRouter initialEntries={["/organizations/nonexistent-org"]}>
+        <Routes>
+          <Route path="/organizations/:slug" element={<OrganizationDetailPage />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+    expect(
+      await screen.findByText("Organization not found"),
     ).toBeInTheDocument();
   });
 
@@ -261,7 +324,14 @@ describe("Route rendering smoke tests", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders ActionDetailPage for a known slug", () => {
+  it("renders ActionHubPage", () => {
+    renderPage(ActionHubPage);
+    expect(
+      screen.getByRole("heading", { name: "Lawful Civic Action Hub" }),
+    ).toBeInTheDocument();
+  });
+
+  it("renders ActionDetailPage for a known slug", async () => {
     render(
       <MemoryRouter initialEntries={["/take-action/contact-representative"]}>
         <Routes>
@@ -270,11 +340,11 @@ describe("Route rendering smoke tests", () => {
       </MemoryRouter>,
     );
     expect(
-      screen.getByRole("heading", { name: "Contact your representative" }),
+      await screen.findByRole("heading", { name: "Contact your representative" }),
     ).toBeInTheDocument();
   });
 
-  it("renders ActionDetailPage not-found state for unknown slug", () => {
+  it("renders ActionDetailPage not-found state for unknown slug", async () => {
     render(
       <MemoryRouter initialEntries={["/take-action/nonexistent-action"]}>
         <Routes>
@@ -283,7 +353,7 @@ describe("Route rendering smoke tests", () => {
       </MemoryRouter>,
     );
     expect(
-      screen.getByText("Action template not found"),
+      await screen.findByText("Action template not found"),
     ).toBeInTheDocument();
   });
 
@@ -297,7 +367,7 @@ describe("Route rendering smoke tests", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders DossierDetailPage for a known slug", () => {
+  it("renders DossierDetailPage for a known slug", async () => {
     render(
       <MemoryRouter initialEntries={["/dossiers/gaza-accountability-one-page"]}>
         <Routes>
@@ -305,11 +375,11 @@ describe("Route rendering smoke tests", () => {
         </Routes>
       </MemoryRouter>,
     );
-    const headings = screen.getAllByRole("heading", { name: /Gaza Accountability — One-Page/ });
+    const headings = await screen.findAllByRole("heading", { name: /Gaza Accountability — One-Page/ });
     expect(headings.length).toBeGreaterThanOrEqual(1);
   });
 
-  it("renders DossierDetailPage not-found state for unknown slug", () => {
+  it("renders DossierDetailPage not-found state for unknown slug", async () => {
     render(
       <MemoryRouter initialEntries={["/dossiers/nonexistent-dossier"]}>
         <Routes>
@@ -318,7 +388,7 @@ describe("Route rendering smoke tests", () => {
       </MemoryRouter>,
     );
     expect(
-      screen.getByText("Dossier not found"),
+      await screen.findByText("Dossier not found"),
     ).toBeInTheDocument();
   });
 
