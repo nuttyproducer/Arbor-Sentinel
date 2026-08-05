@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Container } from "../components/ui/Container";
 import { PageIntro } from "../components/pages/PageIntro";
@@ -9,22 +9,10 @@ import { CorrectionLink } from "../components/pages/CorrectionLink";
 import { SourceFilterControls } from "../components/sources/SourceFilterControls";
 import { SourceRegistryTable } from "../components/sources/SourceRegistryTable";
 import { SourceDetailPanel } from "../components/sources/SourceDetailPanel";
-import {
-  sources,
-} from "../data/sources";
 import type { SourceRecord } from "../types/content";
+import { useRepository } from "../hooks/useRepository";
 import type { SourceFilters } from "../components/sources/SourceFilterControls";
 import { DEFAULT_SOURCE_FILTERS } from "../components/sources/SourceFilterControls";
-
-const allSources: SourceRecord[] = sources;
-
-const availableRegions = [...new Set(
-  allSources.map((s) => s.region).filter(Boolean) as string[],
-)].sort();
-
-const availableLanguages = [...new Set(
-  allSources.map((s) => s.language).filter(Boolean) as string[],
-)].sort();
 
 function filterSources(
   items: SourceRecord[],
@@ -42,9 +30,36 @@ function filterSources(
 }
 
 export default function SourceRegistryPage() {
+  const repo = useRepository();
+  const [allSources, setAllSources] = useState<SourceRecord[]>([]);
+  const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState<SourceFilters>(DEFAULT_SOURCE_FILTERS);
   const [selectedSource, setSelectedSource] = useState<SourceRecord | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    repo.getSources().then((sources) => {
+      if (cancelled) return;
+      setAllSources(sources);
+      setLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [repo]);
+
+  const availableRegions = useMemo(
+    () =>
+      [...new Set(allSources.map((s) => s.region).filter(Boolean) as string[])].sort(),
+    [allSources],
+  );
+
+  const availableLanguages = useMemo(
+    () =>
+      [...new Set(allSources.map((s) => s.language).filter(Boolean) as string[])].sort(),
+    [allSources],
+  );
 
   const setFilter = useCallback(
     <K extends keyof SourceFilters>(key: K, value: SourceFilters[K]) => {
@@ -142,30 +157,53 @@ export default function SourceRegistryPage() {
       </PolicySection>
 
       {/* Filters */}
-      <SourceFilterControls
-        filters={filters}
-        setFilter={setFilter}
-        clearFilter={clearFilter}
-        clearAllFilters={clearAllFilters}
-        availableRegions={availableRegions}
-        availableLanguages={availableLanguages}
-        filteredCount={filteredSources.length}
-        totalCount={allSources.length}
-      />
+      {loading ? (
+        <div
+          className="flex items-center justify-center min-h-[40vh]"
+          role="status"
+          aria-label="Loading sources"
+        >
+          <div className="flex flex-col items-center gap-4">
+            <div
+              className="w-16 h-[2px] bg-amber rounded-full motion-safe:animate-pulse"
+              aria-hidden="true"
+            />
+            <p className="font-mono text-xs tracking-[0.15em] uppercase text-charcoal/50">
+              Loading
+            </p>
+            <span className="sr-only" aria-live="polite">
+              Source records are loading.
+            </span>
+          </div>
+        </div>
+      ) : (
+        <>
+          <SourceFilterControls
+            filters={filters}
+            setFilter={setFilter}
+            clearFilter={clearFilter}
+            clearAllFilters={clearAllFilters}
+            availableRegions={availableRegions}
+            availableLanguages={availableLanguages}
+            filteredCount={filteredSources.length}
+            totalCount={allSources.length}
+          />
 
-      {/* Source Registry Table */}
-      <SourceRegistryTable
-        sources={filteredSources}
-        selectedId={selectedSource?.id}
-        onSelect={handleSelect}
-      />
+          {/* Source Registry Table */}
+          <SourceRegistryTable
+            sources={filteredSources}
+            selectedId={selectedSource?.id}
+            onSelect={handleSelect}
+          />
 
-      {/* Source Detail Panel */}
-      <SourceDetailPanel
-        source={selectedSource}
-        open={panelOpen}
-        onClose={handleClosePanel}
-      />
+          {/* Source Detail Panel */}
+          <SourceDetailPanel
+            source={selectedSource}
+            open={panelOpen}
+            onClose={handleClosePanel}
+          />
+        </>
+      )}
 
       {/* Broken/archived/superseded explanation */}
       <PolicySection title="Source statuses" id="source-statuses" delay={0.50}>

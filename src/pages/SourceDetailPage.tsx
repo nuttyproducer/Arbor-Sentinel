@@ -1,10 +1,10 @@
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Container } from "../components/ui/Container";
 import { Badge } from "../components/ui/Badge";
 import { LastUpdated } from "../components/pages/LastUpdated";
 import { CorrectionLink } from "../components/pages/CorrectionLink";
 import { ExternalLink } from "../components/ui/ExternalLink";
-import { getSourceBySlug } from "../data/sources";
 import { evidenceItems } from "../data/evidenceItems";
 import { legalCases } from "../data/legalCases";
 import { actionTemplates } from "../data/actionTemplates";
@@ -12,7 +12,9 @@ import { organizationRecords } from "../data/organizations";
 import {
   SOURCE_TYPE_LABELS,
   SOURCE_STATUS_LABELS,
+  type SourceRecord,
 } from "../types/content";
+import { useRepository } from "../hooks/useRepository";
 
 /** Find evidence, legal, and action records that reference a source ID. */
 function findRelatedRecords(sourceId: string) {
@@ -25,7 +27,47 @@ function findRelatedRecords(sourceId: string) {
 
 export default function SourceDetailPage() {
   const { sourceId } = useParams<{ sourceId: string }>();
-  const source = sourceId ? getSourceBySlug(sourceId) : undefined;
+  const repo = useRepository();
+  const [source, setSource] = useState<SourceRecord | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!sourceId) return;
+    let cancelled = false;
+    repo.getSources().then((allSources) => {
+      if (cancelled) return;
+      setSource(allSources.find((s) => s.slug === sourceId) ?? null);
+      setLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [repo, sourceId]);
+
+  if (loading && sourceId) {
+    return (
+      <Container className="py-16 lg:py-20">
+        <div
+          className="flex items-center justify-center min-h-[40vh]"
+          role="status"
+          aria-label="Loading source"
+        >
+          <div className="flex flex-col items-center gap-4">
+            <div
+              className="w-16 h-[2px] bg-amber rounded-full motion-safe:animate-pulse"
+              aria-hidden="true"
+            />
+            <p className="font-mono text-xs tracking-[0.15em] uppercase text-charcoal/50">
+              Loading
+            </p>
+            <span className="sr-only" aria-live="polite">
+              Source record is loading.
+            </span>
+          </div>
+        </div>
+      </Container>
+    );
+  }
 
   if (!source) {
     return (
