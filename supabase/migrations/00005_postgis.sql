@@ -43,21 +43,21 @@ CREATE INDEX IF NOT EXISTS idx_organizations_operational_area ON organizations U
  * - exact: no rounding (admin only)
  */
 CREATE OR REPLACE FUNCTION safe_coordinate(
-  coord numeric,
+  coord double precision,
   precision_level text
 )
-RETURNS numeric
+RETURNS double precision
 LANGUAGE sql
 IMMUTABLE
-SET search_path = ''
+SET search_path = 'public'
 AS $$
   SELECT CASE precision_level
-    WHEN 'country' THEN round(coord, 1)
-    WHEN 'region' THEN round(coord, 2)
-    WHEN 'city' THEN round(coord, 3)
-    WHEN 'district' THEN round(coord, 4)
+    WHEN 'country' THEN round(coord::numeric, 1)::double precision
+    WHEN 'region' THEN round(coord::numeric, 2)::double precision
+    WHEN 'city' THEN round(coord::numeric, 3)::double precision
+    WHEN 'district' THEN round(coord::numeric, 4)::double precision
     WHEN 'exact' THEN coord
-    ELSE round(coord, 2) -- default safe
+    ELSE round(coord::numeric, 2)::double precision -- default safe
   END;
 $$;
 
@@ -72,7 +72,7 @@ CREATE OR REPLACE FUNCTION safe_location(
 RETURNS geometry(Point, 4326)
 LANGUAGE sql
 IMMUTABLE
-SET search_path = ''
+SET search_path = 'public'
 AS $$
   SELECT CASE
     WHEN precision_level = 'exact' AND (public.is_admin() OR public.has_role('security_admin'))
@@ -107,7 +107,7 @@ RETURNS TABLE(
 )
 LANGUAGE sql
 STABLE
-SET search_path = ''
+SET search_path = 'public'
 AS $$
   SELECT
     ei.id,
@@ -117,16 +117,16 @@ AS $$
     public.ST_Y(ei.location_geom) AS lat,
     public.ST_X(ei.location_geom) AS lng,
     public.ST_Distance(
-      ei.location_geom::geography,
-      public.ST_SetSRID(public.ST_MakePoint(center_lng, center_lat), 4326)::geography
+      ei.location_geom::public.geography,
+      public.ST_SetSRID(public.ST_MakePoint(center_lng, center_lat), 4326)::public.geography
     ) / 1000.0 AS distance_km
   FROM public.evidence_items ei
   WHERE ei.location_geom IS NOT NULL
     AND ei.review_status = 'published'
     AND ei.visibility = 'public'
     AND public.ST_DWithin(
-      ei.location_geom::geography,
-      public.ST_SetSRID(public.ST_MakePoint(center_lng, center_lat), 4326)::geography,
+      ei.location_geom::public.geography,
+      public.ST_SetSRID(public.ST_MakePoint(center_lng, center_lat), 4326)::public.geography,
       radius_km * 1000
     )
   ORDER BY distance_km
@@ -151,7 +151,7 @@ RETURNS TABLE(
 )
 LANGUAGE sql
 STABLE
-SET search_path = ''
+SET search_path = 'public'
 AS $$
   SELECT
     ei.id,
@@ -174,7 +174,7 @@ CREATE OR REPLACE FUNCTION geojson_evidence_events()
 RETURNS jsonb
 LANGUAGE sql
 STABLE
-SET search_path = ''
+SET search_path = 'public'
 AS $$
   SELECT jsonb_build_object(
     'type', 'FeatureCollection',
@@ -210,7 +210,7 @@ DROP FUNCTION IF EXISTS geojson_evidence_events();
 DROP FUNCTION IF EXISTS evidence_in_bbox(numeric,numeric,numeric,numeric,int);
 DROP FUNCTION IF EXISTS evidence_nearby(numeric,numeric,numeric,int);
 DROP FUNCTION IF EXISTS safe_location(geometry,text);
-DROP FUNCTION IF EXISTS safe_coordinate(numeric,text);
+DROP FUNCTION IF EXISTS safe_coordinate(double precision,text);
 ALTER TABLE sources DROP COLUMN IF EXISTS region_geometry;
 ALTER TABLE country_positions DROP COLUMN IF EXISTS jurisdiction_area;
 ALTER TABLE organizations DROP COLUMN IF EXISTS operational_area;

@@ -3,6 +3,7 @@ import { HashRouter, Route, Routes, useLocation } from "react-router-dom";
 import { PageShell } from "./components/layout/PageShell";
 import { DocumentHead } from "./components/ui/DocumentHead";
 import { RouteLoadingFallback } from "./components/ui/RouteLoadingFallback";
+import { ErrorBoundary } from "./components/ui/ErrorBoundary";
 import { ProtectedRoute } from "./components/admin/ProtectedRoute";
 import { getRouteMeta } from "./data/routeMetadata";
 import { LocaleProvider } from "./i18n/LocaleProvider";
@@ -104,6 +105,7 @@ function ScrollToTop() {
 
 export default function App() {
   return (
+    <ErrorBoundary>
     <DisplayPreferenceProvider>
     <LocaleProvider>
       <HashRouter>
@@ -213,5 +215,6 @@ export default function App() {
     </HashRouter>
     </LocaleProvider>
     </DisplayPreferenceProvider>
+    </ErrorBoundary>
   );
 }
