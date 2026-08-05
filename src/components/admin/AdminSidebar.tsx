@@ -1,7 +1,7 @@
 // src/components/admin/AdminSidebar.tsx
 // Admin sidebar navigation — links to all content types, review queue, dashboards.
 
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 interface NavItem {
   label: string;
@@ -18,6 +18,12 @@ const CONTENT_ITEMS: NavItem[] = [
   { label: 'Legal Cases', path: '/admin/legal-cases' },
   { label: 'Actions', path: '/admin/actions' },
   { label: 'Dossiers', path: '/admin/dossiers' },
+];
+
+const COLLECTOR_ITEMS: NavItem[] = [
+  { label: 'Intelligence', path: '/admin/intelligence' },
+  { label: 'Feed Manager', path: '/admin/feeds' },
+  { label: 'Incidents', path: '/admin/incidents' },
 ];
 
 const WORKFLOW_ITEMS: NavItem[] = [
@@ -87,6 +93,7 @@ export function AdminSidebar() {
       </div>
 
       <SidebarSection title="Content" items={CONTENT_ITEMS} />
+      <SidebarSection title="Intelligence" items={COLLECTOR_ITEMS} />
       <SidebarSection title="Workflow" items={WORKFLOW_ITEMS} />
       <SidebarSection title="Dashboards" items={DASHBOARD_ITEMS} />
       <SidebarSection title="System" items={SYSTEM_ITEMS} />

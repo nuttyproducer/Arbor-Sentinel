@@ -1,6 +1,18 @@
-import type { SourceType, HealthStatus, AutomationStatus } from "../../types/content";
+import type { SourceType, HealthStatus } from "../../types/content";
 
 // ── Collector Configuration ──────────────────────────────────────────────────
+
+/** Taxonomy of collector implementations. */
+export type CollectorType =
+  | 'rss'
+  | 'rest-api'
+  | 'graphql'
+  | 'csv'
+  | 'xml'
+  | 'gov-portal'
+  | 'court'
+  | 'manual-import'
+  | 'ai-extraction';
 
 /** Per-source configuration for a collector instance. */
 export interface CollectorConfig {
