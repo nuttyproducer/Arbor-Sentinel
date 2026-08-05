@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Container } from "../components/ui/Container";
 import { Reveal } from "../components/ui/Reveal";
@@ -8,7 +9,7 @@ import { CorrectionLink } from "../components/pages/CorrectionLink";
 import { LastUpdated } from "../components/pages/LastUpdated";
 import { ContentStatusBadge } from "../components/pages/ContentStatusBadge";
 import { SourceList } from "../components/pages/SourceList";
-import { getDossierBySlug } from "../data/dossiers";
+import { useRepository } from "../hooks/useRepository";
 import { getSourceById } from "../data/sources";
 import { getEvidenceBySlug } from "../data/evidenceItems";
 import { getLegalCaseBySlug } from "../data/legalCases";
@@ -131,7 +132,47 @@ function PrintButton() {
 
 export default function DossierDetailPage() {
   const { slug } = useParams<{ slug: string }>();
-  const dossier = slug ? getDossierBySlug(slug) : undefined;
+  const repo = useRepository();
+  const [dossier, setDossier] = useState<DossierRecord | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!slug) return;
+    let cancelled = false;
+    repo.getDossierBySlug(slug).then((result) => {
+      if (cancelled) return;
+      setDossier(result);
+      setLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [repo, slug]);
+
+  if (loading && slug) {
+    return (
+      <Container className="py-16 lg:py-20">
+        <div
+          className="flex items-center justify-center min-h-[40vh]"
+          role="status"
+          aria-label="Loading dossier"
+        >
+          <div className="flex flex-col items-center gap-4">
+            <div
+              className="w-16 h-[2px] bg-amber rounded-full motion-safe:animate-pulse"
+              aria-hidden="true"
+            />
+            <p className="font-mono text-xs tracking-[0.15em] uppercase text-charcoal/50">
+              Loading
+            </p>
+            <span className="sr-only" aria-live="polite">
+              Dossier record is loading.
+            </span>
+          </div>
+        </div>
+      </Container>
+    );
+  }
 
   if (!dossier) {
     return (

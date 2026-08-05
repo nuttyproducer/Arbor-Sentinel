@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Container } from "../components/ui/Container";
 import { Reveal } from "../components/ui/Reveal";
@@ -9,10 +10,26 @@ import { PreviewNotice } from "../components/pages/PreviewNotice";
 import { CorrectionLink } from "../components/pages/CorrectionLink";
 import { LastUpdated } from "../components/pages/LastUpdated";
 import { dossierTemplates } from "../data/dossierTemplates";
-import { dossiers } from "../data/dossiers";
-import { DOSSIER_TYPE_LABELS } from "../types/content";
+import { useRepository } from "../hooks/useRepository";
+import { DOSSIER_TYPE_LABELS, type DossierRecord } from "../types/content";
 
 export default function DossiersPage() {
+  const repo = useRepository();
+  const [dossiers, setDossiers] = useState<DossierRecord[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    repo.getDossiers().then((records) => {
+      if (cancelled) return;
+      setDossiers(records);
+      setLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [repo]);
+
   return (
     <Container className="py-16 lg:py-20">
       <PageIntro
@@ -51,37 +68,58 @@ export default function DossiersPage() {
           asks, and a print-friendly layout.
         </p>
 
-        <div className="grid grid-cols-1 gap-4">
-          {dossiers.map((dossier, i) => (
-            <Reveal key={dossier.id} delay={0.15 + i * 0.05}>
-              <Link
-                to={`/dossiers/${dossier.slug}`}
-                className="block group rounded-lg border border-border hover:border-trust/30 bg-bone/60 hover:bg-bone transition-colors duration-200 p-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-trust/50 focus-visible:ring-offset-2"
-              >
-                <div className="flex flex-wrap items-start gap-3 mb-3">
-                  <Badge variant="neutral">Static preview</Badge>
-                  <Badge variant="info">
-                    {DOSSIER_TYPE_LABELS[dossier.dossierType]}
-                  </Badge>
-                  <span className="font-mono text-[10px] text-charcoal/50 uppercase pt-1">
-                    v{dossier.version}
-                  </span>
-                </div>
-                <h3 className="font-serif text-lg font-semibold text-ink group-hover:text-trust/80 transition-colors duration-200 mb-2">
-                  {dossier.title}
-                </h3>
-                <p className="text-sm text-charcoal/70 leading-relaxed mb-2">
-                  {dossier.executiveSummary}
-                </p>
-                <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-charcoal/50">
-                  <span>Jurisdiction: {dossier.jurisdiction}</span>
-                  <span>Language: {dossier.language.toUpperCase()}</span>
-                  <span>Created: {dossier.createdAt}</span>
-                </div>
-              </Link>
-            </Reveal>
-          ))}
-        </div>
+        {loading ? (
+          <div
+            className="flex items-center justify-center min-h-[40vh]"
+            role="status"
+            aria-label="Loading dossiers"
+          >
+            <div className="flex flex-col items-center gap-4">
+              <div
+                className="w-16 h-[2px] bg-amber rounded-full motion-safe:animate-pulse"
+                aria-hidden="true"
+              />
+              <p className="font-mono text-xs tracking-[0.15em] uppercase text-charcoal/50">
+                Loading
+              </p>
+              <span className="sr-only" aria-live="polite">
+                Dossier records are loading.
+              </span>
+            </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-4">
+            {dossiers.map((dossier, i) => (
+              <Reveal key={dossier.id} delay={0.15 + i * 0.05}>
+                <Link
+                  to={`/dossiers/${dossier.slug}`}
+                  className="block group rounded-lg border border-border hover:border-trust/30 bg-bone/60 hover:bg-bone transition-colors duration-200 p-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-trust/50 focus-visible:ring-offset-2"
+                >
+                  <div className="flex flex-wrap items-start gap-3 mb-3">
+                    <Badge variant="neutral">Static preview</Badge>
+                    <Badge variant="info">
+                      {DOSSIER_TYPE_LABELS[dossier.dossierType]}
+                    </Badge>
+                    <span className="font-mono text-[10px] text-charcoal/50 uppercase pt-1">
+                      v{dossier.version}
+                    </span>
+                  </div>
+                  <h3 className="font-serif text-lg font-semibold text-ink group-hover:text-trust/80 transition-colors duration-200 mb-2">
+                    {dossier.title}
+                  </h3>
+                  <p className="text-sm text-charcoal/70 leading-relaxed mb-2">
+                    {dossier.executiveSummary}
+                  </p>
+                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-charcoal/50">
+                    <span>Jurisdiction: {dossier.jurisdiction}</span>
+                    <span>Language: {dossier.language.toUpperCase()}</span>
+                    <span>Created: {dossier.createdAt}</span>
+                  </div>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* ── Available Dossier Types ───────────────────────────────────── */}
