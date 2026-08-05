@@ -1,4 +1,4 @@
-import type { CollectorConfig, ScheduledJob, CollectResult } from "./types";
+import type { CollectorConfig, ScheduledJob, CollectResult, StorageInterface } from "./types";
 import type { SourceRecord } from "../../types/content";
 import type { CollectorRegistry } from "./CollectorRegistry";
 
@@ -18,11 +18,13 @@ import type { CollectorRegistry } from "./CollectorRegistry";
  */
 export class Scheduler {
   private readonly registry: CollectorRegistry;
+  private readonly storage: StorageInterface;
   private readonly jobs = new Map<string, ScheduledJob>();
   private readonly intervalTimers = new Map<string, ReturnType<typeof setInterval>>();
 
-  constructor(registry: CollectorRegistry) {
+  constructor(registry: CollectorRegistry, storage: StorageInterface) {
     this.registry = registry;
+    this.storage = storage;
   }
 
   // ── Job Management ────────────────────────────────────────────────────
@@ -166,36 +168,79 @@ export class Scheduler {
         };
       }
 
-      // Sources from registry use source records — for the base framework,
-      // the collector instance is expected to be created by the caller
-      // via CollectorRegistry.createInstance(). Here we log and return.
-      // In practice, the trigger() method will be called by the consumer
-      // who already has a collector instance.
-
-      // This is a framework method — actual collection happens via
-      // registered collector instances. The scheduler coordinates
-      // timing and health checks; the collector does the work.
-
+      // Check if a collector class is registered for this source type
       const collectorConstructor = this.registry.getCollectorForType(
         job.config.sourceType,
       );
       if (!collectorConstructor) {
-        throw new Error(
-          `No collector registered for source type "${job.config.sourceType}"`,
+        console.warn(
+          `[Scheduler] No collector registered for source type "${job.config.sourceType}". ` +
+          `Skipping job for source "${job.sourceId}".`,
         );
+        return {
+          runId: `unregistered-${Date.now()}`,
+          sourceId: job.sourceId,
+          startedAt: new Date().toISOString(),
+          completedAt: new Date().toISOString(),
+          itemsFetched: 0,
+          itemsValidated: 0,
+          itemsNormalized: 0,
+          itemsDeduplicated: 0,
+          itemsStored: 0,
+          stageDurations: { fetch: 0, validate: 0, normalize: 0, deduplicate: 0, store: 0 },
+          success: false,
+        };
       }
 
-      // The instance creation requires a source record.
-      // In real usage, the source record would be fetched from the registry.
-      // For the base framework, we throw a descriptive error.
-      throw new Error(
-        `Collector for "${job.sourceId}" must be triggered via ` +
-        `Scheduler.trigger() which expects the collector instance to be ` +
-        `created with CollectorRegistry.createInstance() first.`,
-      );
+      // Build a minimal source record from the job config for the collector
+      const sourceRecord: SourceRecord = {
+        id: job.sourceId,
+        slug: job.sourceId,
+        title: job.config.label,
+        publisher: job.config.label,
+        sourceType: job.config.sourceType,
+        url: (job.config.metadata?.url as string) ?? "",
+        accessedAt: new Date().toISOString(),
+        status: "active",
+        version: 1,
+        trustLevel: 0,
+        healthStatus: reg?.healthStatus ?? "unknown",
+        automationStatus: "scheduled",
+        failureCount: 0,
+        monitoringEnabled: true,
+        correctionUrl: "",
+      };
+
+      // Create the collector instance and run it
+      const collector = this.registry.createInstance(sourceRecord, job.config);
+      const result = await collector.collect();
+
+      // Update health tracking
+      if (result.success) {
+        this.registry.recordSuccess(collectorName);
+      } else {
+        this.registry.recordFailure(collectorName);
+      }
+
+      job.lastResult = result;
+      return result;
     } catch (error) {
       this.registry.recordFailure(collectorName);
-      throw error;
+      const errorResult: CollectResult = {
+        runId: `error-${Date.now()}`,
+        sourceId: job.sourceId,
+        startedAt: new Date().toISOString(),
+        completedAt: new Date().toISOString(),
+        itemsFetched: 0,
+        itemsValidated: 0,
+        itemsNormalized: 0,
+        itemsDeduplicated: 0,
+        itemsStored: 0,
+        stageDurations: { fetch: 0, validate: 0, normalize: 0, deduplicate: 0, store: 0 },
+        success: false,
+      };
+      job.lastResult = errorResult;
+      return errorResult;
     } finally {
       job.running = false;
       // Recalculate next run

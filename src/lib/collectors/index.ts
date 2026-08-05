@@ -4,6 +4,7 @@ export type { CollectorConstructor } from "./CollectorRegistry";
 export { RateLimiter } from "./rateLimiter";
 export { Scheduler } from "./scheduler";
 export { DevMemoryStore } from "./store";
+export { SupabaseStore } from "./SupabaseStore";
 export { withRetry, computeBackoff, isRetryableStatus } from "./retry";
 export type { RetryResult } from "./retry";
 export {

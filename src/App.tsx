@@ -54,7 +54,11 @@ const MonitoringDashboard = lazy(() => import("./pages/admin/MonitoringDashboard
 const PipelineDashboard = lazy(() => import("./pages/admin/PipelineDashboard"));
 const ReviewMetricsDashboard = lazy(() => import("./pages/admin/ReviewMetricsDashboard"));
 const DataQualityDashboard = lazy(() => import("./pages/admin/DataQualityDashboard"));
+const IntelligenceDashboard = lazy(() => import("./pages/admin/IntelligenceDashboard").then(m => ({ default: m.IntelligenceDashboard })));
+const FeedManager = lazy(() => import("./pages/admin/FeedManager").then(m => ({ default: m.FeedManager })));
+const IncidentManager = lazy(() => import("./pages/admin/IncidentManager").then(m => ({ default: m.IncidentManager })));
 const MapPage = lazy(() => import("./pages/MapPage"));
+const MediaLibrary = lazy(() => import("./components/admin/MediaLibrary").then(m => ({ default: m.MediaLibrary })));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard").then(m => ({ default: m.AdminDashboard })));
 const ContentList = lazy(() => import("./pages/admin/ContentList").then(m => ({ default: m.ContentList })));
 const ContentEditor = lazy(() => import("./pages/admin/ContentEditor").then(m => ({ default: m.ContentEditor })));
@@ -168,6 +172,9 @@ export default function App() {
             <Route path="pipeline" element={<PipelineDashboard />} />
             <Route path="review-metrics" element={<ReviewMetricsDashboard />} />
             <Route path="data-quality" element={<DataQualityDashboard />} />
+            <Route path="intelligence" element={<IntelligenceDashboard />} />
+            <Route path="feeds" element={<FeedManager />} />
+            <Route path="incidents" element={<IncidentManager />} />
             <Route path="editorial-analytics" element={<EditorialAnalyticsPage />} />
             <Route path="corrections" element={<CorrectionQueuePage />} />
             <Route path="review-queue" element={<ReviewQueuePage />} />
@@ -209,7 +216,7 @@ export default function App() {
             ))}
 
             {/* System routes — placeholder pages for WIP features */}
-            <Route path="media" element={<PlaceholderPage title="Media Library" description="Media asset management coming soon." />} />
+            <Route path="media" element={<MediaLibrary />} />
             <Route path="roles" element={<PlaceholderPage title="Role Management" description="User role management coming soon." />} />
             <Route path="audit-log" element={<PlaceholderPage title="Audit Log" description="Security audit trail coming soon." />} />
             <Route path="settings" element={<PlaceholderPage title="Settings" description="Application settings coming soon." />} />

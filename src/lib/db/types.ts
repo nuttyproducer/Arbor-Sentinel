@@ -293,6 +293,89 @@ export interface UserRoleRecord {
   updatedAt: string;
 }
 
+// ── Feed ─────────────────────────────────────────────────────────────────────
+
+export interface FeedRecord {
+  id: string;
+  name: string;
+  url: string;
+  sourceId: string | null;
+  sourceType: string;
+  category: string | null;
+  parser: string;
+  language: string;
+  enabled: boolean;
+  pollIntervalMinutes: number;
+  trustLevel: number;
+  healthStatus: string;
+  lastFetchedAt: string | null;
+  lastSuccessAt: string | null;
+  failureCount: number;
+  lastError: string | null;
+  categoryMapping: Record<string, unknown>;
+  hasPaywall: boolean;
+  metadata: Record<string, unknown>;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// ── Incident Record ──────────────────────────────────────────────────────────
+
+export interface IncidentRecord {
+  id: string;
+  title: string;
+  description: string | null;
+  incidentDate: string | null;
+  incidentDatePrecision: string;
+  incidentDateEnd: string | null;
+  locationName: string | null;
+  countryOrTerritory: string | null;
+  lat: number | null;
+  lng: number | null;
+  locationPrecision: string | null;
+  incidentType: string;
+  verificationStatus: string;
+  confidence: number;
+  sourceIds: string[];
+  sourceCount: number;
+  primarySourceId: string | null;
+  sourceUrls: string[];
+  relatedEntityIds: string[];
+  relatedIncidentIds: string[];
+  reviewStatus: string;
+  reviewedBy: string | null;
+  reviewedAt: string | null;
+  reviewNotes: string | null;
+  mergedIntoId: string | null;
+  isDuplicate: boolean;
+  tags: string[];
+  metadata: Record<string, unknown>;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// ── Processing Queue Item ────────────────────────────────────────────────────
+
+export interface ProcessingQueueItemRecord {
+  id: string;
+  itemType: string;
+  itemId: string;
+  stage: string;
+  priority: number;
+  status: string;
+  attemptCount: number;
+  maxAttempts: number;
+  nextAttemptAt: string;
+  startedAt: string | null;
+  completedAt: string | null;
+  lastError: string | null;
+  errorHistory: Record<string, unknown>[];
+  payload: Record<string, unknown>;
+  result: Record<string, unknown>;
+  createdAt: string;
+  updatedAt: string;
+}
+
 // ── Helper types for inserts/updates ──────────────────────────────────────────
 
 /** Omit auto-generated fields for insert operations. */
