@@ -1,3 +1,4 @@
+import { useEffect, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Container } from "../components/ui/Container";
 import { PageIntro } from "../components/pages/PageIntro";
@@ -7,16 +8,15 @@ import { LastUpdated } from "../components/pages/LastUpdated";
 import { PreviewNotice } from "../components/pages/PreviewNotice";
 import { CorrectionLink } from "../components/pages/CorrectionLink";
 import { ExternalLink } from "../components/ui/ExternalLink";
-import { getActiveTemplates } from "../data/actionTemplates";
+import type { ActionTemplate } from "../data/actionTemplates";
+import { useRepository } from "../hooks/useRepository";
 import { ActionCard } from "../components/actions/ActionCard";
-
-const activeTemplates = getActiveTemplates();
 
 /** Group templates by broad jurisdiction for organised layout. */
 function groupByJurisdiction(
-  templates: typeof activeTemplates,
-): Record<string, typeof activeTemplates> {
-  const groups: Record<string, typeof activeTemplates> = {
+  templates: ActionTemplate[],
+): Record<string, ActionTemplate[]> {
+  const groups: Record<string, ActionTemplate[]> = {
     Belgium: [],
     "European Union": [],
     "Platform-wide / Other": [],
@@ -48,9 +48,28 @@ function groupByJurisdiction(
   return groups;
 }
 
-const jurisdictionGroups = groupByJurisdiction(activeTemplates);
-
 export default function ActionHubPage() {
+  const repo = useRepository();
+  const [templates, setTemplates] = useState<ActionTemplate[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    repo.getActions().then((actions) => {
+      if (cancelled) return;
+      setTemplates(actions);
+      setLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [repo]);
+
+  const jurisdictionGroups = useMemo(
+    () => groupByJurisdiction(templates),
+    [templates],
+  );
+
   return (
     <Container className="py-16 lg:py-20">
       <PageIntro
@@ -130,32 +149,55 @@ export default function ActionHubPage() {
           Available actions
         </h2>
 
-        {Object.entries(jurisdictionGroups).map(([jurisdiction, templates]) => (
-          <div key={jurisdiction} className="mb-8">
-            <h3 className="font-serif text-lg font-semibold text-ink/80 mb-3 border-b border-border pb-2">
-              {jurisdiction}
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
-              {templates.map((template, i) => (
-                <ActionCard key={template.id} template={template} index={i} />
-              ))}
+        {loading ? (
+          <div
+            className="flex items-center justify-center min-h-[40vh]"
+            role="status"
+            aria-label="Loading action templates"
+          >
+            <div className="flex flex-col items-center gap-4">
+              <div
+                className="w-16 h-[2px] bg-amber rounded-full motion-safe:animate-pulse"
+                aria-hidden="true"
+              />
+              <p className="font-mono text-xs tracking-[0.15em] uppercase text-charcoal/50">
+                Loading
+              </p>
+              <span className="sr-only" aria-live="polite">
+                Action templates are loading.
+              </span>
             </div>
           </div>
-        ))}
+        ) : (
+          <>
+            {Object.entries(jurisdictionGroups).map(([jurisdiction, templates]) => (
+              <div key={jurisdiction} className="mb-8">
+                <h3 className="font-serif text-lg font-semibold text-ink/80 mb-3 border-b border-border pb-2">
+                  {jurisdiction}
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                  {templates.map((template, i) => (
+                    <ActionCard key={template.id} template={template} index={i} />
+                  ))}
+                </div>
+              </div>
+            ))}
 
-        {/* Language availability note */}
-        <div className="bg-bone border border-border rounded-md p-4 mb-4">
-          <p className="text-sm text-charcoal/70 leading-relaxed">
-            <strong>Language availability:</strong>{" "}
-            Belgium- and EU-specific templates are published in English, Dutch
-            (Nederlands), and French (Français) where translations have been
-            drafted. Dutch and French translations are marked{" "}
-            <span className="font-medium text-amber/80">draft</span>{" "}
-            and require human language review before they can be marked as
-            reviewed. English originals remain review_pending until legal,
-            jurisdiction, and editorial review are complete.
-          </p>
-        </div>
+            {/* Language availability note */}
+            <div className="bg-bone border border-border rounded-md p-4 mb-4">
+              <p className="text-sm text-charcoal/70 leading-relaxed">
+                <strong>Language availability:</strong>{" "}
+                Belgium- and EU-specific templates are published in English, Dutch
+                (Nederlands), and French (Français) where translations have been
+                drafted. Dutch and French translations are marked{" "}
+                <span className="font-medium text-amber/80">draft</span>{" "}
+                and require human language review before they can be marked as
+                reviewed. English originals remain review_pending until legal,
+                jurisdiction, and editorial review are complete.
+              </p>
+            </div>
+          </>
+        )}
       </section>
 
       {/* Detailed safe-action rules */}
