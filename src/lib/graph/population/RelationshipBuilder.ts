@@ -144,8 +144,6 @@ export function buildDocumentLinks(
     return stats;
   }
 
-  let edgeCounter = 0;
-
   // published_by: document → source
   if (input.sourceId) {
     const sourceNodeId = `source:${input.sourceId}`;
@@ -163,7 +161,6 @@ export function buildDocumentLinks(
           createdAt: new Date().toISOString(),
         });
         stats.created++;
-        edgeCounter++;
       } catch (err) {
         stats.errors.push(`Failed to add published_by for "${input.documentId}": ${err}`);
       }
@@ -190,7 +187,6 @@ export function buildDocumentLinks(
           createdAt: new Date().toISOString(),
         });
         stats.created++;
-        edgeCounter++;
       } catch (err) {
         stats.errors.push(`Failed to add mentions edge "${edgeId}": ${err}`);
       }
@@ -217,7 +213,6 @@ export function buildDocumentLinks(
           createdAt: new Date().toISOString(),
         });
         stats.created++;
-        edgeCounter++;
       } catch (err) {
         stats.errors.push(`Failed to add supports edge "${edgeId}": ${err}`);
       }

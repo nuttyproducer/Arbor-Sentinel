@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback, useRef, type ReactNode } from "react";
+import { createContext, useContext, useState, useCallback, type ReactNode } from "react";
 import { HealthMonitor } from "./HealthMonitor";
 import { AlertSystem } from "./AlertSystem";
 import { MetricsCollector } from "./MetricsCollector";
@@ -41,29 +41,33 @@ const MonitoringContext = createContext<MonitoringContextValue | null>(null);
 // ── Provider ─────────────────────────────────────────────────────────────
 
 export function MonitoringProvider({ children }: { children: ReactNode }) {
-  const healthRef = useRef(new HealthMonitor());
-  const alertRef = useRef(new AlertSystem());
-  const metricsRef = useRef(new MetricsCollector());
+  // Monitors are created once and kept stable for the provider's lifetime.
+  // Held in state (not refs) so consumers may read them during render.
+  const [monitors] = useState(() => ({
+    healthMonitor: new HealthMonitor(),
+    alertSystem: new AlertSystem(),
+    metricsCollector: new MetricsCollector(),
+  }));
 
   const [report, setReport] = useState<HealthReport>(
-    healthRef.current.generateReport(),
+    monitors.healthMonitor.generateReport(),
   );
   const [alerts, setAlerts] = useState<AlertEvent[]>([]);
   const [activeAlertCount, setActiveAlertCount] = useState(0);
 
   const refresh = useCallback(() => {
-    const r = healthRef.current.generateReport();
+    const r = monitors.healthMonitor.generateReport();
     setReport(r);
-    setAlerts(alertRef.current.getAllEvents());
-    setActiveAlertCount(alertRef.current.getActiveCount());
-  }, []);
+    setAlerts(monitors.alertSystem.getAllEvents());
+    setActiveAlertCount(monitors.alertSystem.getActiveCount());
+  }, [monitors]);
 
   const syncRegistrations = useCallback(
     (registrations: CollectorRegistration[]) => {
-      healthRef.current.syncRegistrations(registrations);
+      monitors.healthMonitor.syncRegistrations(registrations);
       refresh();
     },
-    [refresh],
+    [monitors, refresh],
   );
 
   const recordRun = useCallback(
@@ -72,8 +76,8 @@ export function MonitoringProvider({ children }: { children: ReactNode }) {
       sourceType: string,
       result: CollectResult,
     ) => {
-      healthRef.current.recordRun(collectorName, sourceType, result);
-      metricsRef.current.recordRun(
+      monitors.healthMonitor.recordRun(collectorName, sourceType, result);
+      monitors.metricsCollector.recordRun(
         result.sourceId,
         collectorName,
         sourceType,
@@ -81,62 +85,62 @@ export function MonitoringProvider({ children }: { children: ReactNode }) {
       );
 
       // Evaluate alerts
-      const snapshot = healthRef.current.getSnapshot(collectorName);
+      const snapshot = monitors.healthMonitor.getSnapshot(collectorName);
       if (snapshot) {
         // Auto-resolve if recovered
-        alertRef.current.autoResolve(collectorName, snapshot);
+        monitors.alertSystem.autoResolve(collectorName, snapshot);
         // Check for new alerts
-        alertRef.current.evaluate([snapshot]);
+        monitors.alertSystem.evaluate([snapshot]);
       }
 
       refresh();
     },
-    [refresh],
+    [monitors, refresh],
   );
 
   const recordError = useCallback(
     (collectorName: string, sourceType: string, error: Error) => {
-      healthRef.current.recordError(collectorName, sourceType, error);
+      monitors.healthMonitor.recordError(collectorName, sourceType, error);
 
-      const snapshot = healthRef.current.getSnapshot(collectorName);
+      const snapshot = monitors.healthMonitor.getSnapshot(collectorName);
       if (snapshot) {
-        alertRef.current.evaluate([snapshot]);
+        monitors.alertSystem.evaluate([snapshot]);
       }
 
       refresh();
     },
-    [refresh],
+    [monitors, refresh],
   );
 
   const acknowledgeAlert = useCallback(
     (alertId: string) => {
-      alertRef.current.acknowledge(alertId);
+      monitors.alertSystem.acknowledge(alertId);
       refresh();
     },
-    [refresh],
+    [monitors, refresh],
   );
 
   const resolveAlert = useCallback(
     (alertId: string) => {
-      alertRef.current.resolve(alertId);
+      monitors.alertSystem.resolve(alertId);
       refresh();
     },
-    [refresh],
+    [monitors, refresh],
   );
 
   const getMetrics = useCallback(
     (window: MetricsWindow): SystemMetrics => {
-      return metricsRef.current.getSystemMetrics(window);
+      return monitors.metricsCollector.getSystemMetrics(window);
     },
-    [],
+    [monitors],
   );
 
   return (
     <MonitoringContext.Provider
       value={{
-        healthMonitor: healthRef.current,
-        alertSystem: alertRef.current,
-        metricsCollector: metricsRef.current,
+        healthMonitor: monitors.healthMonitor,
+        alertSystem: monitors.alertSystem,
+        metricsCollector: monitors.metricsCollector,
         report,
         alerts,
         activeAlertCount,

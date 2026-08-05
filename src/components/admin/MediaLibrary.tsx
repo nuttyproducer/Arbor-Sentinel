@@ -55,7 +55,7 @@ export function MediaLibrary({
   }
 
   useEffect(() => {
-    loadItems();
+    void Promise.resolve().then(loadItems);
   }, [bucket]);
 
   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {

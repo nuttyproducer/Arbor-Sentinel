@@ -5,16 +5,16 @@ import { SupabaseRepository } from '../lib/repository/SupabaseRepository';
 
 let instance: ContentRepository | null = null;
 
-function createRepository(): ContentRepository {
-  const mode = import.meta.env.VITE_DATA_MODE ?? 'static';
-  return mode === 'live'
-    ? new SupabaseRepository()
-    : new StaticRepository();
+function getRepositoryInstance(): ContentRepository {
+  if (!instance) {
+    const mode = import.meta.env.VITE_DATA_MODE ?? 'static';
+    instance = mode === 'live'
+      ? new SupabaseRepository()
+      : new StaticRepository();
+  }
+  return instance;
 }
 
 export function useRepository(): ContentRepository {
-  return useMemo(() => {
-    if (!instance) instance = createRepository();
-    return instance;
-  }, []);
+  return useMemo(() => getRepositoryInstance(), []);
 }

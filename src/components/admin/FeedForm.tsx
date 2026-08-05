@@ -59,7 +59,7 @@ export function FeedForm({ initial, onSubmit, onCancel, loading }: FeedFormProps
 
   useEffect(() => {
     if (initial) {
-      setData({ ...DEFAULTS, ...initial });
+      void Promise.resolve().then(() => setData({ ...DEFAULTS, ...initial }));
     }
   }, [initial]);
 

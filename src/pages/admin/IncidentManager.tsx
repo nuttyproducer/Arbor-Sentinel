@@ -130,7 +130,7 @@ export function IncidentManager() {
   }, [filter]);
 
   useEffect(() => {
-    loadIncidents();
+    void Promise.resolve().then(loadIncidents);
   }, [loadIncidents]);
 
   async function handleUpdateStatus(incidentId: string, newStatus: string) {

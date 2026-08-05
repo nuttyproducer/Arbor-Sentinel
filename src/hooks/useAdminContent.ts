@@ -53,8 +53,10 @@ export function useAdminContent<T extends { id: string }>(
   // Fetch data
   useEffect(() => {
     let cancelled = false;
-    setIsLoading(true);
-    setError(null);
+    void Promise.resolve().then(() => {
+      setIsLoading(true);
+      setError(null);
+    });
 
     async function fetchData() {
       const offset = (page - 1) * perPage;

@@ -35,7 +35,7 @@ export function FeedManager() {
   }, []);
 
   useEffect(() => {
-    loadFeeds();
+    void Promise.resolve().then(loadFeeds);
   }, [loadFeeds]);
 
   async function handleToggle(feedId: string, enabled: boolean) {

@@ -15,8 +15,7 @@ export function TwoFactorSetup() {
 
   useEffect(() => {
     // Generate a new secret on mount
-    const newSecret = generateSecret();
-    setSecret(newSecret);
+    void Promise.resolve().then(() => setSecret(generateSecret()));
   }, []);
 
   async function handleVerify(e: FormEvent) {

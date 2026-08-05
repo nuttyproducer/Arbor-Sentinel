@@ -1,5 +1,5 @@
 // src/components/admin/shared/AutoRefreshProvider.tsx
-import { useState, useCallback, useEffect, type ReactNode } from "react";
+import { useState, useCallback, type ReactNode } from "react";
 import type { AutoRefreshInterval } from "../../../lib/admin/types";
 import {
   AutoRefreshContext,
@@ -17,12 +17,14 @@ export function AutoRefreshProvider({
   defaultInterval = null,
 }: AutoRefreshProviderProps) {
   const [interval, setIntervalState] = useState<AutoRefreshInterval>(defaultInterval);
+  const [prevDefaultInterval, setPrevDefaultInterval] = useState(defaultInterval);
 
   // Keep state in sync when the `defaultInterval` prop changes (e.g. a
   // dashboard switches auto-refresh off by re-rendering with `null`).
-  useEffect(() => {
+  if (prevDefaultInterval !== defaultInterval) {
+    setPrevDefaultInterval(defaultInterval);
     setIntervalState(defaultInterval);
-  }, [defaultInterval]);
+  }
 
   const setInterval = useCallback((i: AutoRefreshInterval) => {
     setIntervalState(i);
