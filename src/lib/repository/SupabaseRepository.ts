@@ -13,15 +13,40 @@ import type { SourceRecord as ContentSourceRecord, DossierRecord } from '../../t
 
 import { getEvidenceList, getEvidenceBySlug } from '../db/queries/evidence';
 import type { EvidenceListParams } from '../db/queries/evidence';
-import { getAllLegalCases, getLegalCaseById } from '../db/queries/legalCases';
+import { getAllLegalCases } from '../db/queries/legalCases';
 import { getAllCountries, getCountryBySlug } from '../db/queries/countries';
 import { getAllOrganizations, getOrganizationBySlug } from '../db/queries/organizations';
 import { getActions, getActionBySlug } from '../db/queries/actions';
 import { getAllSources, getSourceById } from '../db/queries/sources';
 
+/**
+ * The evidence query module paginates with a default perPage of 20. The
+ * ContentRepository contract exposes no pagination surface yet, so pass a large
+ * page size to return all published records rather than truncating to one page.
+ */
+const MAX_EVIDENCE_PAGE_SIZE = 1000;
+
 export class SupabaseRepository implements ContentRepository {
+  /**
+   * Maps domain `EvidenceFilters` to the query module's `EvidenceListParams`.
+   *
+   * Supported in Supabase mode:
+   * - `category` -> `category`
+   * - `verificationLevel` -> `verificationLevel`
+   *
+   * Not supported in Supabase mode (intentionally dropped):
+   * - `sourceType`: the evidence_items table has no source-type column.
+   * - `contentStatus`: this repository only returns published records — the
+   *   query module hard-filters `review_status = 'published'`, so any other
+   *   value would always yield an empty result.
+   */
   async getEvidenceList(filters?: EvidenceFilters): Promise<EvidenceItem[]> {
-    const { data } = await getEvidenceList((filters ?? {}) as EvidenceListParams);
+    const params: EvidenceListParams = { perPage: MAX_EVIDENCE_PAGE_SIZE };
+    if (filters?.category) params.category = filters.category;
+    if (filters?.verificationLevel !== undefined && filters.verificationLevel !== null) {
+      params.verificationLevel = filters.verificationLevel;
+    }
+    const { data } = await getEvidenceList(params);
     return data as unknown as EvidenceItem[];
   }
 
@@ -35,11 +60,10 @@ export class SupabaseRepository implements ContentRepository {
     return data as unknown as LegalCaseEntry[];
   }
 
-  async getLegalCaseBySlug(slug: string): Promise<LegalCaseEntry | null> {
-    // No slug-based legal case query exists yet (legal_cases has no slug
-    // column), so fall back to the by-id lookup.
-    const { data } = await getLegalCaseById(slug);
-    return data as LegalCaseEntry | null;
+  async getLegalCaseBySlug(): Promise<LegalCaseEntry | null> {
+    // The legal_cases table has no slug column and no slug-based query module
+    // exists yet, so slug lookup is unsupported in Supabase mode.
+    return null;
   }
 
   async getCountries(): Promise<CountryEntry[]> {
