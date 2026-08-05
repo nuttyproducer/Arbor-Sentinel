@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Container } from "../components/ui/Container";
 import { LastUpdated } from "../components/pages/LastUpdated";
@@ -7,9 +8,10 @@ import { LegalStatusBadge } from "../components/pages/LegalStatusBadge";
 import { ContentStatusBadge } from "../components/pages/ContentStatusBadge";
 import { SourceList } from "../components/pages/SourceList";
 import { LegalTimeline } from "../components/legal/LegalTimeline";
-import { getLegalCaseBySlug } from "../data/legalCases";
+import type { LegalCaseEntry } from "../data/legalCases";
 import { getTimelineEventsForCase } from "../data/legalTimeline";
 import { sources } from "../data/sources";
+import { useRepository } from "../hooks/useRepository";
 import {
   VERIFICATION_LEVEL_LABELS,
   type VerificationLevel,
@@ -17,7 +19,47 @@ import {
 
 export default function LegalCaseDetailPage() {
   const { slug } = useParams<{ slug: string }>();
-  const legalCase = slug ? getLegalCaseBySlug(slug) : undefined;
+  const repo = useRepository();
+  const [legalCase, setLegalCase] = useState<LegalCaseEntry | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!slug) return;
+    let cancelled = false;
+    repo.getLegalCaseBySlug(slug).then((result) => {
+      if (cancelled) return;
+      setLegalCase(result);
+      setLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [repo, slug]);
+
+  if (loading && slug) {
+    return (
+      <Container className="py-16 lg:py-20">
+        <div
+          className="flex items-center justify-center min-h-[40vh]"
+          role="status"
+          aria-label="Loading legal case"
+        >
+          <div className="flex flex-col items-center gap-4">
+            <div
+              className="w-16 h-[2px] bg-amber rounded-full motion-safe:animate-pulse"
+              aria-hidden="true"
+            />
+            <p className="font-mono text-xs tracking-[0.15em] uppercase text-charcoal/50">
+              Loading
+            </p>
+            <span className="sr-only" aria-live="polite">
+              Legal case record is loading.
+            </span>
+          </div>
+        </div>
+      </Container>
+    );
+  }
 
   if (!legalCase) {
     return (

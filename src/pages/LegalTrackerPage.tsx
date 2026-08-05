@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Container } from "../components/ui/Container";
 import { Reveal } from "../components/ui/Reveal";
@@ -8,11 +9,28 @@ import { LastUpdated } from "../components/pages/LastUpdated";
 import { PreviewNotice } from "../components/pages/PreviewNotice";
 import { CorrectionLink } from "../components/pages/CorrectionLink";
 import { LegalStatusBadge } from "../components/pages/LegalStatusBadge";
-import { legalCases } from "../data/legalCases";
+import type { LegalCaseEntry } from "../data/legalCases";
 import { LegalCaseCard } from "../components/legal/LegalCaseCard";
 import { statusExplanations } from "../components/legal/legalStatusExplanations";
+import { useRepository } from "../hooks/useRepository";
 
 export default function LegalTrackerPage() {
+  const repo = useRepository();
+  const [cases, setCases] = useState<LegalCaseEntry[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    repo.getLegalCases().then((items) => {
+      if (cancelled) return;
+      setCases(items);
+      setLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [repo]);
+
   return (
     <Container className="py-16 lg:py-20">
       <PageIntro
@@ -67,11 +85,32 @@ export default function LegalTrackerPage() {
         </p>
       </PolicySection>
 
-      <div className="space-y-8 mb-10">
-        {legalCases.map((entry, i) => (
-          <LegalCaseCard key={entry.id} entry={entry} index={i} />
-        ))}
-      </div>
+      {loading ? (
+        <div
+          className="flex items-center justify-center min-h-[40vh]"
+          role="status"
+          aria-label="Loading legal cases"
+        >
+          <div className="flex flex-col items-center gap-4">
+            <div
+              className="w-16 h-[2px] bg-amber rounded-full motion-safe:animate-pulse"
+              aria-hidden="true"
+            />
+            <p className="font-mono text-xs tracking-[0.15em] uppercase text-charcoal/50">
+              Loading
+            </p>
+            <span className="sr-only" aria-live="polite">
+              Legal case records are loading.
+            </span>
+          </div>
+        </div>
+      ) : (
+        <div className="space-y-8 mb-10">
+          {cases.map((entry, i) => (
+            <LegalCaseCard key={entry.id} entry={entry} index={i} />
+          ))}
+        </div>
+      )}
 
       {/* 3. How to Read Legal Status Labels */}
       <PolicySection
