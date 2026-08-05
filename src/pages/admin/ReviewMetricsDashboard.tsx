@@ -1,19 +1,18 @@
 // src/pages/admin/ReviewMetricsDashboard.tsx
-import { useMemo, useState, useCallback } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { Container } from "../../components/ui/Container";
 import { PageIntro } from "../../components/pages/PageIntro";
-import { PageStatusNotice } from "../../components/pages/PageStatusNotice";
 import { TimeRangeSelector } from "../../components/admin/shared/TimeRangeSelector";
 import { AutoRefreshProvider, AutoRefreshControls } from "../../components/admin/shared/AutoRefreshProvider";
-import { useAutoRefresh, useAutoRefreshContext } from "../../components/admin/shared/useAutoRefresh";
+import { useAutoRefreshContext } from "../../components/admin/shared/useAutoRefresh";
 import { ReviewQueueDepth } from "../../components/admin/ReviewQueueDepth";
 import { ReviewAgeChart } from "../../components/admin/ReviewAgeChart";
 import { ReviewThroughputChart } from "../../components/admin/ReviewThroughputChart";
 import { SLAComplianceChart } from "../../components/admin/SLAComplianceChart";
 import { ReviewerPerformanceTable } from "../../components/admin/ReviewerPerformanceTable";
 import { BottleneckPanel } from "../../components/admin/BottleneckPanel";
-import { getQueueDepth, getAgeDistribution, getThroughput, getReviewerPerformance, getSLACompliance, detectBottlenecks } from "../../lib/admin/reviewMetrics";
-import { seedReviewItems, seedReviewerProfiles } from "../../lib/admin/seedData";
+import { getQueueDepth, getAgeDistribution, getThroughput, getReviewerPerformance, getSLACompliance, detectBottlenecks, fetchReviewData } from "../../lib/admin/reviewMetrics";
+import type { ReviewItem, ReviewerProfile } from "../../lib/review/types";
 import type { TimeRangePreset, DashboardTimeRange } from "../../lib/admin/types";
 
 function downloadCSV(filename: string, headers: string[], rows: string[][]) {
@@ -34,17 +33,36 @@ function ReviewMetricsDashboardContent() {
     end: new Date().toISOString(),
   }));
 
-  const { items, profiles } = useMemo(() => ({
-    items: seedReviewItems(),
-    profiles: seedReviewerProfiles(),
-  }), []);
+  const [data, setData] = useState<{
+    items: ReviewItem[];
+    profiles: ReviewerProfile[];
+  } | null>(null);
 
-  const queueDepth = useMemo(() => getQueueDepth(items), [items]);
-  const ageDistribution = useMemo(() => getAgeDistribution(items), [items]);
-  const throughput = useMemo(() => getThroughput(items, range), [items, range]);
-  const reviewerMetrics = useMemo(() => getReviewerPerformance(profiles, items), [profiles, items]);
-  const slaCompliance = useMemo(() => getSLACompliance(items, range), [items, range]);
-  const bottlenecks = useMemo(() => detectBottlenecks(items, profiles), [items, profiles]);
+  const { interval } = useAutoRefreshContext();
+  const [, setTick] = useState(0);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      const result = await fetchReviewData(range);
+      if (!cancelled) setData(result);
+    }
+    load();
+    return () => { cancelled = true; };
+  }, [range, setTick]);
+
+  useEffect(() => {
+    if (!interval) return;
+    const id = setInterval(() => setTick((t) => t + 1), interval);
+    return () => clearInterval(id);
+  }, [interval]);
+
+  const queueDepth = useMemo(() => data ? getQueueDepth(data.items) : null, [data]);
+  const ageDistribution = useMemo(() => data ? getAgeDistribution(data.items) : [], [data]);
+  const throughput = useMemo(() => data ? getThroughput(data.items, range) : [], [data, range]);
+  const reviewerMetrics = useMemo(() => data ? getReviewerPerformance(data.profiles, data.items) : [], [data]);
+  const slaCompliance = useMemo(() => data ? getSLACompliance(data.items, range) : [], [data, range]);
+  const bottlenecks = useMemo(() => data ? detectBottlenecks(data.items, data.profiles) : [], [data]);
 
   const handleTimeChange = useCallback(
     (change: { preset: TimeRangePreset; range: DashboardTimeRange }) => {
@@ -63,44 +81,42 @@ function ReviewMetricsDashboardContent() {
     downloadCSV(`review-metrics-${stamp}.csv`, headers, rows);
   }, [reviewerMetrics]);
 
-  const { interval } = useAutoRefreshContext();
-  const [, setTick] = useState(0);
-  useAutoRefresh(() => setTick((t) => t + 1), interval);
-
   return (
     <Container className="py-12">
       <PageIntro title="Review Queue Metrics" description="Queue depth, age distribution, throughput, SLA compliance, and bottleneck detection." />
-
-      <PageStatusNotice label="Static Preview">
-        This dashboard shows in-memory development data. Review items and reviewer
-        profiles are seeded from realistic mock values. All reviewer IDs are internal
-        — no personal names are stored or displayed.
-      </PageStatusNotice>
 
       <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
         <div className="flex items-center gap-4">
           <TimeRangeSelector value={preset} onChange={handleTimeChange} />
           <AutoRefreshControls />
         </div>
-        <button
-          type="button"
-          onClick={handleExportCSV}
-          className="font-mono text-xs text-trust hover:text-trust/80 underline underline-offset-2 transition-colors min-h-[44px]"
-        >
-          Export CSV
-        </button>
+        {data && (
+          <button
+            type="button"
+            onClick={handleExportCSV}
+            className="font-mono text-xs text-trust hover:text-trust/80 underline underline-offset-2 transition-colors min-h-[44px]"
+          >
+            Export CSV
+          </button>
+        )}
       </div>
 
-      <div className="space-y-8">
-        <ReviewQueueDepth data={queueDepth} />
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <ReviewAgeChart data={ageDistribution} />
-          <ReviewThroughputChart data={throughput} />
+      {!data ? (
+        <div className="flex items-center justify-center py-20" aria-busy="true">
+          <span className="font-mono text-sm text-charcoal/40">Loading review data…</span>
         </div>
-        <SLAComplianceChart data={slaCompliance} targetPercent={90} />
-        <ReviewerPerformanceTable data={reviewerMetrics} />
-        <BottleneckPanel bottlenecks={bottlenecks} />
-      </div>
+      ) : (
+        <div className="space-y-8">
+          <ReviewQueueDepth data={queueDepth!} />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <ReviewAgeChart data={ageDistribution} />
+            <ReviewThroughputChart data={throughput} />
+          </div>
+          <SLAComplianceChart data={slaCompliance} targetPercent={90} />
+          <ReviewerPerformanceTable data={reviewerMetrics} />
+          <BottleneckPanel bottlenecks={bottlenecks} />
+        </div>
+      )}
     </Container>
   );
 }

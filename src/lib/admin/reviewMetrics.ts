@@ -1,7 +1,8 @@
 // src/lib/admin/reviewMetrics.ts
-// Pure query functions for the Review Queue Metrics Dashboard (M4.4-02).
+// Pure query functions and Supabase loader for the Review Queue Metrics Dashboard (M4.4-02).
 
-import type { ReviewItem, ReviewerProfile } from "../review/types";
+import { supabase } from "../db/client";
+import type { ReviewItem, ReviewerProfile, ReviewType, PriorityLevel, ReviewState, ReviewComment, ReviewChecklistResult, StateTransition, SLATarget } from "../review/types";
 import type { DashboardTimeRange, ReviewQueueDepth, AgeBucket, ThroughputPoint, ReviewerMetric, SLACompliancePoint, Bottleneck } from "./types";
 
 export function getQueueDepth(items: ReviewItem[]): ReviewQueueDepth {
@@ -238,4 +239,122 @@ export function detectBottlenecks(
   }
 
   return bottlenecks;
+}
+
+// ── Supabase data loader ────────────────────────────────────────────────────
+
+interface ReviewQueueItemRow {
+  id: string;
+  source_content_type: string;
+  source_content_id: string;
+  source_content_slug: string;
+  review_type: string;
+  priority: string;
+  priority_score: number;
+  state: string;
+  assigned_reviewer: string | null;
+  due_by: string | null;
+  comments: ReviewComment[] | null;
+  checklists: ReviewChecklistResult[] | null;
+  state_history: StateTransition[] | null;
+  created_at: string;
+  updated_at: string;
+}
+
+const SLA_TARGETS: Record<string, SLATarget> = {
+  critical: { targetHours: 4, warningThreshold: 0.75, overdueThreshold: 1.0, escalationPath: [{ afterHoursOverdue: 1, action: "notify_admin" }] },
+  high: { targetHours: 8, warningThreshold: 0.75, overdueThreshold: 1.0, escalationPath: [{ afterHoursOverdue: 2, action: "notify_admin" }] },
+  medium: { targetHours: 24, warningThreshold: 0.75, overdueThreshold: 1.0, escalationPath: [{ afterHoursOverdue: 4, action: "notify_reviewer" }] },
+  low: { targetHours: 72, warningThreshold: 0.75, overdueThreshold: 1.0, escalationPath: [{ afterHoursOverdue: 8, action: "notify_reviewer" }] },
+};
+
+function mapPriority(raw: string): PriorityLevel {
+  const p = raw.toLowerCase();
+  if (p === "critical") return "critical";
+  if (p === "high") return "high";
+  if (p === "medium") return "medium";
+  return "low";
+}
+
+function mapState(raw: string): ReviewState {
+  const valid: ReviewState[] = ["new", "assigned", "in_review", "changes_requested", "approved", "published", "rejected", "archived"];
+  return valid.includes(raw as ReviewState) ? (raw as ReviewState) : "new";
+}
+
+function mapReviewType(raw: string): ReviewType {
+  const valid: ReviewType[] = ["source", "editorial", "legal", "competency", "safety", "translation", "accessibility", "licensing"];
+  return valid.includes(raw as ReviewType) ? (raw as ReviewType) : "editorial";
+}
+
+function toReviewItem(row: ReviewQueueItemRow): ReviewItem {
+  const priority = mapPriority(row.priority);
+  return {
+    id: row.id,
+    sourceContentRef: {
+      type: row.source_content_type as ReviewItem["sourceContentRef"]["type"],
+      id: row.source_content_id,
+      slug: row.source_content_slug ?? "",
+    },
+    reviewType: mapReviewType(row.review_type),
+    priority,
+    priorityScore: row.priority_score ?? 50,
+    state: mapState(row.state),
+    assignedReviewer: row.assigned_reviewer ?? undefined,
+    dueBy: row.due_by ?? undefined,
+    comments: (row.comments as ReviewComment[] | null) ?? [],
+    checklists: (row.checklists as ReviewChecklistResult[] | null) ?? [],
+    slaTarget: SLA_TARGETS[priority] ?? SLA_TARGETS.medium,
+    stateHistory: (row.state_history as StateTransition[] | null) ?? [],
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
+export async function fetchReviewData(_range: DashboardTimeRange): Promise<{
+  items: ReviewItem[];
+  profiles: ReviewerProfile[];
+}> {
+  const { data, error } = await supabase
+    .from("review_queue_items")
+    .select("id, source_content_type, source_content_id, source_content_slug, review_type, priority, priority_score, state, assigned_reviewer, due_by, comments, checklists, state_history, created_at, updated_at")
+    .order("created_at", { ascending: false })
+    .limit(500);
+
+  if (error || !data) return { items: [], profiles: [] };
+
+  const rows = data as ReviewQueueItemRow[];
+  const items = rows.map(toReviewItem);
+
+  // Build ReviewerProfile[] from assigned_reviewer aggregation
+  const reviewerMap = new Map<string, { activeAssignments: string[]; completed: number; totalAssigned: number }>();
+  for (const item of items) {
+    if (item.assignedReviewer) {
+      const entry = reviewerMap.get(item.assignedReviewer) ?? { activeAssignments: [], completed: 0, totalAssigned: 0 };
+      entry.totalAssigned++;
+      if (["approved", "published", "rejected", "archived"].includes(item.state)) {
+        entry.completed++;
+      } else {
+        entry.activeAssignments.push(item.id);
+      }
+      reviewerMap.set(item.assignedReviewer, entry);
+    }
+  }
+
+  const profiles: ReviewerProfile[] = Array.from(reviewerMap.entries()).map(([id, entry]) => ({
+    id,
+    role: "Reviewer",
+    expertiseAreas: [] as ReviewType[],
+    contentSkills: [],
+    maxWorkload: 10,
+    currentWorkload: entry.activeAssignments.length,
+    availability: entry.activeAssignments.length >= 10 ? "busy" as const : "available" as const,
+    activeAssignments: entry.activeAssignments,
+    completedToday: entry.completed,
+    averageReviewTimeMinutes: 0,
+    languages: [],
+    countries: [],
+    institutions: [],
+  }));
+
+  return { items, profiles };
 }

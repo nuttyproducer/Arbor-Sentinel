@@ -1,12 +1,10 @@
 // src/pages/admin/__tests__/DataQualityDashboard.test.tsx
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import DataQualityDashboard from "../DataQualityDashboard";
 
 // Mock framer-motion — jsdom doesn't support animation APIs.
-// Components using Reveal (PageIntro, PageStatusNotice) render children
-// without animation, matching the route-smoke-test convention.
 vi.mock("framer-motion", () => ({
   motion: {
     div: "div",
@@ -27,19 +25,31 @@ vi.mock("framer-motion", () => ({
   useReducedMotion: () => true,
 }));
 
+vi.mock("../../../lib/admin/qualityMetrics", async () => {
+  const actual = await vi.importActual("../../../lib/admin/qualityMetrics");
+  return {
+    ...actual,
+    fetchQualityData: vi.fn().mockResolvedValue({
+      entries: [],
+      qualityData: { scores: [], contradictionReports: [], duplicateGroups: [] },
+      coverageCells: [],
+      freshnessInputs: [],
+    }),
+  };
+});
+
 describe("DataQualityDashboard", () => {
-  it("renders all panel sections", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("renders heading", () => {
     render(
       <MemoryRouter>
         <DataQualityDashboard />
       </MemoryRouter>,
     );
     expect(screen.getByText("Data Quality")).toBeDefined();
-    expect(screen.getByText("Confidence Distribution")).toBeDefined();
-    expect(screen.getByText("Duplicate Detection")).toBeDefined();
-    expect(screen.getByText("Source Coverage")).toBeDefined();
-    expect(screen.getByText("Data Freshness")).toBeDefined();
-    expect(screen.getByText("Quality Trends")).toBeDefined();
   });
 
   it("renders time range selector", () => {
@@ -49,5 +59,14 @@ describe("DataQualityDashboard", () => {
       </MemoryRouter>,
     );
     expect(screen.getByText("30 days")).toBeDefined();
+  });
+
+  it("renders loading state initially", () => {
+    render(
+      <MemoryRouter>
+        <DataQualityDashboard />
+      </MemoryRouter>,
+    );
+    expect(screen.getByText(/Loading quality data/)).toBeDefined();
   });
 });

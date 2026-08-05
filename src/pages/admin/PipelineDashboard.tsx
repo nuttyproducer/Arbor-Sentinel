@@ -1,18 +1,18 @@
 // src/pages/admin/PipelineDashboard.tsx
-import { useMemo, useState, useCallback } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { Container } from "../../components/ui/Container";
 import { PageIntro } from "../../components/pages/PageIntro";
-import { PageStatusNotice } from "../../components/pages/PageStatusNotice";
 import { TimeRangeSelector } from "../../components/admin/shared/TimeRangeSelector";
 import { AutoRefreshProvider, AutoRefreshControls } from "../../components/admin/shared/AutoRefreshProvider";
-import { useAutoRefresh, useAutoRefreshContext } from "../../components/admin/shared/useAutoRefresh";
+import { useAutoRefreshContext } from "../../components/admin/shared/useAutoRefresh";
 import { SourceOverviewPanel } from "../../components/admin/SourceOverviewPanel";
 import { IngestionChart } from "../../components/admin/IngestionChart";
 import { AIPipelineMetrics } from "../../components/admin/AIPipelineMetrics";
 import { CollectorStatusGrid } from "../../components/admin/CollectorStatusGrid";
 import { ErrorRateChart } from "../../components/admin/ErrorRateChart";
-import { getSourceOverview, getIngestionSeries, getPipelineMetrics, getCollectorGridItems, getErrorRateSeries } from "../../lib/admin/metrics";
-import { seedCollectorRuns, seedHealthReport, seedAlertEvents } from "../../lib/admin/seedData";
+import { getSourceOverview, getIngestionSeries, getPipelineMetrics, getCollectorGridItems, getErrorRateSeries, fetchPipelineData } from "../../lib/admin/metrics";
+import type { CollectResult } from "../../lib/collectors/types";
+import type { HealthReport, AlertEvent } from "../../lib/collectors/monitoring/types";
 import type { TimeRangePreset, DashboardTimeRange } from "../../lib/admin/types";
 
 function PipelineDashboardContent() {
@@ -22,18 +22,37 @@ function PipelineDashboardContent() {
     end: new Date().toISOString(),
   }));
 
-  // Seed data once on mount (in-memory, resets on reload)
-  const { runs, report, events } = useMemo(() => ({
-    runs: seedCollectorRuns(),
-    report: seedHealthReport(),
-    events: seedAlertEvents(),
-  }), []);
+  const [data, setData] = useState<{
+    runs: CollectResult[];
+    report: HealthReport;
+    events: AlertEvent[];
+  } | null>(null);
 
-  const sourceOverview = useMemo(() => getSourceOverview(report), [report]);
-  const ingestionData = useMemo(() => getIngestionSeries(runs, range), [runs, range]);
-  const pipelineMetrics = useMemo(() => getPipelineMetrics(runs, range), [runs, range]);
-  const gridItems = useMemo(() => getCollectorGridItems(report), [report]);
-  const errorRateData = useMemo(() => getErrorRateSeries(events, range), [events, range]);
+  const { interval } = useAutoRefreshContext();
+  const [, setTick] = useState(0);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      const result = await fetchPipelineData(range);
+      if (!cancelled) setData(result);
+    }
+    load();
+    return () => { cancelled = true; };
+  }, [range, setTick]);
+
+  // Re-fetch on auto-refresh tick
+  useEffect(() => {
+    if (!interval) return;
+    const id = setInterval(() => setTick((t) => t + 1), interval);
+    return () => clearInterval(id);
+  }, [interval]);
+
+  const sourceOverview = useMemo(() => data ? getSourceOverview(data.report) : null, [data]);
+  const ingestionData = useMemo(() => data ? getIngestionSeries(data.runs, range) : [], [data, range]);
+  const pipelineMetrics = useMemo(() => data ? getPipelineMetrics(data.runs, range) : [], [data, range]);
+  const gridItems = useMemo(() => data ? getCollectorGridItems(data.report) : [], [data]);
+  const errorRateData = useMemo(() => data ? getErrorRateSeries(data.events, range) : [], [data, range]);
 
   const handleTimeChange = useCallback(
     (change: { preset: TimeRangePreset; range: DashboardTimeRange }) => {
@@ -43,11 +62,6 @@ function PipelineDashboardContent() {
     [],
   );
 
-  // Auto-refresh: re-render on each tick (simulates live data)
-  const { interval } = useAutoRefreshContext();
-  const [, setTick] = useState(0);
-  useAutoRefresh(() => setTick((t) => t + 1), interval);
-
   return (
     <Container className="py-12">
       <PageIntro
@@ -55,25 +69,25 @@ function PipelineDashboardContent() {
         description="Sources, ingestion, AI pipeline throughput and latency, error rates."
       />
 
-      <PageStatusNotice label="Static Preview">
-        This dashboard shows in-memory development data. Metrics reset on page
-        reload. Data is seeded from realistic mock values for preview purposes.
-      </PageStatusNotice>
-
       {/* Controls */}
       <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
         <TimeRangeSelector value={preset} onChange={handleTimeChange} />
         <AutoRefreshControls />
       </div>
 
-      {/* Panels */}
-      <div className="space-y-8">
-        <SourceOverviewPanel data={sourceOverview} />
-        <IngestionChart data={ingestionData} />
-        <AIPipelineMetrics data={pipelineMetrics} />
-        <CollectorStatusGrid items={gridItems} />
-        <ErrorRateChart data={errorRateData} />
-      </div>
+      {!data ? (
+        <div className="flex items-center justify-center py-20" aria-busy="true">
+          <span className="font-mono text-sm text-charcoal/40">Loading pipeline data…</span>
+        </div>
+      ) : (
+        <div className="space-y-8">
+          <SourceOverviewPanel data={sourceOverview!} />
+          <IngestionChart data={ingestionData} />
+          <AIPipelineMetrics data={pipelineMetrics} />
+          <CollectorStatusGrid items={gridItems} />
+          <ErrorRateChart data={errorRateData} />
+        </div>
+      )}
     </Container>
   );
 }

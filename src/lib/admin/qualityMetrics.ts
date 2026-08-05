@@ -1,6 +1,7 @@
 // src/lib/admin/qualityMetrics.ts
-// Pure query functions for the Data Quality Dashboard (M4.4-03).
+// Pure query functions and Supabase loader for the Data Quality Dashboard (M4.4-03).
 
+import { supabase } from "../db/client";
 import type { AILogEntry } from "../ai/types";
 import type { DashboardTimeRange, ConfidenceBucket, ContradictionRate, DuplicateRates, CoverageCell, FreshnessItem, QualityTrendPoint, QualityAlert } from "./types";
 
@@ -277,4 +278,191 @@ export function getQualityAlerts(
   }
 
   return alerts;
+}
+
+// ── Supabase data loader ────────────────────────────────────────────────────
+
+interface AIOperationRow {
+  id: string;
+  operation_type: string;
+  model_used: string;
+  confidence: number;
+  tokens_input: number;
+  tokens_output: number;
+  latency_ms: number;
+  warnings: string[] | null;
+  status: string;
+  created_at: string;
+}
+
+export async function fetchQualityData(range: DashboardTimeRange): Promise<{
+  entries: AILogEntry[];
+  qualityData: {
+    scores: Array<{ stage: string; score: number; timestamp: string }>;
+    contradictionReports: Array<{ contentType: string; sourceType: string; unresolved: number; total: number }>;
+    duplicateGroups: Array<{ sourceType: string; detected: number; falsePositives: number; merged: number }>;
+  };
+  coverageCells: CoverageCell[];
+  freshnessInputs: Array<{ category: string; lastUpdated: string; thresholdDays: number }>;
+}> {
+  const rangeStart = range.start;
+  const rangeEnd = range.end;
+
+  // 1. AI operations → AILogEntry[] + scores
+  const { data: aiData } = await supabase
+    .from("ai_operations")
+    .select("id, operation_type, model_used, confidence, tokens_input, tokens_output, latency_ms, warnings, status, created_at")
+    .gte("created_at", rangeStart)
+    .lte("created_at", rangeEnd)
+    .order("created_at", { ascending: false })
+    .limit(500);
+
+  const aiRows = (aiData ?? []) as AIOperationRow[];
+
+  const entries: AILogEntry[] = aiRows.map((row) => ({
+    timestamp: row.created_at,
+    stageName: row.operation_type,
+    model: row.model_used ?? "unknown",
+    prompt: "",
+    responseSummary: "",
+    tokensUsed: { input: row.tokens_input ?? 0, output: row.tokens_output ?? 0 },
+    latencyMs: row.latency_ms ?? 0,
+    confidence: row.confidence ?? 0,
+    error: row.warnings?.length ? row.warnings[0] : undefined,
+  }));
+
+  const scores = aiRows.map((row) => ({
+    stage: row.operation_type,
+    score: row.confidence ?? 0,
+    timestamp: row.created_at,
+  }));
+
+  // 2. Duplicate groups from incident_records
+  const { data: dupData } = await supabase
+    .from("incident_records")
+    .select("id, incident_type, is_duplicate, merged_into_id, source_count")
+    .eq("is_duplicate", true);
+
+  const dupRows = (dupData ?? []) as Array<{ incident_type: string; is_duplicate: boolean; merged_into_id: string | null; source_count: number }>;
+  const dupByType = new Map<string, { detected: number; merged: number }>();
+  for (const d of dupRows) {
+    const st = d.incident_type ?? "unknown";
+    const entry = dupByType.get(st) ?? { detected: 0, merged: 0 };
+    entry.detected++;
+    if (d.merged_into_id) entry.merged++;
+    dupByType.set(st, entry);
+  }
+  const duplicateGroups = Array.from(dupByType.entries()).map(([sourceType, v]) => ({
+    sourceType,
+    detected: v.detected,
+    falsePositives: 0,
+    merged: v.merged,
+  }));
+
+  // 3. Contradiction reports from corrections
+  const { data: corrData } = await supabase
+    .from("corrections")
+    .select("target_type, status")
+    .gte("created_at", rangeStart)
+    .lte("created_at", rangeEnd);
+
+  const corrRows = (corrData ?? []) as Array<{ target_type: string; status: string }>;
+  const corrByType = new Map<string, { total: number; unresolved: number }>();
+  for (const c of corrRows) {
+    const ct = c.target_type ?? "evidence";
+    const entry = corrByType.get(ct) ?? { total: 0, unresolved: 0 };
+    entry.total++;
+    if (c.status === "pending") entry.unresolved++;
+    corrByType.set(ct, entry);
+  }
+  const contradictionReports = Array.from(corrByType.entries()).map(([contentType, v]) => ({
+    contentType,
+    sourceType: contentType,
+    unresolved: v.unresolved,
+    total: v.total,
+  }));
+
+  // 4. Source coverage: join sources + evidence_items
+  const { data: sourcesData } = await supabase
+    .from("sources")
+    .select("id, type");
+
+  const { data: evidenceData } = await supabase
+    .from("evidence_items")
+    .select("source_id, country_or_territory");
+
+  const srcRows = (sourcesData ?? []) as Array<{ id: string; type: string }>;
+  const evRows = (evidenceData ?? []) as Array<{ source_id: string | null; country_or_territory: string | null }>;
+
+  const srcTypeMap = new Map<string, string>();
+  for (const s of srcRows) srcTypeMap.set(s.id, s.type);
+
+  const coverageMap = new Map<string, Map<string, number>>();
+  const allCountries = new Set<string>();
+  const allSourceTypes = new Set<string>();
+
+  for (const s of srcRows) allSourceTypes.add(s.type);
+
+  for (const ev of evRows) {
+    const country = ev.country_or_territory ?? "Unknown";
+    const srcType = ev.source_id ? (srcTypeMap.get(ev.source_id) ?? "unknown") : "unknown";
+    allCountries.add(country);
+    allSourceTypes.add(srcType);
+
+    if (!coverageMap.has(country)) coverageMap.set(country, new Map());
+    const cm = coverageMap.get(country)!;
+    cm.set(srcType, (cm.get(srcType) ?? 0) + 1);
+  }
+
+  const countries = Array.from(allCountries).sort();
+  const sourceTypes = Array.from(allSourceTypes).sort();
+
+  const coverageCells: CoverageCell[] = [];
+  for (const country of countries) {
+    for (const sourceType of sourceTypes) {
+      const count = coverageMap.get(country)?.get(sourceType) ?? -1;
+      let status: CoverageCell["status"];
+      if (count < 0) status = "na";
+      else if (count === 0) status = "gap";
+      else if (count <= 2) status = "partial";
+      else status = "covered";
+
+      coverageCells.push({ country, sourceType, status, sourceCount: Math.max(0, count) });
+    }
+  }
+
+  // 5. Data freshness from content tables
+  const freshnessCategories: Array<{ table: string; category: string; thresholdDays: number }> = [
+    { table: "evidence_items", category: "evidence", thresholdDays: 7 },
+    { table: "legal_cases", category: "legal_cases", thresholdDays: 14 },
+    { table: "countries", category: "countries", thresholdDays: 7 },
+    { table: "organizations", category: "organizations", thresholdDays: 14 },
+    { table: "actions", category: "actions", thresholdDays: 30 },
+  ];
+
+  const freshnessResults = await Promise.all(
+    freshnessCategories.map(async ({ table, category, thresholdDays }) => {
+      const { data: rows } = await supabase
+        .from(table)
+        .select("updated_at")
+        .order("updated_at", { ascending: false })
+        .limit(1);
+
+      const latest = (rows as Array<{ updated_at: string }> | null)?.[0]?.updated_at;
+      return {
+        category,
+        lastUpdated: latest ?? new Date(0).toISOString(),
+        thresholdDays,
+      };
+    }),
+  );
+
+  const freshnessInputs = freshnessResults;
+
+  return {
+    entries,
+    qualityData: { scores, contradictionReports, duplicateGroups },
+    coverageCells,
+    freshnessInputs,
+  };
 }

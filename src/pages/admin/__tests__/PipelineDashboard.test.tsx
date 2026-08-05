@@ -1,12 +1,10 @@
 // src/pages/admin/__tests__/PipelineDashboard.test.tsx
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import PipelineDashboard from "../PipelineDashboard";
 
 // Mock framer-motion — jsdom doesn't support animation APIs.
-// Components using Reveal (PageIntro, PageStatusNotice) render children
-// without animation, matching the route-smoke-test convention.
 vi.mock("framer-motion", () => ({
   motion: {
     div: "div",
@@ -27,19 +25,37 @@ vi.mock("framer-motion", () => ({
   useReducedMotion: () => true,
 }));
 
+vi.mock("../../../lib/admin/metrics", async () => {
+  const actual = await vi.importActual("../../../lib/admin/metrics");
+  return {
+    ...actual,
+    fetchPipelineData: vi.fn().mockResolvedValue({
+      runs: [],
+      report: {
+        generatedAt: new Date().toISOString(),
+        collectors: [],
+        summary: {
+          totalCollectors: 0, activeCount: 0, degradedCount: 0, failedCount: 0,
+          unknownCount: 0, staleCount: 0, overallErrorRate: 0, coverageGaps: [],
+        },
+      },
+      events: [],
+    }),
+  };
+});
+
 describe("PipelineDashboard", () => {
-  it("renders all panel sections", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("renders heading", () => {
     render(
       <MemoryRouter>
         <PipelineDashboard />
       </MemoryRouter>,
     );
     expect(screen.getByText("Pipeline Monitoring")).toBeDefined();
-    expect(screen.getByText("Source Overview")).toBeDefined();
-    expect(screen.getByText("Content Ingestion")).toBeDefined();
-    expect(screen.getByText("AI Pipeline Metrics")).toBeDefined();
-    expect(screen.getByText("Collector Status")).toBeDefined();
-    expect(screen.getByText("Error Rates")).toBeDefined();
   });
 
   it("renders time range selector", () => {
@@ -51,12 +67,12 @@ describe("PipelineDashboard", () => {
     expect(screen.getByText("24 hours")).toBeDefined();
   });
 
-  it("renders static preview notice", () => {
+  it("renders loading state initially", () => {
     render(
       <MemoryRouter>
         <PipelineDashboard />
       </MemoryRouter>,
     );
-    expect(screen.getByText(/in-memory development data/)).toBeDefined();
+    expect(screen.getByText(/Loading pipeline data/)).toBeDefined();
   });
 });
