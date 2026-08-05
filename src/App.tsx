@@ -62,6 +62,7 @@ const CorrectionQueuePage = lazy(() => import("./pages/admin/CorrectionQueuePage
 const ReviewQueuePage = lazy(() => import("./pages/admin/ReviewQueuePage").then(m => ({ default: m.ReviewQueuePage })));
 const EditorialAnalyticsPage = lazy(() => import("./pages/admin/EditorialAnalyticsPage").then(m => ({ default: m.EditorialAnalyticsPage })));
 const LoginPage = lazy(() => import("./pages/admin/LoginPage").then(m => ({ default: m.LoginPage })));
+const PlaceholderPage = lazy(() => import("./pages/admin/PlaceholderPage").then(m => ({ default: m.PlaceholderPage })));
 const TwoFactorSetup = lazy(() => import("./pages/admin/TwoFactorSetup").then(m => ({ default: m.TwoFactorSetup })));
 const TwoFactorVerify = lazy(() => import("./pages/admin/TwoFactorVerify").then(m => ({ default: m.TwoFactorVerify })));
 const GraphExplorerPage = lazy(() => import("./pages/explore/GraphExplorerPage").then(m => ({ default: m.GraphExplorerPage })));
@@ -206,6 +207,12 @@ export default function App() {
                 } />
               </Route>
             ))}
+
+            {/* System routes — placeholder pages for WIP features */}
+            <Route path="media" element={<PlaceholderPage title="Media Library" description="Media asset management coming soon." />} />
+            <Route path="roles" element={<PlaceholderPage title="Role Management" description="User role management coming soon." />} />
+            <Route path="audit-log" element={<PlaceholderPage title="Audit Log" description="Security audit trail coming soon." />} />
+            <Route path="settings" element={<PlaceholderPage title="Settings" description="Application settings coming soon." />} />
           </Route>
 
           <Route path="*" element={<NotFoundPage />} />
