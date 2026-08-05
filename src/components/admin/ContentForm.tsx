@@ -139,7 +139,9 @@ export function ContentForm({
       {header}
 
       <div className="space-y-4">
-        {fields.map((field) => (
+        {fields.map((field) => {
+          const fieldError = errors[field.key];
+          return (
           <div key={field.key}>
             <label
               htmlFor={`field-${field.key}`}
@@ -149,14 +151,14 @@ export function ContentForm({
               {field.required && <span className="text-clay ml-0.5">*</span>}
             </label>
             {renderField(field)}
-            {field.hint && !error && (
+            {field.hint && !fieldError && (
               <p className="font-mono text-[10px] text-charcoal/40 mt-0.5">{field.hint}</p>
             )}
-            {error && (
-              <p className="font-mono text-[10px] text-clay mt-0.5" role="alert">{error}</p>
+            {fieldError && (
+              <p className="font-mono text-[10px] text-clay mt-0.5" role="alert">{fieldError}</p>
             )}
           </div>
-        ))}
+        )})}
       </div>
 
       <div className="mt-6 flex gap-3">
