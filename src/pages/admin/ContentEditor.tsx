@@ -6,7 +6,9 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ContentForm, type FormField } from '../../components/admin/ContentForm';
 import { StatusSelect } from '../../components/admin/StatusSelect';
+import { VersionHistory } from '../../components/admin/VersionHistory';
 import { useAdminContent, type ContentType } from '../../hooks/useAdminContent';
+import { publishRecord } from '../../lib/workflow/publish';
 
 interface ContentEditorProps {
   contentType: ContentType;
@@ -20,7 +22,7 @@ export function ContentEditor({ contentType, title, listPath, fields }: ContentE
   const { id } = useParams<{ id: string }>();
   const isNew = !id || id === 'new';
 
-  const { data, create, update } = useAdminContent<{ id: string } & Record<string, unknown>>({
+  const { create, update } = useAdminContent<{ id: string } & Record<string, unknown>>({
     contentType,
     perPage: 1,
   });
@@ -91,6 +93,18 @@ export function ContentEditor({ contentType, title, listPath, fields }: ContentE
     setIsSaving(false);
   }
 
+  async function handlePublish() {
+    if (!id || isNew) return;
+    setIsSaving(true);
+    setSaveMessage(null);
+    const result = await publishRecord(contentType, id);
+    setIsSaving(false);
+    setSaveMessage(result.success ? 'Published successfully' : `Error: ${result.error}`);
+    if (result.success) {
+      setReviewStatus('published');
+    }
+  }
+
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
@@ -135,7 +149,31 @@ export function ContentEditor({ contentType, title, listPath, fields }: ContentE
           onSubmit={handleSave}
           submitLabel={isNew ? 'Create' : 'Save Changes'}
         />
+
+        {/* Publish action — only for evidence_items with an active review workflow */}
+        {contentType === 'evidence_items' &&
+          !isNew &&
+          (reviewStatus === 'draft' || reviewStatus === 'approved') && (
+            <div className="mt-6 flex gap-3">
+              <button
+                type="button"
+                onClick={handlePublish}
+                disabled={isSaving}
+                className="px-6 py-2 bg-clay text-white font-mono text-sm rounded
+                  hover:bg-clay/90 focus:outline-none focus:ring-2 focus:ring-clay/40
+                  disabled:bg-clay/30 disabled:cursor-not-allowed transition-colors"
+              >
+                {isSaving ? 'Publishing…' : 'Publish'}
+              </button>
+            </div>
+          )}
       </div>
+
+      {!isNew && (
+        <div className="mt-8">
+          <VersionHistory contentType={contentType} contentId={id!} />
+        </div>
+      )}
     </div>
   );
 }
