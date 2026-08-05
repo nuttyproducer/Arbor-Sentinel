@@ -89,7 +89,7 @@ export default function SourceRegistryPage() {
 
   const filteredSources = useMemo(
     () => filterSources(allSources, filters),
-    [filters],
+    [allSources, filters],
   );
 
   return (
