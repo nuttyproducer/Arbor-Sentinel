@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { Container } from "../components/ui/Container";
 import { PageIntro } from "../components/pages/PageIntro";
@@ -8,12 +8,13 @@ import { LastUpdated } from "../components/pages/LastUpdated";
 import { PreviewNotice } from "../components/pages/PreviewNotice";
 import { CorrectionLink } from "../components/pages/CorrectionLink";
 import {
-  evidenceItems,
   EVIDENCE_CATEGORIES,
   getAvailableSourceTypes,
   getAvailableVerificationLevels,
   getAvailableContentStatuses,
+  type EvidenceItem,
 } from "../data/evidenceItems";
+import { useRepository } from "../hooks/useRepository";
 import { VERIFICATION_LEVEL_LABELS, type VerificationLevel } from "../types/content";
 import { EvidenceFilters } from "../components/evidence/EvidenceFilters";
 import { EvidenceItemCard } from "../components/evidence/EvidenceItemCard";
@@ -25,13 +26,27 @@ import {
   type FilterKey,
 } from "../components/evidence/filters";
 
-const allItems = evidenceItems;
 const availableSourceTypes = getAvailableSourceTypes();
 const availableVerificationLevels = getAvailableVerificationLevels();
 const availableContentStatuses = getAvailableContentStatuses();
 
 export default function EvidenceLibraryPage() {
+  const repo = useRepository();
   const [filters, setFilters] = useState<ActiveFilters>(defaultFilters);
+  const [allItems, setAllItems] = useState<EvidenceItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    repo.getEvidenceList().then((items) => {
+      if (cancelled) return;
+      setAllItems(items);
+      setLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [repo]);
 
   const setFilter = useCallback(
     <K extends FilterKey>(key: K, value: ActiveFilters[K]) => {
@@ -50,7 +65,7 @@ export default function EvidenceLibraryPage() {
 
   const filteredItems = useMemo(
     () => filterItems(allItems, filters),
-    [filters],
+    [allItems, filters],
   );
 
   return (
@@ -104,32 +119,55 @@ export default function EvidenceLibraryPage() {
         </p>
       </PolicySection>
 
-      {/* Filters */}
-      <EvidenceFilters
-        filters={filters}
-        setFilter={setFilter}
-        clearFilter={clearFilter}
-        clearAllFilters={clearAllFilters}
-        availableSourceTypes={availableSourceTypes}
-        availableVerificationLevels={availableVerificationLevels}
-        availableContentStatuses={availableContentStatuses}
-        filteredCount={filteredItems.length}
-        totalCount={allItems.length}
-      />
-
-      {/* Evidence item cards / empty state */}
-      {filteredItems.length === 0 ? (
-        <EvidenceEmptyState
-          totalCount={allItems.length}
-          categoryCount={EVIDENCE_CATEGORIES.length}
-          onClearFilters={clearAllFilters}
-        />
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-          {filteredItems.map((item) => (
-            <EvidenceItemCard key={item.id} item={item} />
-          ))}
+      {/* Filters + records — rendered once the repository has loaded */}
+      {loading ? (
+        <div
+          className="flex items-center justify-center min-h-[40vh]"
+          role="status"
+          aria-label="Loading evidence records"
+        >
+          <div className="flex flex-col items-center gap-4">
+            <div
+              className="w-16 h-[2px] bg-amber rounded-full motion-safe:animate-pulse"
+              aria-hidden="true"
+            />
+            <p className="font-mono text-xs tracking-[0.15em] uppercase text-charcoal/50">
+              Loading
+            </p>
+            <span className="sr-only" aria-live="polite">
+              Evidence records are loading.
+            </span>
+          </div>
         </div>
+      ) : (
+        <>
+          <EvidenceFilters
+            filters={filters}
+            setFilter={setFilter}
+            clearFilter={clearFilter}
+            clearAllFilters={clearAllFilters}
+            availableSourceTypes={availableSourceTypes}
+            availableVerificationLevels={availableVerificationLevels}
+            availableContentStatuses={availableContentStatuses}
+            filteredCount={filteredItems.length}
+            totalCount={allItems.length}
+          />
+
+          {/* Evidence item cards / empty state */}
+          {filteredItems.length === 0 ? (
+            <EvidenceEmptyState
+              totalCount={allItems.length}
+              categoryCount={EVIDENCE_CATEGORIES.length}
+              onClearFilters={clearAllFilters}
+            />
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+              {filteredItems.map((item) => (
+                <EvidenceItemCard key={item.id} item={item} />
+              ))}
+            </div>
+          )}
+        </>
       )}
 
       {/* Source and verification explanation */}

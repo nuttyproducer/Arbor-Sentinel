@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Container } from "../components/ui/Container";
 import { Badge } from "../components/ui/Badge";
@@ -6,9 +6,10 @@ import { ExternalLink } from "../components/ui/ExternalLink";
 import { LastUpdated } from "../components/pages/LastUpdated";
 import { CorrectionLink } from "../components/pages/CorrectionLink";
 import { PrintHeader, PrintFooter } from "../components/pages/PrintOnly";
-import { getEvidenceBySlug, EVIDENCE_CATEGORY_LABELS } from "../data/evidenceItems";
+import { EVIDENCE_CATEGORY_LABELS, type EvidenceItem } from "../data/evidenceItems";
 import { sources } from "../data/sources";
 import { legalCases } from "../data/legalCases";
+import { useRepository } from "../hooks/useRepository";
 import {
   CONTENT_STATUS_LABELS,
   VERIFICATION_LEVEL_LABELS,
@@ -85,7 +86,47 @@ function CitationControl({ title, version, lastReviewedAt, canonicalPath }: Cita
 
 export default function EvidenceDetailPage() {
   const { slug } = useParams<{ slug: string }>();
-  const item = slug ? getEvidenceBySlug(slug) : undefined;
+  const repo = useRepository();
+  const [item, setItem] = useState<EvidenceItem | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!slug) return;
+    let cancelled = false;
+    repo.getEvidenceBySlug(slug).then((result) => {
+      if (cancelled) return;
+      setItem(result);
+      setLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [repo, slug]);
+
+  if (loading && slug) {
+    return (
+      <Container className="py-16 lg:py-20">
+        <div
+          className="flex items-center justify-center min-h-[40vh]"
+          role="status"
+          aria-label="Loading evidence record"
+        >
+          <div className="flex flex-col items-center gap-4">
+            <div
+              className="w-16 h-[2px] bg-amber rounded-full motion-safe:animate-pulse"
+              aria-hidden="true"
+            />
+            <p className="font-mono text-xs tracking-[0.15em] uppercase text-charcoal/50">
+              Loading
+            </p>
+            <span className="sr-only" aria-live="polite">
+              Evidence record is loading.
+            </span>
+          </div>
+        </div>
+      </Container>
+    );
+  }
 
   if (!item) {
     return (

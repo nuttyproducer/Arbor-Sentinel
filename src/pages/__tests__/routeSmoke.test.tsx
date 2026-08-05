@@ -209,7 +209,7 @@ describe("Route rendering smoke tests", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders EvidenceDetailPage for a known slug", () => {
+  it("renders EvidenceDetailPage for a known slug", async () => {
     render(
       <MemoryRouter initialEntries={["/evidence/icj-provisional-measures-jan-2024"]}>
         <Routes>
@@ -217,12 +217,13 @@ describe("Route rendering smoke tests", () => {
         </Routes>
       </MemoryRouter>,
     );
-    // Print header adds a hidden h1 with the same name; use getAllByRole
-    const headings = screen.getAllByRole("heading", { name: /ICJ provisional measures order/ });
+    // The page loads the record asynchronously via the repository.
+    // Print header adds a hidden h1 with the same name; use findAllByRole.
+    const headings = await screen.findAllByRole("heading", { name: /ICJ provisional measures order/ });
     expect(headings.length).toBeGreaterThanOrEqual(1);
   });
 
-  it("renders EvidenceDetailPage not-found state for unknown slug", () => {
+  it("renders EvidenceDetailPage not-found state for unknown slug", async () => {
     render(
       <MemoryRouter initialEntries={["/evidence/nonexistent-slug"]}>
         <Routes>
@@ -231,7 +232,7 @@ describe("Route rendering smoke tests", () => {
       </MemoryRouter>,
     );
     expect(
-      screen.getByText("Evidence record not found"),
+      await screen.findByText("Evidence record not found"),
     ).toBeInTheDocument();
   });
 
