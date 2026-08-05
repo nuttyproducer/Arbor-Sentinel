@@ -69,10 +69,10 @@ function MonitoringDashboardContent() {
     <Container className="py-12">
       <PageIntro
         title="Monitoring Dashboard"
-        subtitle="Collector health, system metrics, and alert history."
+        description="Collector health, system metrics, and alert history."
       />
 
-      <PageStatusNotice status="static-preview">
+      <PageStatusNotice variant="warning">
         This dashboard shows in-memory monitoring state. Data resets on page
         reload. Collectors are triggered manually during the static beta —
         auto-scheduling is planned for a future milestone.

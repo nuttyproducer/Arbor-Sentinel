@@ -161,7 +161,7 @@ export async function getSourceById(id: string) {
 // ── Search ────────────────────────────────────────────────────────────────────
 
 export async function search(params: SearchParams) {
-  return apiGet<ApiListResponse<unknown>>('/search', params as Record<string, unknown>);
+  return apiGet<ApiListResponse<unknown>>('/search', params as unknown as Record<string, unknown>);
 }
 
 // ── Corrections ───────────────────────────────────────────────────────────────
@@ -173,11 +173,11 @@ export async function submitCorrection(submission: CorrectionSubmission) {
 // ── Spatial / Map ─────────────────────────────────────────────────────────────
 
 export async function getNearbyItems(params: SpatialQueryParams) {
-  return apiGet<ApiListResponse<unknown>>('/locations/nearby', params as Record<string, unknown>);
+  return apiGet<ApiListResponse<unknown>>('/locations/nearby', params as unknown as Record<string, unknown>);
 }
 
 export async function getItemsInBoundingBox(params: BoundingBoxParams) {
-  return apiGet<ApiListResponse<unknown>>('/locations/bbox', params as Record<string, unknown>);
+  return apiGet<ApiListResponse<unknown>>('/locations/bbox', params as unknown as Record<string, unknown>);
 }
 
 export async function getGeoJSON(layer: string) {

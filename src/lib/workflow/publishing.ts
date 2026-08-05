@@ -152,7 +152,8 @@ export async function preflightCheck(
     },
   ];
 
-  return runApprovalGates(content, gates);
+  const { allPassed, results } = await runApprovalGates(content, gates);
+  return { canPublish: allPassed, gates: results };
 }
 
 // ── Rollback ──────────────────────────────────────────────────────────────────
@@ -161,7 +162,7 @@ export async function rollbackContent(
   contentType: string,
   contentId: string,
   targetVersion: number,
-  actorId: string,
+  _actorId: string,
 ): Promise<boolean> {
   // Fetch the target version
   const { data: version } = await supabase

@@ -14,12 +14,8 @@ import { DevMemoryStore } from "../../store";
 import { BaseCollector } from "../../BaseCollector";
 import {
   validCourtDocument,
-  validCourtDocumentAlt,
   emptyCourtDocument,
   normalizationVariants,
-  notFoundError,
-  serverError,
-  rateLimitedError,
   icjHtmlFixture,
 } from "../../__tests__/fixtures/courtFixtures";
 import type { SourceRecord, SourceType } from "../../../../types/content";

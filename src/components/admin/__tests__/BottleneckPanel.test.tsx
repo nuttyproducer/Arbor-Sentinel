@@ -2,7 +2,7 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { BottleneckPanel } from "../BottleneckPanel";
-import type { Bottleneck } from "../../lib/admin/types";
+import type { Bottleneck } from "../../../lib/admin/types";
 
 const BOTTLENECKS: Bottleneck[] = [
   { type: "stuck", description: "3 items stuck in review (>48h)", count: 3, threshold: "48h" },

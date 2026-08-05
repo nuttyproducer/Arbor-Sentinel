@@ -15,7 +15,6 @@ import { BaseCollector } from "../../BaseCollector";
 import {
   validJournalismDocument,
   validAcademicDocument,
-  emptyMediaDocument,
   normalizationVariants,
 } from "../../__tests__/fixtures/mediaFixtures";
 import type { SourceRecord, SourceType } from "../../../../types/content";
@@ -256,7 +255,6 @@ describe("Media Collectors — Integration", () => {
     });
 
     it("distinguishes between investigative journalism and opinion", () => {
-      const normalizer = new MediaNormalizer();
       const variants = normalizationVariants.filter(
         (v) => v.url && v.headline && v.bodyPreview && v.publication,
       );

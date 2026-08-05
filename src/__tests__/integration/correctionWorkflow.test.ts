@@ -7,12 +7,10 @@
 
 import { describe, it, expect, beforeEach } from "vitest";
 import { CorrectionManager } from "../../lib/review/CorrectionManager";
-import type { CorrectionCategory, CorrectionState, CorrectionSubmission } from "../../lib/review/types";
+import type { CorrectionCategory, CorrectionState } from "../../lib/review/types";
 import { ReviewQueue } from "../../lib/review/ReviewQueue";
 import { InMemoryPersistence } from "../../lib/review/ReviewPersistence";
 import { ReviewStateMachine } from "../../lib/review/ReviewStateMachine";
-import { AssignmentRouter } from "../../lib/review/AssignmentRouter";
-import { ReviewerRegistry } from "../../lib/review/ReviewerRegistry";
 
 describe("Correction Workflow — Integration", () => {
   let manager: CorrectionManager;
@@ -21,9 +19,7 @@ describe("Correction Workflow — Integration", () => {
   beforeEach(() => {
     const persistence = new InMemoryPersistence();
     const stateMachine = new ReviewStateMachine();
-    const reviewerRegistry = new ReviewerRegistry();
-    const assignmentRouter = new AssignmentRouter(reviewerRegistry);
-    queue = new ReviewQueue(persistence, stateMachine, assignmentRouter);
+    queue = new ReviewQueue(persistence, stateMachine);
     manager = new CorrectionManager(queue);
   });
 
@@ -36,7 +32,6 @@ describe("Correction Workflow — Integration", () => {
         targetPage: "/evidence/test-page",
         description: "The reported casualty count appears incorrect based on new source evidence.",
         sourceUrl: "https://example.org/corrected-data",
-        isMajor: true,
       });
 
       expect(submission.id).toBeTruthy();
@@ -54,7 +49,6 @@ describe("Correction Workflow — Integration", () => {
           category: category as CorrectionCategory,
           targetPage: "/test",
           description: `Test correction: ${category}`,
-          isMajor: false,
         });
         expect(sub.category).toBe(category);
       }
@@ -65,7 +59,6 @@ describe("Correction Workflow — Integration", () => {
         category: "factual_error",
         targetPage: "/test",
         description: "Major correction to factual content.",
-        isMajor: true,
       });
       expect(major.isMajor).toBe(true);
 
@@ -73,7 +66,6 @@ describe("Correction Workflow — Integration", () => {
         category: "broken_link",
         targetPage: "/test",
         description: "Minor broken link fix.",
-        isMajor: false,
       });
       expect(minor.isMajor).toBe(false);
     });
@@ -88,7 +80,6 @@ describe("Correction Workflow — Integration", () => {
         category: "factual_error",
         targetPage: "/evidence/test",
         description: "Correcting casualty count in evidence record.",
-        isMajor: true,
       });
 
       // Public log should exist and be queryable
@@ -101,7 +92,6 @@ describe("Correction Workflow — Integration", () => {
         category: "factual_error",
         targetPage: "/evidence/test",
         description: "Factual correction needed.",
-        isMajor: true,
       });
 
       const log = await manager.getPublicLog();

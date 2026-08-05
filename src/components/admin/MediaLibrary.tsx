@@ -40,7 +40,16 @@ export function MediaLibrary({
     if (err) {
       setError(err.message);
     } else {
-      setItems(data ?? []);
+      setItems(
+        (data ?? []).map((f) => ({
+          name: f.name,
+          id: f.id,
+          created_at: f.created_at ?? "",
+          metadata: f.metadata
+            ? { size: f.metadata.size, mimetype: f.metadata.mimetype }
+            : null,
+        })),
+      );
     }
     setIsLoading(false);
   }

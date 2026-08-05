@@ -18,13 +18,11 @@ import type { CollectorRegistry } from "./CollectorRegistry";
  */
 export class Scheduler {
   private readonly registry: CollectorRegistry;
-  private readonly storage: StorageInterface;
   private readonly jobs = new Map<string, ScheduledJob>();
   private readonly intervalTimers = new Map<string, ReturnType<typeof setInterval>>();
 
-  constructor(registry: CollectorRegistry, storage: StorageInterface) {
+  constructor(registry: CollectorRegistry, _storage: StorageInterface) {
     this.registry = registry;
-    this.storage = storage;
   }
 
   // ── Job Management ────────────────────────────────────────────────────
@@ -224,7 +222,7 @@ export class Scheduler {
 
       job.lastResult = result;
       return result;
-    } catch (error) {
+    } catch {
       this.registry.recordFailure(collectorName);
       const errorResult: CollectResult = {
         runId: `error-${Date.now()}`,

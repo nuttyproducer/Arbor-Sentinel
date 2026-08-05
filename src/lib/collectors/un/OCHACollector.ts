@@ -1,8 +1,7 @@
 import { BaseCollector } from "../BaseCollector";
 import { UNNormalizer } from "./UNNormalizer";
 import { ParseError, ValidationError } from "../errors";
-import type { NormalizedContent } from "../types";
-import type { RawUNDocument, UNDocumentType } from "./UNNormalizer";
+import type { RawUNDocument, UNDocumentType, NormalizedUNDocument } from "./UNNormalizer";
 
 /**
  * Collector for UN Office for the Coordination of Humanitarian Affairs (ochaopt.org, unocha.org).
@@ -46,7 +45,7 @@ export class OCHACollector extends BaseCollector {
     return [doc];
   }
 
-  async normalize(raw: unknown): Promise<NormalizedContent> {
+  async normalize(raw: unknown): Promise<NormalizedUNDocument> {
     const doc = raw as RawUNDocument;
     const v = this.normalizer.validate(doc);
     if (!v.valid) throw new ValidationError(`OCHA validation: ${v.reason}`, { sourceId: this.source.id, url: doc.url, attempt: 1 });

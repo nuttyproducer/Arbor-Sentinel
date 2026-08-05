@@ -1,8 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { BaseCollector } from "../BaseCollector";
 import { RateLimiter } from "../rateLimiter";
 import { DevMemoryStore } from "../store";
-import { FetchError, ParseError, TimeoutError } from "../errors";
+import { FetchError, ParseError } from "../errors";
 import type { SourceRecord, SourceType } from "../../../types/content";
 import type { CollectorConfig, NormalizedContent } from "../types";
 import { DEFAULT_RATE_LIMIT, DEFAULT_RETRY_CONFIG } from "../types";
@@ -76,7 +76,7 @@ class TestCollector extends BaseCollector {
     return this.fetchResult;
   }
 
-  async validate(raw: unknown): Promise<boolean> {
+  async validate(_raw: unknown): Promise<boolean> {
     this.validateCallCount++;
     this.pipelineCallOrder.push("validate");
     if (this.shouldFailValidate) {

@@ -1,5 +1,4 @@
 import type { HealthStatus } from "../../../types/content";
-import type { CollectResult } from "../types";
 
 // ── Health Tracking ──────────────────────────────────────────────────────
 

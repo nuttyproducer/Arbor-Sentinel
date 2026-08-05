@@ -20,7 +20,6 @@ import { CorrectionManager } from "../CorrectionManager";
 import type {
   ReviewItem,
   ReviewerProfile,
-  CorrectionSubmission,
   ReviewType,
 } from "../types";
 

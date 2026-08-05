@@ -3,8 +3,6 @@ import userEvent from "@testing-library/user-event";
 import { SourceFilterControls, DEFAULT_SOURCE_FILTERS } from "../SourceFilterControls";
 import type { SourceFilters } from "../SourceFilterControls";
 
-const noop = () => {};
-
 function renderControls(overrides: Partial<{
   filters: SourceFilters;
   availableRegions: string[];
@@ -84,7 +82,6 @@ describe("SourceFilterControls", () => {
   });
 
   it("shows 'Clear all filters' when a filter is active", async () => {
-    const user = userEvent.setup();
     renderControls({
       filters: { ...DEFAULT_SOURCE_FILTERS, sourceType: "court" },
     });

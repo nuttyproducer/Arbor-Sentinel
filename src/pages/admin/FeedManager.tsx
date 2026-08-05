@@ -8,6 +8,7 @@ import { PageIntro } from "../../components/pages/PageIntro";
 import { FeedTable, type FeedRow } from "../../components/admin/FeedTable";
 import { FeedForm, type FeedFormData } from "../../components/admin/FeedForm";
 import { SupabaseStore } from "../../lib/collectors/SupabaseStore";
+import type { TrustLevel } from "../../types/content";
 
 type View = "list" | "add" | "edit";
 
@@ -25,8 +26,8 @@ export function FeedManager() {
     setLoading(true);
     try {
       const data = await store.getFeeds();
-      setFeeds(data as FeedRow[]);
-    } catch (err) {
+      setFeeds(data as unknown as FeedRow[]);
+    } catch {
       setMessage({ type: "error", text: "Failed to load feeds." });
     } finally {
       setLoading(false);
@@ -150,7 +151,7 @@ export function FeedManager() {
         accessedAt: new Date().toISOString(),
         status: "active" as const,
         version: 1,
-        trustLevel: feed.trust_level,
+        trustLevel: feed.trust_level as TrustLevel,
         healthStatus: feed.health_status as
           | "unknown"
           | "active"
@@ -181,7 +182,7 @@ export function FeedManager() {
         itemsFetched: result.itemsFetched,
         itemsValidated: result.itemsValidated,
         itemsStored: result.itemsStored,
-        stageDurations: result.stageDurations,
+        stageDurations: result.stageDurations as unknown as Record<string, number>,
         errors: [],
         startedAt: result.startedAt,
         completedAt: result.completedAt,

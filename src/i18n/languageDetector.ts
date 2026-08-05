@@ -24,7 +24,6 @@ function normalize(lang: string): string | undefined {
 
 const detector: LanguageDetectorModule = {
   type: "languageDetector",
-  name: "accountabilityAtlasDetector",
 
   detect(): string | undefined {
     // 1. localStorage (persisted preference)

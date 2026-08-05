@@ -56,7 +56,6 @@ export function AlertHistoryPanel({
   }
 
   const activeAlerts = alerts.filter((a) => a.status === "active");
-  const resolvedAlerts = alerts.filter((a) => a.status === "resolved");
 
   return (
     <section aria-labelledby="alert-history-heading">

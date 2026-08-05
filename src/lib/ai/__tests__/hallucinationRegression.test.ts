@@ -56,7 +56,6 @@ describe("Hallucination Regression", () => {
     });
 
     it("detects invented source attribution", async () => {
-      const sourceText = "Several organizations reported access challenges in affected areas.";
       const hallucinatedText =
         "According to UNSC Resolution 9999, all parties must allow unimpeded access, " +
         "as reported by several organizations.";

@@ -419,12 +419,18 @@ describe("Rule 13: Action template review", () => {
         sourceBasis: "Test",
         instructions: "Test",
         language: "en",
+        templateReviewStatus: "draft" as const,
+        jurisdictionReviewStatus: "draft" as const,
+        languageReviewStatus: "draft" as const,
+        translationStatus: "not_started" as const,
         contentStatus: "reviewed" as const,
         sourceIds: [] as string[],
+        lastChangedDate: "2026-07-01",
         version: 1,
         relatedRoutes: [] as string[],
         warnings: ["Warning"],
         active: true,
+        correctionUrl: "/corrections",
       },
     ];
     const errors = checkActionTemplateReview(templates);
@@ -589,6 +595,11 @@ describe("Rule 18: Source completeness", () => {
     status: "active" as const,
     version: 1,
     correctionUrl: "/corrections",
+    trustLevel: 0 as const,
+    healthStatus: "unknown" as const,
+    automationStatus: "manual" as const,
+    failureCount: 0,
+    monitoringEnabled: false,
   };
 
   it("passes for complete sources", () => {

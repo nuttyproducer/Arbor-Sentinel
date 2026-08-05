@@ -2,7 +2,7 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { ReviewerPerformanceTable } from "../ReviewerPerformanceTable";
-import type { ReviewerMetric } from "../../lib/admin/types";
+import type { ReviewerMetric } from "../../../lib/admin/types";
 
 const DATA: ReviewerMetric[] = [
   { id: "rev-001", completed: 10, avgTimeMinutes: 45, slaCompliancePercent: 85, workload: 5, maxWorkload: 8 },

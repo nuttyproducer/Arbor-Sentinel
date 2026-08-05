@@ -1,4 +1,4 @@
-import type { SourceType, HealthStatus } from "../../types/content";
+import type { SourceType, HealthStatus, SourceRecord } from "../../types/content";
 import type {
   CollectorConfig,
   CollectorRegistration,
@@ -9,7 +9,7 @@ import { RateLimiter } from "./rateLimiter";
 
 /** Constructor type for a collector subclass. */
 export type CollectorConstructor = new (
-  source: Parameters<BaseCollector["constructor"]>[0],
+  source: SourceRecord,
   config: CollectorConfig,
   storage: StorageInterface,
   rateLimiter: RateLimiter,
@@ -136,7 +136,7 @@ export class CollectorRegistry {
    * @throws If no collector is registered for this source's type.
    */
   createInstance(
-    source: Parameters<BaseCollector["constructor"]>[0],
+    source: SourceRecord,
     config: CollectorConfig,
   ): BaseCollector {
     const cacheKey = `${source.id}:${config.sourceId}`;

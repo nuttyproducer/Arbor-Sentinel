@@ -149,7 +149,7 @@ function detectCaseNumber(text: string, court: "ICJ" | "ICC"): string | undefine
 }
 
 /** Detect parties from text. */
-function detectParties(text: string, title: string): string[] {
+function detectParties(_text: string, title: string): string[] {
   const parties: string[] = [];
 
   // Common patterns for party extraction
@@ -252,7 +252,7 @@ export class LegalNormalizer {
   private generateTags(
     raw: RawCourtDocument,
     documentType: CourtDocumentType,
-    parties: string[],
+    _parties: string[],
   ): string[] {
     const tags: string[] = [raw.court.toLowerCase(), documentType];
 

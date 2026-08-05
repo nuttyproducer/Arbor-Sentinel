@@ -16,7 +16,6 @@ import {
   validOHCHRDocument,
   validOCHADocument,
   validCOIDocument,
-  emptyUNDocument,
   normalizationVariants,
 } from "../../__tests__/fixtures/unFixtures";
 import type { SourceRecord, SourceType } from "../../../../types/content";

@@ -8,7 +8,6 @@
 // in edge functions or server-side scripts.
 
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
-import type { Database } from './types';
 
 // ── Environment validation ────────────────────────────────────────────────────
 
@@ -19,7 +18,7 @@ const SUPABASE_SERVICE_ROLE_KEY = import.meta.env.SUPABASE_SERVICE_ROLE_KEY as s
 function requireEnv(name: string, value: string | undefined): string {
   if (!value) {
     // In test environments, return a placeholder — tests should mock supabase
-    if (typeof process !== 'undefined' && process.env?.VITEST) {
+    if (import.meta.env.MODE === 'test') {
       return `mock-${name}`;
     }
     throw new Error(
@@ -56,7 +55,7 @@ export function getSupabaseClient(): SupabaseClient {
 /** Convenience alias — primary client for most operations. */
 export const supabase = new Proxy({} as SupabaseClient, {
   get(_, prop) {
-    return (getSupabaseClient() as Record<string | symbol, unknown>)[prop];
+    return (getSupabaseClient() as unknown as Record<string | symbol, unknown>)[prop];
   },
 });
 
@@ -101,14 +100,14 @@ export const supabaseAdmin = typeof window === 'undefined'
  * Get a typed Supabase query builder for a table.
  * Usage: db('sources').select('*').eq('type', 'court')
  */
-export function db<T = Record<string, unknown>>(table: string) {
+export function db(table: string) {
   return supabase.from(table);
 }
 
 /**
  * Get a typed admin query builder for a table (server-side only).
  */
-export function dbAdmin<T = Record<string, unknown>>(table: string) {
+export function dbAdmin(table: string) {
   if (typeof window !== 'undefined') {
     throw new Error('dbAdmin cannot be used in browser bundles.');
   }

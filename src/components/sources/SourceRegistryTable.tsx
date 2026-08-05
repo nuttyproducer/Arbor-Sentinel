@@ -1,12 +1,11 @@
 import { Link } from "react-router-dom";
-import type { SourceRecord, SourceType, SourceStatus, HealthStatus, TrustLevel } from "../../types/content";
+import type { SourceRecord, SourceStatus } from "../../types/content";
 import {
   SOURCE_TYPE_LABELS,
   SOURCE_STATUS_LABELS,
   TRUST_LEVEL_LABELS,
 } from "../../types/content";
 import { Badge } from "../ui/Badge";
-import { ExternalLink } from "../ui/ExternalLink";
 import { SourceHealthIndicator } from "./SourceHealthIndicator";
 
 interface SourceRegistryTableProps {
@@ -26,23 +25,6 @@ const statusBadgeVariant = (status: SourceStatus) => {
     default:
       return "neutral" as const;
   }
-};
-
-const trustBadgeVariant = (level: TrustLevel) => {
-  if (level >= 4) return "info" as const;
-  if (level >= 2) return "neutral" as const;
-  return "neutral" as const;
-};
-
-const sourceTypeSort: Record<SourceType, number> = {
-  court: 0,
-  un: 1,
-  government: 2,
-  humanitarian: 3,
-  ngo: 4,
-  academic: 5,
-  journalism: 6,
-  osint: 7,
 };
 
 export function SourceRegistryTable({

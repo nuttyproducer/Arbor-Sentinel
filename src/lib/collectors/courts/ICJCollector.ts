@@ -24,8 +24,6 @@ export class ICJCollector extends BaseCollector {
   private readonly normalizer = new LegalNormalizer();
 
   private static readonly BASE_URL = "https://www.icj-cij.org";
-  private static readonly PRESS_RELEASES_URL = `${ICJCollector.BASE_URL}/press-releases`;
-  private static readonly CASES_URL = `${ICJCollector.BASE_URL}/cases`;
 
   /**
    * Fetch raw documents from the ICJ website.

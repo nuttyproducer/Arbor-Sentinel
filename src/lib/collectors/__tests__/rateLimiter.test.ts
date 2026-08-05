@@ -39,7 +39,6 @@ describe("RateLimiter", () => {
       await limiter.acquire("src-1", "example.com", config);
       limiter.release("example.com");
 
-      const start = Date.now();
       const promise = limiter.acquire("src-1", "example.com", config);
       await vi.runAllTimersAsync();
       await promise;

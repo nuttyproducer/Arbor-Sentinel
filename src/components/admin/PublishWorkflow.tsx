@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 import type { PublishState, PublishAction } from '../../lib/workflow/types';
-import { VALID_TRANSITIONS, nextState } from '../../lib/workflow/types';
+import { VALID_TRANSITIONS } from '../../lib/workflow/types';
 import { executeTransition } from '../../lib/workflow/publishing';
 
 interface PublishWorkflowProps {

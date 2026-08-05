@@ -2,16 +2,14 @@ import type {
   CollectorConfig,
   CollectedItem,
   CollectResult,
-  CollectError,
   NormalizedContent,
   PipelineStageDurations,
   StorageInterface,
 } from "./types";
-import { PIPELINE_STAGES, DEFAULT_RETRY_CONFIG } from "./types";
 import type { RetryConfig } from "./types";
 import { RateLimiter } from "./rateLimiter";
 import { withRetry } from "./retry";
-import { FetchError, TimeoutError, RateLimitError } from "./errors";
+import { TimeoutError } from "./errors";
 import type { SourceRecord } from "../../types/content";
 
 /** Unique run ID counter. */
@@ -136,27 +134,7 @@ export abstract class BaseCollector {
         stageDurations: durations,
         success: true,
       };
-    } catch (error) {
-      const stage =
-        durations.fetch > 0 && durations.validate === 0
-          ? "validate"
-          : durations.validate > 0 && durations.normalize === 0
-            ? "normalize"
-            : durations.normalize > 0 && durations.deduplicate === 0
-              ? "deduplicate"
-              : "fetch";
-
-      const collectError: CollectError = {
-        type: "unknown",
-        message: error instanceof Error ? error.message : String(error),
-        sourceId: this.source.id,
-        url: this.source.url,
-        attempt: 1,
-        stage,
-        timestamp: new Date().toISOString(),
-        retryable: false,
-      };
-
+    } catch {
       return {
         runId,
         sourceId: this.source.id,
@@ -287,7 +265,7 @@ export abstract class BaseCollector {
     operation: () => Promise<T>,
   ): Promise<T> {
     const result = await withRetry(
-      (attempt) => operation(),
+      () => operation(),
       this.config.retry,
       this.source.id,
     );

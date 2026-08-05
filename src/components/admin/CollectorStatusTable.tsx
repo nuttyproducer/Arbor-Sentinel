@@ -18,10 +18,6 @@ function formatMs(ms: number): string {
   return `${(ms / 1000).toFixed(1)}s`;
 }
 
-function formatRate(rate: number): string {
-  return `${(rate * 100).toFixed(0)}%`;
-}
-
 export function CollectorStatusTable({ collectors }: CollectorStatusTableProps) {
   if (collectors.length === 0) {
     return (

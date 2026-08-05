@@ -14,7 +14,7 @@ import { RateLimiter } from "../rateLimiter";
 import { DevMemoryStore } from "../store";
 import { z } from "zod/v4";
 import type { SourceRecord, SourceType } from "../../../types/content";
-import type { CollectorConfig, CollectResult } from "../types";
+import type { CollectorConfig } from "../types";
 import { DEFAULT_RATE_LIMIT, DEFAULT_RETRY_CONFIG } from "../types";
 
 // ── Zod schemas for CollectResult validation ──────────────────────────────────

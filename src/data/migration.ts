@@ -5,11 +5,10 @@
 
 import { supabaseAdmin } from '../lib/db/client';
 
-// ── Type mapping: camelCase (TS) → snake_case (DB) ────────────────────────────
+// Runs as a Node script via `npx tsx src/data/migration.ts` — used for exit codes.
+declare const process: { exit(code?: number): never };
 
-function toSnakeCase(str: string): string {
-  return str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
-}
+// ── Type mapping: camelCase (TS) → snake_case (DB) ────────────────────────────
 
 function mapRecord<T extends Record<string, unknown>>(
   record: T,
@@ -92,7 +91,7 @@ async function migrateSources(): Promise<void> {
       notes: 'notes',
     };
 
-    const records = sourceList.map((s: Record<string, unknown>) => mapRecord(s, fieldMap));
+    const records = sourceList.map((s) => mapRecord(s as unknown as Record<string, unknown>, fieldMap));
     const result = await upsertTable('sources', records);
     logResult(result);
   } catch (err) {
@@ -137,7 +136,7 @@ async function migrateOrganizations(): Promise<void> {
 
   try {
     const module = await import('../data/organizations');
-    const orgList = module.organizations || [];
+    const orgList = module.organizationRecords || [];
 
     const fieldMap: Record<string, string> = {
       id: 'id',
@@ -149,7 +148,7 @@ async function migrateOrganizations(): Promise<void> {
       partnership_status: 'partnership_status',
     };
 
-    const records = orgList.map((o: Record<string, unknown>) => mapRecord(o, fieldMap));
+    const records = orgList.map((o) => mapRecord(o as unknown as Record<string, unknown>, fieldMap));
     const result = await upsertTable('organizations', records);
     logResult(result);
   } catch (err) {

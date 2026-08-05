@@ -19,8 +19,6 @@ import { BaseCollector } from "../../BaseCollector";
 import {
   validAmnestyDocument,
   validHRWDocument,
-  validBtselemDocument,
-  validMSFDocument,
   validICRCDocument,
   emptyNGODocument,
   normalizationVariants,
@@ -310,7 +308,6 @@ describe("NGO Collectors — Integration", () => {
     });
 
     it("handles documents across report types", () => {
-      const normalizer = new NGONormalizer();
       const types = new Set(normalizationVariants.map((v) => v.reportType));
       expect(types.size).toBeGreaterThan(1); // Multiple report types covered
     });

@@ -27,7 +27,7 @@ export interface RetryResult<T> {
 export async function withRetry<T>(
   operation: (attempt: number) => Promise<T>,
   config: RetryConfig,
-  sourceId: string,
+  _sourceId: string,
 ): Promise<RetryResult<T>> {
   const startTime = Date.now();
   let lastError: unknown;

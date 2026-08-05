@@ -2,7 +2,6 @@ import {
   type AlertRule,
   type AlertEvent,
   type AlertStatus,
-  type AlertSeverity,
   type CollectorHealthSnapshot,
   DEFAULT_MONITORING_CONFIG,
   type MonitoringConfig,
@@ -29,14 +28,10 @@ export class AlertSystem {
   private readonly rules: AlertRule[];
   private readonly events: AlertEvent[] = [];
   private readonly lastFired = new Map<string, number>(); // ruleId:collectorName → timestamp
-  private readonly cooldownMs: number;
-  private readonly staleThresholdMs: number;
 
   constructor(config?: Partial<MonitoringConfig>) {
     const cfg = { ...DEFAULT_MONITORING_CONFIG, ...config };
     this.rules = cfg.rules.filter((r) => r.enabled);
-    this.cooldownMs = cfg.defaultAlertCooldownMs;
-    this.staleThresholdMs = cfg.defaultStaleThresholdMs;
   }
 
   // ── Evaluation ────────────────────────────────────────────────────────
@@ -179,7 +174,6 @@ export class AlertSystem {
       }
 
       case "stale_data": {
-        const maxAge = t.maxStaleAgeMs ?? this.staleThresholdMs;
         if (s.isStale) {
           const lastSuccess = s.lastSuccessAt
             ? new Date(s.lastSuccessAt).toISOString()

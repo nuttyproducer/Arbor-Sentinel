@@ -6,7 +6,6 @@ import {
   icjPressRelease,
   iccWarrantDocument,
   iccProceedingUpdate,
-  iccDocketEntry,
 } from "../mockData";
 
 const normalizer = new LegalNormalizer();

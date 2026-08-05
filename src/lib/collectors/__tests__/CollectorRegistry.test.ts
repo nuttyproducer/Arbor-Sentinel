@@ -3,8 +3,8 @@ import { CollectorRegistry } from "../CollectorRegistry";
 import { RateLimiter } from "../rateLimiter";
 import { DevMemoryStore } from "../store";
 import { BaseCollector } from "../BaseCollector";
-import type { SourceRecord, SourceType, HealthStatus } from "../../../types/content";
-import type { CollectorConfig, NormalizedContent } from "../types";
+import type { SourceRecord, SourceType } from "../../../types/content";
+import type { CollectorConfig } from "../types";
 import { DEFAULT_RATE_LIMIT, DEFAULT_RETRY_CONFIG } from "../types";
 
 // ── Test helpers ────────────────────────────────────────────────────────────
@@ -218,7 +218,7 @@ describe("CollectorRegistry", () => {
       registry.recordFailure("MockCollectorA");
       registry.recordFailure("MockCollectorA");
 
-      let degraded = registry.findByHealth("degraded");
+      const degraded = registry.findByHealth("degraded");
       expect(degraded).toHaveLength(1);
 
       registry.recordFailure("MockCollectorA");

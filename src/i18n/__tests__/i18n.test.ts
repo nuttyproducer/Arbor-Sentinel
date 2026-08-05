@@ -90,7 +90,7 @@ describe("Locale dictionaries — shape consistency", () => {
 
   it("Dutch statusLabels translate all content statuses", async () => {
     const nlSL = await import("../locales/nl/statusLabels.json");
-    const statuses = ["draft", "static_preview", "review_pending", "reviewed", "disputed", "corrected", "archived"];
+    const statuses = ["draft", "static_preview", "review_pending", "reviewed", "disputed", "corrected", "archived"] as const;
     for (const s of statuses) {
       expect(nlSL.contentStatus[s]).toBeTruthy();
       // Translation must differ from English key (not a copy-paste error)
@@ -100,7 +100,7 @@ describe("Locale dictionaries — shape consistency", () => {
 
   it("French statusLabels translate all content statuses", async () => {
     const frSL = await import("../locales/fr/statusLabels.json");
-    const statuses = ["draft", "static_preview", "review_pending", "reviewed", "disputed", "corrected", "archived"];
+    const statuses = ["draft", "static_preview", "review_pending", "reviewed", "disputed", "corrected", "archived"] as const;
     for (const s of statuses) {
       expect(frSL.contentStatus[s]).toBeTruthy();
     }
@@ -125,7 +125,7 @@ describe("Locale dictionaries — shape consistency", () => {
 
 describe("Translation metadata types", () => {
   it("translation status vocabulary has 6 values", async () => {
-    const statuses = ["not_started", "draft", "review_pending", "reviewed", "outdated", "archived"];
+    const statuses = ["not_started", "draft", "review_pending", "reviewed", "outdated", "archived"] as const;
     const { TRANSLATION_STATUS_LABELS } = await import("../../types/content");
     for (const s of statuses) {
       expect(TRANSLATION_STATUS_LABELS[s]).toBeTruthy();
@@ -138,7 +138,7 @@ describe("Translation metadata types", () => {
     const nlSL = await import("../locales/nl/statusLabels.json");
     const frSL = await import("../locales/fr/statusLabels.json");
 
-    const statuses = ["not_started", "draft", "review_pending", "reviewed", "outdated", "archived"];
+    const statuses = ["not_started", "draft", "review_pending", "reviewed", "outdated", "archived"] as const;
     for (const s of statuses) {
       expect(enSL.translationStatus[s]).toBeTruthy();
       expect(nlSL.translationStatus[s]).toBeTruthy();

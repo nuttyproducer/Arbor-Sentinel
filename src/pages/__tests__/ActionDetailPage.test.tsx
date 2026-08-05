@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Routes, Route } from "react-router-dom";
 import ActionDetailPage from "../ActionDetailPage";
 
@@ -29,71 +29,77 @@ vi.mock("framer-motion", () => ({
   useReducedMotion: () => true,
 }));
 
-function renderActionDetail(slug: string) {
-  return render(
+async function renderActionDetail(slug: string) {
+  const utils = render(
     <MemoryRouter initialEntries={[`/take-action/${slug}`]}>
       <Routes>
         <Route path="/take-action/:slug" element={<ActionDetailPage />} />
       </Routes>
     </MemoryRouter>,
   );
+  // The page loads the template asynchronously via the repository.
+  // Wait for the loading spinner to unmount before asserting on content.
+  await waitFor(() => {
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
+  });
+  return utils;
 }
 
 describe("ActionDetailPage", () => {
-  it("renders a known action template by slug", () => {
-    renderActionDetail("contact-representative");
+  it("renders a known action template by slug", async () => {
+    await renderActionDetail("contact-representative");
     expect(
       screen.getByRole("heading", { name: "Contact your representative" }),
     ).toBeInTheDocument();
   });
 
-  it("displays action type badge", () => {
-    renderActionDetail("contact-representative");
+  it("displays action type badge", async () => {
+    await renderActionDetail("contact-representative");
     expect(screen.getByText("Contact a representative")).toBeInTheDocument();
   });
 
-  it("displays jurisdiction information", () => {
-    renderActionDetail("contact-representative");
+  it("displays jurisdiction information", async () => {
+    await renderActionDetail("contact-representative");
     expect(
       screen.getByText(/Any country with elected or appointed public representatives/),
     ).toBeInTheDocument();
   });
 
-  it("displays intended audience section", () => {
-    renderActionDetail("contact-representative");
+  it("displays intended audience section", async () => {
+    await renderActionDetail("contact-representative");
     expect(screen.getByText("Intended audience")).toBeInTheDocument();
   });
 
-  it("displays purpose section", () => {
-    renderActionDetail("contact-representative");
+  it("displays purpose section", async () => {
+    await renderActionDetail("contact-representative");
     expect(screen.getByText("Purpose")).toBeInTheDocument();
   });
 
-  it("displays policy ask section", () => {
-    renderActionDetail("contact-representative");
+  it("displays policy ask section", async () => {
+    await renderActionDetail("contact-representative");
     expect(screen.getByText("What the recipient can do")).toBeInTheDocument();
   });
 
-  it("displays source basis section", () => {
-    renderActionDetail("contact-representative");
+  it("displays source basis section", async () => {
+    await renderActionDetail("contact-representative");
     expect(screen.getByText("Legal and policy basis")).toBeInTheDocument();
   });
 
-  it("displays instructions section", () => {
-    renderActionDetail("contact-representative");
+  it("displays instructions section", async () => {
+    await renderActionDetail("contact-representative");
     expect(
       screen.getByText("How to complete this action safely"),
     ).toBeInTheDocument();
   });
 
-  it("displays template text and copy button when template exists", () => {
-    renderActionDetail("contact-representative");
+  it("displays template text and copy button when template exists", async () => {
+    await renderActionDetail("contact-representative");
     expect(screen.getByText("Template text")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /copy.*template.*clipboard/i })).toBeInTheDocument();
   });
 
-  it("displays review status dimensions", () => {
-    renderActionDetail("contact-representative");
+  it("displays review status dimensions", async () => {
+    await renderActionDetail("contact-representative");
     expect(screen.getByText("Review status")).toBeInTheDocument();
     expect(screen.getByText("Template review")).toBeInTheDocument();
     expect(screen.getByText("Jurisdiction review")).toBeInTheDocument();
@@ -101,56 +107,56 @@ describe("ActionDetailPage", () => {
     expect(screen.getByText("Editorial content status")).toBeInTheDocument();
   });
 
-  it("displays language information", () => {
-    renderActionDetail("contact-representative");
+  it("displays language information", async () => {
+    await renderActionDetail("contact-representative");
     expect(screen.getByText("Language and translation")).toBeInTheDocument();
     // "English" may appear in the language label
     const englishMatches = screen.getAllByText(/English/);
     expect(englishMatches.length).toBeGreaterThan(0);
   });
 
-  it("displays warnings section", () => {
-    renderActionDetail("contact-representative");
+  it("displays warnings section", async () => {
+    await renderActionDetail("contact-representative");
     expect(screen.getByText("Important warnings")).toBeInTheDocument();
   });
 
-  it("displays related pages section", () => {
-    renderActionDetail("contact-representative");
+  it("displays related pages section", async () => {
+    await renderActionDetail("contact-representative");
     expect(screen.getByText("Related pages")).toBeInTheDocument();
   });
 
-  it("displays version and review metadata", () => {
-    renderActionDetail("contact-representative");
+  it("displays version and review metadata", async () => {
+    await renderActionDetail("contact-representative");
     expect(screen.getByText("Version and review metadata")).toBeInTheDocument();
     expect(screen.getByText("Record version")).toBeInTheDocument();
   });
 
-  it("displays correction link", () => {
-    renderActionDetail("contact-representative");
+  it("displays correction link", async () => {
+    await renderActionDetail("contact-representative");
     expect(
       screen.getByText("Report an error in this action template"),
     ).toBeInTheDocument();
   });
 
-  it("displays lawful use disclaimer", () => {
-    renderActionDetail("contact-representative");
+  it("displays lawful use disclaimer", async () => {
+    await renderActionDetail("contact-representative");
     expect(screen.getByText("Lawful use only")).toBeInTheDocument();
   });
 
-  it("displays what-the-platform-does-not-do section", () => {
-    renderActionDetail("contact-representative");
+  it("displays what-the-platform-does-not-do section", async () => {
+    await renderActionDetail("contact-representative");
     expect(screen.getByText("What this platform does not do")).toBeInTheDocument();
   });
 
-  it("displays back link to Action Hub", () => {
-    renderActionDetail("contact-representative");
+  it("displays back link to Action Hub", async () => {
+    await renderActionDetail("contact-representative");
     expect(
       screen.getByText("← Back to Action Hub"),
     ).toBeInTheDocument();
   });
 
-  it("renders template without body correctly (volunteer action)", () => {
-    renderActionDetail("volunteer");
+  it("renders template without body correctly (volunteer action)", async () => {
+    await renderActionDetail("volunteer");
     expect(
       screen.getByRole("heading", { name: "Volunteer for the project" }),
     ).toBeInTheDocument();
@@ -158,8 +164,8 @@ describe("ActionDetailPage", () => {
     expect(screen.queryByText("Template text")).not.toBeInTheDocument();
   });
 
-  it("renders not-found state for unknown slug", () => {
-    renderActionDetail("nonexistent-action");
+  it("renders not-found state for unknown slug", async () => {
+    await renderActionDetail("nonexistent-action");
     expect(
       screen.getByText("Action template not found"),
     ).toBeInTheDocument();
@@ -168,8 +174,8 @@ describe("ActionDetailPage", () => {
     ).toBeInTheDocument();
   });
 
-  it("separates review dimensions (does not collapse to single reviewed flag)", () => {
-    renderActionDetail("contact-representative");
+  it("separates review dimensions (does not collapse to single reviewed flag)", async () => {
+    await renderActionDetail("contact-representative");
     // Each review dimension appears independently
     const reviewStatusSection = screen.getByText("Review status").closest("section") ??
       screen.getByText("Review status").parentElement!;

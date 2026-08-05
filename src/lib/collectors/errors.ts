@@ -45,7 +45,7 @@ export abstract class CollectorError extends Error {
       stage: this.stage,
       timestamp: new Date().toISOString(),
       retryable: this.retryable,
-      cause: this.cause,
+      cause: (this as unknown as { cause?: unknown }).cause,
     };
   }
 }

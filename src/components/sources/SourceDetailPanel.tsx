@@ -5,7 +5,6 @@ import {
   SOURCE_STATUS_LABELS,
   TRUST_LEVEL_LABELS,
   VERIFICATION_METHOD_LABELS,
-  HEALTH_STATUS_LABELS,
   AUTOMATION_STATUS_LABELS,
 } from "../../types/content";
 import { Badge } from "../ui/Badge";

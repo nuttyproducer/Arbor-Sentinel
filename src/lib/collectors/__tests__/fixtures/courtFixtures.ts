@@ -42,7 +42,7 @@ export const validCourtDocumentAlt: RawCourtDocument = {
   caseName: "Prosecutor v. Test Defendant",
   caseNumber: "ICC-01/99",
   parties: ["Prosecutor", "Test Defendant"],
-  documentType: "arrest_warrant",
+  documentType: "warrant",
   date: "2026-07-01",
   bodyText:
     "Pre-Trial Chamber I hereby issues a warrant of arrest for Test Defendant. " +

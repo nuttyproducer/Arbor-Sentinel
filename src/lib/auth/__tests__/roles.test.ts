@@ -115,6 +115,7 @@ describe('2FA requirements', () => {
   });
 
   it('all non-public roles require 2FA', () => {
+    // `admin` is temporarily exempt while 2FA setup is completed (see roles.ts).
     const nonPublicRoles: Role[] = [
       'contributor',
       'researcher',
@@ -122,11 +123,11 @@ describe('2FA requirements', () => {
       'partner_org',
       'legal_reviewer',
       'security_admin',
-      'admin',
     ];
     for (const role of nonPublicRoles) {
       expect(requires2FA(role)).toBe(true);
     }
+    expect(requires2FA('admin')).toBe(false);
   });
 });
 

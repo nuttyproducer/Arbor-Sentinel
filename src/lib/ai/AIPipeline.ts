@@ -7,10 +7,10 @@ import type {
   AIContent,
   AIProcessedContent,
   AIOperationResult,
-  NormalizedContent,
   StageDefinition,
   AILogEntry,
 } from "./types";
+import type { NormalizedContent } from "../collectors/types";
 import { emptyResult } from "./types";
 
 /**
@@ -220,8 +220,8 @@ export class AIPipeline {
       locations: arrayResult("geographic_extraction"),
       relationships: arrayResult("relationship_detection"),
       topics: arrayResult("topic_classification"),
-      duplicates: results.get("duplicate_detection"),
-      contradictions: results.get("contradiction_detection"),
+      duplicates: results.get("duplicate_detection") as AIOperationResult<unknown[]> | undefined,
+      contradictions: results.get("contradiction_detection") as AIOperationResult<unknown[]> | undefined,
       confidence: singleResult("confidence_estimation"),
       hallucinationFlags: arrayResult("hallucination_detection"),
       auditLog,

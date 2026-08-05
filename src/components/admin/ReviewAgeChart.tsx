@@ -31,7 +31,7 @@ export function ReviewAgeChart({ data, isLoading, error }: ReviewAgeChartProps) 
           <YAxis tick={{ fontSize: 11, fill: "#1F2937" }} allowDecimals={false} />
           <Tooltip
             formatter={(value: number, _name: string, props: unknown) => {
-              const pct = (props as Record<string, unknown>)?.payload?.pct ?? 0;
+              const pct = (props as { payload?: { pct?: number } } | undefined)?.payload?.pct ?? 0;
               return [`${value} (${pct}%)`, "Items"];
             }}
             contentStyle={{ fontSize: 12, fontFamily: "'IBM Plex Mono', monospace" }}

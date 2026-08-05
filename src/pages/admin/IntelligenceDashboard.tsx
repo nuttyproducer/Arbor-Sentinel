@@ -11,7 +11,7 @@ import { IngestionChart } from "../../components/admin/IngestionChart";
 import { ConfidenceDistribution } from "../../components/admin/ConfidenceDistribution";
 import { DataFreshnessPanel } from "../../components/admin/DataFreshnessPanel";
 import { AutoRefreshProvider } from "../../components/admin/shared/AutoRefreshProvider";
-import { useAutoRefresh } from "../../components/admin/shared/useAutoRefresh";
+import { useAutoRefresh, useAutoRefreshContext } from "../../components/admin/shared/useAutoRefresh";
 import {
   MonitoringProvider,
   useMonitoring,
@@ -29,7 +29,8 @@ interface QuickStats {
 
 function IntelligenceDashboardContent() {
   const { report, alerts, activeAlertCount, refresh } = useMonitoring();
-  const autoRefresh = useAutoRefresh();
+  const { interval } = useAutoRefreshContext();
+  useAutoRefresh(refresh, interval);
   const [stats, setStats] = useState<QuickStats>({
     totalFeeds: 0,
     enabledFeeds: 0,
@@ -96,7 +97,7 @@ function IntelligenceDashboardContent() {
           onClick={refresh}
           className="px-3 py-2 border border-charcoal/20 rounded font-mono text-sm text-charcoal/60 hover:bg-charcoal/5 transition-colors"
         >
-          {autoRefresh.enabled ? "Auto-refreshing" : "Refresh"}
+          {interval !== null ? "Auto-refreshing" : "Refresh"}
         </button>
       </div>
 
@@ -143,47 +144,50 @@ function IntelligenceDashboardContent() {
         <div className="bg-white border border-charcoal/10 rounded-lg p-4">
           <h3 className="font-serif text-sm font-semibold text-ink mb-3">Collector Health</h3>
           <SystemHealthPanel
-            report={
-              report ?? {
-                generatedAt: new Date().toISOString(),
-                collectors: [],
-                summary: {
-                  totalCollectors: 0,
-                  activeCount: 0,
-                  degradedCount: 0,
-                  failedCount: 0,
-                  unknownCount: 0,
-                  staleCount: 0,
-                  overallErrorRate: 0,
-                  coverageGaps: [],
-                },
-              }
-            }
+            summary={report?.summary ?? {
+              totalCollectors: 0,
+              activeCount: 0,
+              degradedCount: 0,
+              failedCount: 0,
+              unknownCount: 0,
+              staleCount: 0,
+              overallErrorRate: 0,
+              coverageGaps: [],
+            }}
           />
         </div>
 
         <div className="bg-white border border-charcoal/10 rounded-lg p-4">
           <h3 className="font-serif text-sm font-semibold text-ink mb-3">Collector Status</h3>
-          <CollectorStatusGrid collectors={report?.collectors ?? []} />
+          <CollectorStatusGrid
+            items={(report?.collectors ?? []).map((c) => ({
+              name: c.collectorName,
+              sourceType: c.sourceType,
+              status: c.status,
+              lastFetch: c.lastFetchAt ?? null,
+              itemsCollected: c.successfulFetches,
+              errorCount: c.failedFetches,
+            }))}
+          />
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <div className="bg-white border border-charcoal/10 rounded-lg p-4">
           <h3 className="font-serif text-sm font-semibold text-ink mb-3">Ingestion Overview</h3>
-          <IngestionChart window="24h" />
+          <IngestionChart data={[]} />
         </div>
 
         <div className="bg-white border border-charcoal/10 rounded-lg p-4">
           <h3 className="font-serif text-sm font-semibold text-ink mb-3">Data Freshness</h3>
-          <DataFreshnessPanel sources={[]} />
+          <DataFreshnessPanel items={[]} />
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white border border-charcoal/10 rounded-lg p-4">
           <h3 className="font-serif text-sm font-semibold text-ink mb-3">Confidence Distribution</h3>
-          <ConfidenceDistribution />
+          <ConfidenceDistribution data={[]} />
         </div>
 
         <div className="bg-white border border-charcoal/10 rounded-lg p-4">
@@ -210,7 +214,7 @@ function IntelligenceDashboardContent() {
 
 export function IntelligenceDashboard() {
   return (
-    <AutoRefreshProvider defaultIntervalMs={60_000}>
+    <AutoRefreshProvider defaultInterval={60_000}>
       <MonitoringProvider>
         <IntelligenceDashboardContent />
       </MonitoringProvider>

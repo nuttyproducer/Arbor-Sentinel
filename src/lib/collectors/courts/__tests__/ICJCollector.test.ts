@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { ICJCollector } from "../ICJCollector";
 import { RateLimiter } from "../../rateLimiter";
 import { DevMemoryStore } from "../../store";
-import { FetchError, ParseError, ValidationError } from "../../errors";
+import { ValidationError } from "../../errors";
 import { icjOrderHtml } from "../mockData";
 import type { SourceRecord, SourceType } from "../../../../types/content";
 import type { CollectorConfig } from "../../types";

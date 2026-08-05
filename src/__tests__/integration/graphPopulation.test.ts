@@ -7,14 +7,13 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { GraphDB } from "../../lib/graph/GraphDB";
 import { EntityResolver } from "../../lib/graph/EntityResolver";
-import { schema } from "../../lib/graph/schema";
-import type { GraphNode, GraphEdge, NodeType, EdgeType } from "../../lib/graph/types";
+import type { GraphNode, GraphEdge, EdgeType } from "../../lib/graph/types";
 
 describe("Graph Population — Integration", () => {
   let graph: GraphDB;
 
   beforeEach(() => {
-    graph = new GraphDB(schema);
+    graph = new GraphDB();
   });
 
   // ── Node creation with schema-required properties ─────────────────────
@@ -161,7 +160,7 @@ describe("Graph Population — Integration", () => {
         createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(),
       });
 
-      const resolver = new EntityResolver(graph);
+      const resolver = new EntityResolver();
       expect(resolver).toBeDefined();
     });
   });

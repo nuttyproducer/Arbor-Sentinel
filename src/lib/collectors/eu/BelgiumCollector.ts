@@ -1,8 +1,7 @@
 import { BaseCollector } from "../BaseCollector";
 import { GovernmentNormalizer } from "./GovernmentNormalizer";
 import { ParseError, ValidationError } from "../errors";
-import type { NormalizedContent } from "../types";
-import type { RawGovernmentDocument, GovernmentDocumentType } from "./GovernmentNormalizer";
+import type { RawGovernmentDocument, GovernmentDocumentType, NormalizedGovernmentDocument } from "./GovernmentNormalizer";
 
 /**
  * Collector for Belgium government sources.
@@ -42,7 +41,7 @@ export class BelgiumCollector extends BaseCollector {
     return [doc];
   }
 
-  async normalize(raw: unknown): Promise<NormalizedContent> {
+  async normalize(raw: unknown): Promise<NormalizedGovernmentDocument> {
     const doc = raw as RawGovernmentDocument;
     const v = this.normalizer.validate(doc);
     if (!v.valid) throw new ValidationError(`Belgium validation: ${v.reason}`, { sourceId: this.source.id, url: doc.url, attempt: 1 });
@@ -151,7 +150,7 @@ export class BelgiumCollector extends BaseCollector {
     if (/Flemish|Vlaams|Flanders/i.test(html)) return "Flemish Government";
     if (/Walloon|Wallon|Wallonia/i.test(html)) return "Walloon Government";
     if (/Brussels.Capital|Brussels Hoofdstedelijk/i.test(html)) return "Brussels-Capital Region";
-    if (/Foreign Affairs|Buitenlandse Zaken|Affaires [eÉ]trangères/i.test(html)) return "FPS Foreign Affairs";
+    if (/Foreign Affairs|Buitenlandse Zaken|Affaires [eEé]trangères/i.test(html)) return "FPS Foreign Affairs";
     return "Federal Government of Belgium";
   }
 

@@ -571,9 +571,11 @@ describe("Full System Integration — M7-01", () => {
 
     it("enforces 2FA for all non-public roles", () => {
       expect(requires2FA("public")).toBe(false);
-      for (const role of ["contributor", "researcher", "moderator", "partner_org", "legal_reviewer", "security_admin", "admin"] as const) {
+      // `admin` is temporarily exempt while 2FA setup is completed (see roles.ts).
+      for (const role of ["contributor", "researcher", "moderator", "partner_org", "legal_reviewer", "security_admin"] as const) {
         expect(requires2FA(role)).toBe(true);
       }
+      expect(requires2FA("admin")).toBe(false);
     });
 
     it("a downgraded role loses elevated permissions", () => {

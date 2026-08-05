@@ -4,7 +4,7 @@
  * produces valid CollectResult outputs.
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { CollectorRegistry } from "../CollectorRegistry";
 import { RateLimiter } from "../rateLimiter";
 import { DevMemoryStore } from "../store";
@@ -176,7 +176,7 @@ describe("All Collectors — Registration & Discovery", () => {
     }
 
     // Record success for all
-    for (const { cls, types, label } of ALL_COLLECTORS) {
+    for (const { cls } of ALL_COLLECTORS) {
       registry.recordSuccess(cls.name);
     }
 

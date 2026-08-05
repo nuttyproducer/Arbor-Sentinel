@@ -25,8 +25,6 @@ export class ICCCollector extends BaseCollector {
   private readonly normalizer = new LegalNormalizer();
 
   private static readonly BASE_URL = "https://www.icc-cpi.int";
-  private static readonly NEWS_URL = `${ICCCollector.BASE_URL}/news`;
-  private static readonly SITUATIONS_URL = `${ICCCollector.BASE_URL}/situations`;
 
   /**
    * Fetch raw documents from the ICC website.

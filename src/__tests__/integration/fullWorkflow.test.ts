@@ -20,7 +20,6 @@ import { ReviewStateMachine } from "../../lib/review/ReviewStateMachine";
 import { AssignmentRouter } from "../../lib/review/AssignmentRouter";
 import { ReviewerRegistry } from "../../lib/review/ReviewerRegistry";
 import { GraphDB } from "../../lib/graph/GraphDB";
-import { schema } from "../../lib/graph/schema";
 import type { SourceRecord, SourceType } from "../../types/content";
 import type { CollectorConfig, NormalizedContent } from "../../lib/collectors/types";
 import { DEFAULT_RATE_LIMIT, DEFAULT_RETRY_CONFIG } from "../../lib/collectors/types";
@@ -169,7 +168,7 @@ describe("Full Workflow — Collector → AI → Review → Graph", () => {
   });
 
   it("Phase 4: Knowledge graph populates from approved content", () => {
-    const graph = new GraphDB(schema);
+    const graph = new GraphDB();
 
     graph.addNode({
       id: "doc-approved", type: "document", label: "ICJ Order — Approved",
@@ -199,7 +198,7 @@ describe("Full Workflow — Collector → AI → Review → Graph", () => {
     const registry = new CollectorRegistry(store, new RateLimiter());
     const sm = new ReviewStateMachine();
     const queue = new ReviewQueue(new InMemoryPersistence(), sm);
-    const graph = new GraphDB(schema);
+    const graph = new GraphDB();
 
     expect(registry).toBeDefined();
     expect(queue).toBeDefined();

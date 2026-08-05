@@ -17,6 +17,11 @@ const sampleSources: SourceRecord[] = [
     status: "active",
     version: 1,
     correctionUrl: "/corrections",
+    trustLevel: 0,
+    healthStatus: "unknown",
+    automationStatus: "manual",
+    failureCount: 0,
+    monitoringEnabled: false,
   },
   {
     id: "ocha-report",
@@ -33,6 +38,11 @@ const sampleSources: SourceRecord[] = [
     status: "active",
     version: 1,
     correctionUrl: "/corrections",
+    trustLevel: 0,
+    healthStatus: "unknown",
+    automationStatus: "manual",
+    failureCount: 0,
+    monitoringEnabled: false,
   },
 ];
 

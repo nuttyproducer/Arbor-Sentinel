@@ -81,7 +81,7 @@ export function VersionHistory({ contentType, contentId }: VersionHistoryProps) 
                   )}
                 </span>
                 <span className="font-mono text-[10px] text-charcoal/40">
-                  {new Date(v.createdAt ?? v.created_at).toLocaleString()}
+                  {new Date(v.createdAt).toLocaleString()}
                 </span>
               </div>
               {v.createdBy && (
@@ -99,7 +99,7 @@ export function VersionHistory({ contentType, contentId }: VersionHistoryProps) 
             <div>
               <p className="font-mono text-xs text-charcoal/50 mb-2">
                 Version {selectedVersion.version} —{' '}
-                {new Date(selectedVersion.createdAt ?? selectedVersion.created_at).toLocaleString()}
+                {new Date(selectedVersion.createdAt).toLocaleString()}
               </p>
               <pre className="font-mono text-xs text-ink bg-bone p-3 rounded overflow-auto max-h-96 whitespace-pre-wrap">
                 {JSON.stringify(selectedVersion.data, null, 2)}
