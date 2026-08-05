@@ -33,23 +33,17 @@ export function EntityDetailPage({ nodes, edges }: EntityDetailPageProps) {
     [nodes, entityId],
   );
 
-  if (!entity) {
-    return (
-      <Container>
-        <PageIntro title="Entity Not Found" description="The requested entity could not be found." />
-      </Container>
-    );
-  }
-
-  // Find connected edges and nodes
+  // Find connected edges and nodes (hooks must be unconditional)
   const connectedEdges = useMemo(
-    () => edges.filter((e) => e.sourceId === entity.id || e.targetId === entity.id),
-    [edges, entity.id],
+    () => entity ? edges.filter((e) => e.sourceId === entity.id || e.targetId === entity.id) : [],
+    [edges, entity],
   );
 
   const connectedNodeIds = useMemo(
-    () => new Set(connectedEdges.map((e) => (e.sourceId === entity.id ? e.targetId : e.sourceId))),
-    [connectedEdges, entity.id],
+    () => entity
+      ? new Set(connectedEdges.map((e) => (e.sourceId === entity.id ? e.targetId : e.sourceId)))
+      : new Set<string>(),
+    [connectedEdges, entity],
   );
 
   const connectedNodes = useMemo(
@@ -79,9 +73,17 @@ export function EntityDetailPage({ nodes, edges }: EntityDetailPageProps) {
 
   // Subgraph: entity + 1 hop
   const subgraphNodes = useMemo(
-    () => [entity, ...connectedNodes],
+    () => entity ? [entity, ...connectedNodes] : [],
     [entity, connectedNodes],
   );
+
+  if (!entity) {
+    return (
+      <Container>
+        <PageIntro title="Entity Not Found" description="The requested entity could not be found." />
+      </Container>
+    );
+  }
 
   return (
     <Container>

@@ -71,7 +71,7 @@ CREATE OR REPLACE FUNCTION safe_location(
 )
 RETURNS geometry(Point, 4326)
 LANGUAGE sql
-IMMUTABLE
+STABLE
 SET search_path = 'public'
 AS $$
   SELECT CASE

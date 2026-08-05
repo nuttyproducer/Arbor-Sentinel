@@ -23,6 +23,10 @@ Thumbs.db
 # TypeScript
 *.tsbuildinfo
 
+# Supabase local state
+supabase/.temp/
+supabase/migrations/supabase/
+
 # Superpowers
 .superpowers/
 docs/superpowers/
