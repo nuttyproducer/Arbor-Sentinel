@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Container } from "../components/ui/Container";
 import { PageIntro } from "../components/pages/PageIntro";
@@ -6,12 +7,27 @@ import { PolicySection } from "../components/pages/PolicySection";
 import { LastUpdated } from "../components/pages/LastUpdated";
 import { PreviewNotice } from "../components/pages/PreviewNotice";
 import { CorrectionLink } from "../components/pages/CorrectionLink";
-import { getActiveCountries } from "../data/countries";
+import type { CountryEntry } from "../data/countries";
+import { useRepository } from "../hooks/useRepository";
 import { CountryIndexCard } from "../components/countries/CountryIndexCard";
 
-const activeCountries = getActiveCountries();
-
 export default function CountriesIndexPage() {
+  const repo = useRepository();
+  const [activeCountries, setActiveCountries] = useState<CountryEntry[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    repo.getCountries().then((countries) => {
+      if (cancelled) return;
+      setActiveCountries(countries);
+      setLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [repo]);
+
   return (
     <Container className="py-16 lg:py-20">
       <PageIntro
@@ -137,7 +153,26 @@ export default function CountriesIndexPage() {
           Active country pages
         </h2>
 
-        {activeCountries.length === 0 ? (
+        {loading ? (
+          <div
+            className="flex items-center justify-center min-h-[40vh]"
+            role="status"
+            aria-label="Loading countries"
+          >
+            <div className="flex flex-col items-center gap-4">
+              <div
+                className="w-16 h-[2px] bg-amber rounded-full motion-safe:animate-pulse"
+                aria-hidden="true"
+              />
+              <p className="font-mono text-xs tracking-[0.15em] uppercase text-charcoal/50">
+                Loading
+              </p>
+              <span className="sr-only" aria-live="polite">
+                Country records are loading.
+              </span>
+            </div>
+          </div>
+        ) : activeCountries.length === 0 ? (
           <div className="bg-bone border border-border rounded-lg p-6 text-center">
             <p className="text-charcoal/70 leading-relaxed">
               No country pages are active yet. The first country page is under
