@@ -12,7 +12,6 @@ import {
   SOURCE_TYPE_LABELS,
   LEGAL_STATUS_LABELS,
 } from "../../types/content";
-import type { SourceRecord } from "../../types/content";
 
 import { categoryAccent } from "./categoryAccent";
 
@@ -23,9 +22,9 @@ interface EvidenceItemCardProps {
 export function EvidenceItemCard({ item }: EvidenceItemCardProps) {
   const [expanded, setExpanded] = useState(false);
 
-  const itemSources: SourceRecord[] = item.sourceIds
+  const itemSources = item.sourceIds
     .map((sid) => sources.find((s) => s.id === sid))
-    .filter((s): s is SourceRecord => s !== undefined);
+    .filter((s): s is NonNullable<typeof s> => s !== undefined);
 
   const hasDetail =
     item.legalStatuses ||
