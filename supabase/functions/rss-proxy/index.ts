@@ -3,8 +3,6 @@
 // Solves the CORS problem: browsers can't fetch RSS feeds directly,
 // but Deno (Edge Functions) can.
 
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-
 // ── Types ──────────────────────────────────────────────────────────────────
 
 interface ParsedFeedItem {
@@ -173,7 +171,7 @@ function parseAtom(xml: string): FeedResponse {
 
 // ── Main Handler ────────────────────────────────────────────────────────────
 
-serve(async (req: Request) => {
+Deno.serve(async (req: Request) => {
   // CORS headers for browser access
   const headers = {
     "Content-Type": "application/json",
@@ -195,7 +193,7 @@ serve(async (req: Request) => {
         success: false,
         items: [],
         error: 'Missing "url" query parameter. Usage: ?url=https://example.com/rss',
-      } satisfies FeedResponse),
+      }),
       { headers, status: 400 },
     );
   }
@@ -214,7 +212,7 @@ serve(async (req: Request) => {
           success: false,
           items: [],
           error: `Feed returned HTTP ${response.status}`,
-        } satisfies FeedResponse),
+        }),
         { headers, status: 502 },
       );
     }
@@ -235,7 +233,7 @@ serve(async (req: Request) => {
           success: false,
           items: [],
           error: "Unrecognized feed format — expected RSS 2.0 or Atom 1.0",
-        } satisfies FeedResponse),
+        }),
         { headers, status: 400 },
       );
     }
@@ -247,7 +245,7 @@ serve(async (req: Request) => {
         success: false,
         items: [],
         error: error instanceof Error ? error.message : "Unknown error fetching feed",
-      } satisfies FeedResponse),
+      }),
       { headers, status: 500 },
     );
   }

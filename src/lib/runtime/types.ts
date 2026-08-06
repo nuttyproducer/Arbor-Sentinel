@@ -76,6 +76,26 @@ export type ItemOutcome = "accepted" | "rejected" | "duplicated" | "published";
 
 // ── Diagnostics ──────────────────────────────────────────────────────────────
 
+// ── Run All result ───────────────────────────────────────────────────────────
+
+export interface FeedRunResult {
+  name: string;
+  fetched: number;
+  stored: number;
+  success: boolean;
+  error?: string;
+  proxyUsed?: string;
+}
+
+export interface RunAllSummary {
+  feeds: FeedRunResult[];
+  totalFetched: number;
+  totalStored: number;
+  errors: string[];
+}
+
+// ── Diagnostics ──────────────────────────────────────────────────────────────
+
 export interface RuntimeDiagnostics {
   state: RuntimeState;
   uptimeMs: number;

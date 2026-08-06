@@ -1,15 +1,30 @@
 import { BaseCollector } from "../BaseCollector";
-import { FeedParser, type ParsedFeedItem } from "../feeds/FeedParser";
-import { getFeedsBySourceType, type FeedDefinition } from "../feeds/feedConfig";
+import { type ParsedFeedItem } from "../feeds/FeedParser";
+import { getFeedsBySourceType } from "../feeds/feedConfig";
 import { MediaNormalizer, type RawMediaDocument, type MediaContentType } from "./MediaNormalizer";
 import { ParseError, ValidationError } from "../errors";
 import type { NormalizedContent, CollectedItem } from "../types";
 
 /**
- * Collector for journalism sources via RSS/Atom feeds.
+ * CORS proxies for fetching RSS feeds from the browser.
+ * Tried in order — first successful response wins.
+ */
+const CORS_PROXIES = [
+  { url: "https://dwtuyqtqmuwioqqjtnny.supabase.co/functions/v1/rss-proxy?url=", needsAuth: true },
+  { url: "https://corsproxy.io/?", needsAuth: false },
+  { url: "https://api.allorigins.win/raw?url=", needsAuth: false },
+];
+
+/** Publishable key for calling our own edge function. */
+const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string | undefined;
+
+/**
+ * Collector for journalism, NGO, and academic sources via RSS/Atom feeds.
  *
- * Consumes feedConfig to know which feeds to poll. Parses feeds via
- * FeedParser. Normalizes parsed items through MediaNormalizer.
+ * Routes all RSS fetches through the rss-proxy Edge Function to avoid
+ * browser CORS restrictions. Reads the feed URL from the collector config
+ * metadata (set by RuntimeEngine from the DB feeds table), falling back
+ * to the static feedConfig for development/testing.
  *
  * Guardrails:
  * - Never stores full article text — body is the preview/snippet only
@@ -19,23 +34,35 @@ import type { NormalizedContent, CollectedItem } from "../types";
  */
 export class JournalismCollector extends BaseCollector {
   private readonly normalizer = new MediaNormalizer();
-  private readonly feedParser = new FeedParser();
 
   /**
-   * Fetch: poll all enabled journalism feeds, parse, return ParsedFeedItems.
+   * Fetch: poll the feed URL from config metadata (DB-sourced), falling
+   * back to static feedConfig entries if no URL is in metadata.
    */
   async fetch(): Promise<unknown[]> {
-    const feeds = getFeedsBySourceType("journalism").filter((f) => f.enabled);
+    // Primary path: use the URL from config metadata (set by RuntimeEngine from DB)
+    const feedUrl = this.config.metadata?.url as string | undefined;
 
-    // If the source URL is a specific feed, only poll that one
-    const targetFeeds = feeds.filter((f) => f.url === this.source.url);
-    const feedsToPoll = targetFeeds.length > 0 ? targetFeeds : feeds;
+    if (feedUrl) {
+      try {
+        const items = await this.pollUrl(feedUrl);
+        return items;
+      } catch {
+        // Fall through to static config fallback
+      }
+    }
+
+    // Fallback: poll from static feedConfig (development/testing)
+    const feeds = getFeedsBySourceType("journalism")
+      .filter((f) => f.enabled)
+      .filter((f) => f.url === this.source.url || this.source.url === "");
+
+    const feedsToPoll = feeds.length > 0 ? feeds : getFeedsBySourceType("journalism").filter((f) => f.enabled);
 
     const allItems: ParsedFeedItem[] = [];
-
     for (const feed of feedsToPoll) {
       try {
-        const items = await this.pollFeed(feed);
+        const items = await this.pollUrl(feed.url);
         allItems.push(...items);
       } catch {
         // Skip failed feeds, continue with others
@@ -90,18 +117,102 @@ export class JournalismCollector extends BaseCollector {
 
   // ── Feed Polling ─────────────────────────────────────────────────────
 
-  private async pollFeed(feed: FeedDefinition): Promise<ParsedFeedItem[]> {
-    const res = await fetch(feed.url);
-    if (!res.ok) {
-      throw new ParseError(
-        `Feed poll ${res.status} for "${feed.id}": ${feed.url}`,
-        { sourceId: this.source.id, url: feed.url, attempt: 1 },
-      );
+  /**
+   * Poll a single feed URL. Tries CORS proxies in order, falling back to
+   * direct fetch for feeds that allow CORS or non-browser environments.
+   */
+  private async pollUrl(feedUrl: string): Promise<ParsedFeedItem[]> {
+    // 1. Try each CORS proxy
+    for (const proxy of CORS_PROXIES) {
+      try {
+        const proxyUrl = `${proxy.url}${encodeURIComponent(feedUrl)}`;
+        const fetchOpts: RequestInit = proxy.needsAuth && SUPABASE_PUBLISHABLE_KEY
+          ? { headers: { apikey: SUPABASE_PUBLISHABLE_KEY, Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}` } }
+          : {};
+        const res = await fetch(proxyUrl, fetchOpts);
+        if (!res.ok) continue;
+
+        const text = await res.text();
+        if (!text.trim()) continue;
+
+        // Detect if response is JSON (rss-proxy) or XML (corsproxy.io returns raw XML)
+        if (text.startsWith("{")) {
+          const body = JSON.parse(text) as {
+            success?: boolean;
+            items?: Array<{
+              title: string; url: string; description: string;
+              publishedAt?: string; author?: string; categories?: string[];
+              guid?: string; feedTitle: string;
+            }>;
+            error?: string;
+          };
+          if (body.success && body.items?.length) {
+            return body.items.map((item) => ({
+              title: item.title,
+              url: item.url,
+              description: item.description || "",
+              publishedAt: item.publishedAt,
+              author: item.author,
+              categories: item.categories ?? [],
+              guid: item.guid,
+              feedTitle: item.feedTitle || "",
+              language: undefined,
+            }));
+          }
+        } else if (text.includes("<rss") || text.includes("<feed") || text.includes("<channel") || text.includes("<entry")) {
+          // Raw XML returned by CORS proxy — parse it inline
+          return this.parseXmlItems(text);
+        }
+      } catch {
+        // Proxy failed, try next
+      }
     }
 
-    const xml = await res.text();
-    const parsed = this.feedParser.parse(xml);
-    return parsed.items;
+    // 2. Fallback: direct fetch (works in Node.js tests)
+    const res = await fetch(feedUrl);
+    if (!res.ok) {
+      throw new ParseError(
+        `All proxies + direct fetch failed for "${feedUrl}" (${res.status})`,
+        { sourceId: this.source.id, url: feedUrl, attempt: 1 },
+      );
+    }
+    return this.parseXmlItems(await res.text());
+  }
+
+  /** Lightweight inline RSS/Atom parser for the fallback path. */
+  private parseXmlItems(xml: string): ParsedFeedItem[] {
+    const itemPattern = /<(item|entry)\b[^>]*>([\s\S]*?)<\/(item|entry)>/gi;
+    const items: ParsedFeedItem[] = [];
+    let match;
+    while ((match = itemPattern.exec(xml)) !== null) {
+      const el = match[2];
+      items.push({
+        title: this.extractXml(el, "title"),
+        url: this.extractXml(el, "link") || this.extractLinkHref(el),
+        description: this.stripHtml(this.extractXml(el, "description") || this.extractXml(el, "summary") || "").slice(0, 280),
+        publishedAt: this.extractXml(el, "pubDate") || this.extractXml(el, "published") || this.extractXml(el, "updated"),
+        author: this.extractXml(el, "author") || this.extractXml(el, "name") || undefined,
+        categories: [],
+        guid: this.extractXml(el, "guid") || this.extractXml(el, "id") || undefined,
+        feedTitle: this.extractXml(xml, "title"),
+        language: undefined,
+      });
+    }
+    return items;
+  }
+
+  private extractXml(xml: string, tag: string): string {
+    const m = xml.match(new RegExp(`<${tag}\\b[^>]*>([\\s\\S]*?)</${tag}>`, "i"));
+    return m ? m[1].replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1").replace(/<[^>]+>/g, " ").trim() : "";
+  }
+
+  private extractLinkHref(xml: string): string {
+    const m = xml.match(/<link\b[^>]*href\s*=\s*["']([^"']+)["'][^>]*\/?>/i);
+    return m ? m[1] : "";
+  }
+
+  private stripHtml(text: string): string {
+    return text.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
   }
 
   // ── Conversion ─────────────────────────────────────────────────────────

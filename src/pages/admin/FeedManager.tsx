@@ -17,7 +17,11 @@ export function FeedManager() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [editingFeed, setEditingFeed] = useState<FeedRow | null>(null);
-  const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [message, setMessage] = useState<{
+    type: "success" | "error";
+    text: string;
+    details?: Array<{ name: string; fetched: number; stored: number; success: boolean; error?: string }>;
+  } | null>(null);
 
   const loadFeeds = useCallback(async () => {
     setLoading(true);
@@ -62,13 +66,13 @@ export function FeedManager() {
     if (!feed) return;
 
     try {
+      setMessage({ type: "success", text: `Syncing ${feed.name}…` });
       const runtime = getRuntimeEngine();
-      const result = await runtime.runOnce(feedId);
+      const summary = await runtime.runOnce(feedId);
+      const fr = summary.feeds[0];
       setMessage({
-        type: result?.success ? "success" : "error",
-        text: result?.success
-          ? `Sync complete: ${result.itemsStored} new items stored.`
-          : `Sync completed with errors. Check diagnostics for details.`,
+        type: summary.errors.length > 0 ? "error" : "success",
+        text: `${feed.name}: ${fr?.fetched ?? 0} fetched, ${fr?.stored ?? 0} stored${summary.errors.length > 0 ? ` (${summary.errors.join(", ")})` : ""}`,
       });
       await loadFeeds();
     } catch (err) {
@@ -83,14 +87,17 @@ export function FeedManager() {
     try {
       setMessage({ type: "success", text: "Running all enabled feeds…" });
       const runtime = getRuntimeEngine();
-      const result = await runtime.runOnce();
-      setMessage({
-        type: result?.success ? "success" : "error",
-        text: result?.success
-          ? `Run All complete.`
-          : `Run All completed with some errors. Check diagnostics.`,
-      });
+      const summary = await runtime.runOnce();
       await loadFeeds();
+
+      const successCount = summary.feeds.filter((f) => f.success).length;
+      const failCount = summary.feeds.filter((f) => !f.success).length;
+
+      setMessage({
+        type: failCount > 0 ? "error" : "success",
+        text: `Run All: ${summary.totalFetched} fetched, ${summary.totalStored} stored across ${successCount}/${summary.feeds.length} feeds${failCount > 0 ? ` (${failCount} failed)` : ""}. View at /admin/evidence`,
+        details: summary.feeds.filter((f) => !f.success || f.fetched > 0),
+      });
     } catch (err) {
       setMessage({
         type: "error",
@@ -194,19 +201,41 @@ export function FeedManager() {
       {/* Message banner */}
       {message && (
         <div
-          className={`mb-4 px-4 py-2 rounded text-sm font-mono ${
+          className={`mb-4 p-4 rounded text-sm font-mono ${
             message.type === "success"
               ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
               : "bg-red-50 text-red-700 border border-red-200"
           }`}
         >
-          {message.text}
-          <button
-            onClick={() => setMessage(null)}
-            className="ml-3 text-xs opacity-60 hover:opacity-100"
-          >
-            Dismiss
-          </button>
+          <div className="flex items-start justify-between">
+            <span className="whitespace-pre-wrap">{message.text}</span>
+            <button
+              onClick={() => setMessage(null)}
+              className="ml-3 text-xs opacity-60 hover:opacity-100 flex-shrink-0"
+            >
+              Dismiss
+            </button>
+          </div>
+          {message.details && message.details.length > 0 && (
+            <div className="mt-2 pt-2 border-t border-current/10 text-xs">
+              {message.details.map((f, i) => (
+                <div key={i} className="flex items-center gap-2 py-0.5">
+                  <span className={f.success ? "text-emerald-600" : "text-red-600"}>
+                    {f.success ? "✓" : "✗"}
+                  </span>
+                  <span className="flex-1">{f.name}</span>
+                  <span className="opacity-60">
+                    {f.fetched} fetched, {f.stored} stored
+                  </span>
+                  {f.error && (
+                    <span className="text-red-500 truncate max-w-[200px]" title={f.error}>
+                      — {f.error}
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 

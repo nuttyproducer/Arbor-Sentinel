@@ -29,11 +29,12 @@ export class SupabaseStore implements StorageInterface {
     this.fingerprintCache.add(item.fingerprint);
 
     // Persist the collected item to evidence_items, then auto-publish it if
-    // its source is trusted. Both steps are best-effort — failures are logged
-    // and swallowed so collection is never disrupted.
+    // its source is trusted. Then enqueue for review. All steps are best-effort
+    // — failures are logged and swallowed so collection is never disrupted.
     const recordId = await persistEvidenceItem(item);
     if (recordId) {
       await autoPublishIfTrusted(item.sourceId, recordId);
+      await enqueueForReview(item, recordId);
     }
   }
 
@@ -393,6 +394,33 @@ function toDateOnly(iso?: string): string | null {
   if (!iso) return null;
   const match = /^\d{4}-\d{2}-\d{2}/.exec(iso);
   return match ? match[0] : null;
+}
+
+/**
+ * Enqueue a newly collected evidence item into the review queue.
+ * Best-effort — never throws, failures are logged and swallowed.
+ */
+async function enqueueForReview(item: CollectedItem, recordId: string): Promise<void> {
+  try {
+    const title = item.normalized?.title?.slice(0, 100) ?? item.fingerprint;
+    await supabase.from("review_queue_items").insert({
+      source_content_type: "evidence",
+      source_content_id: recordId,
+      source_content_slug: title,
+      review_type: "editorial",
+      priority: "medium",
+      priority_score: 50,
+      state: "new",
+      due_by: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    });
+  } catch (err) {
+    console.warn(
+      "[SupabaseStore] Failed to enqueue item for review:",
+      err instanceof Error ? err.message : err,
+    );
+  }
 }
 
 /** Map normalized content to an evidence_items category value. */

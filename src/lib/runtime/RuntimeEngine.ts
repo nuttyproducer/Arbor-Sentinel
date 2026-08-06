@@ -10,7 +10,7 @@ import { setupRegistry } from "../collectors/registrySetup";
 import { listEnabled, getFeed } from "../collectors/feedRegistry";
 import { DEFAULT_RATE_LIMIT, DEFAULT_RETRY_CONFIG, DEFAULT_FETCH_TIMEOUT_MS } from "../collectors/types";
 import { recordRun, recordFeedError } from "./metrics";
-import type { RuntimeState, RuntimeConfig, RuntimeStats, RuntimeDiagnostics } from "./types";
+import type { RuntimeState, RuntimeConfig, RuntimeStats, RuntimeDiagnostics, RunAllSummary, FeedRunResult } from "./types";
 import { DEFAULT_RUNTIME_CONFIG } from "./types";
 import type { CollectorConfig, CollectResult } from "../collectors/types";
 import type { SourceRecord } from "../../types/content";
@@ -126,37 +126,51 @@ export class RuntimeEngine {
 
   /**
    * Run collection for a specific feed (or all enabled feeds if no ID given).
-   * This is the manual trigger path — used by FeedManager "Sync" / "Run All".
+   * Returns a summary with per-feed results for display in the UI.
    */
-  async runOnce(feedId?: string): Promise<CollectResult | null> {
+  async runOnce(feedId?: string): Promise<RunAllSummary> {
     if (feedId) {
       const feed = await getFeed(feedId);
       if (!feed) {
-        this.lastErrors.push({
-          feedId,
-          error: `Feed ${feedId} not found`,
-          timestamp: new Date().toISOString(),
-        });
-        return null;
+        return { feeds: [], totalFetched: 0, totalStored: 0, errors: [`Feed ${feedId} not found`] };
       }
       if (!feed.enabled) {
-        this.lastErrors.push({
-          feedId,
-          error: `Feed ${feed.name} is disabled`,
-          timestamp: new Date().toISOString(),
-        });
-        return null;
+        return { feeds: [], totalFetched: 0, totalStored: 0, errors: [`Feed ${feed.name} is disabled`] };
       }
-      return this.collectFeed(feed);
+      const result = await this.collectFeed(feed);
+      return {
+        feeds: [{ name: feed.name, fetched: result?.itemsFetched ?? 0, stored: result?.itemsStored ?? 0, success: result?.success ?? false }],
+        totalFetched: result?.itemsFetched ?? 0,
+        totalStored: result?.itemsStored ?? 0,
+        errors: result?.success ? [] : [`${feed.name} failed`],
+      };
     }
 
     // Run all enabled feeds
     const feeds = await listEnabled();
-    let lastResult: CollectResult | null = null;
+    const feedResults: FeedRunResult[] = [];
+    let totalFetched = 0;
+    let totalStored = 0;
+    const errors: string[] = [];
+
     for (const feed of feeds) {
-      lastResult = await this.collectFeed(feed);
+      const result = await this.collectFeed(feed);
+      const lastErr = this.lastErrors.filter((e) => e.feedId === feed.id).pop();
+      feedResults.push({
+        name: feed.name,
+        fetched: result?.itemsFetched ?? 0,
+        stored: result?.itemsStored ?? 0,
+        success: result?.success ?? false,
+        error: result && !result.success ? (lastErr?.error ?? "Unknown error") : undefined,
+      });
+      totalFetched += result?.itemsFetched ?? 0;
+      totalStored += result?.itemsStored ?? 0;
+      if (!result?.success) {
+        errors.push(`${feed.name}: ${lastErr?.error ?? "failed"}`);
+      }
     }
-    return lastResult;
+
+    return { feeds: feedResults, totalFetched, totalStored, errors };
   }
 
   /**
@@ -192,10 +206,14 @@ export class RuntimeEngine {
         return null;
       }
 
+      // The real source identity is feed.source_id (FK → sources.id).
+      // Fall back to feed.id for feeds that aren't linked to a source row yet.
+      const sourceId = feed.source_id ?? feed.id;
+
       // Build SourceRecord from feed data
       const sourceRecord: SourceRecord = {
-        id: feed.id,
-        slug: feed.id,
+        id: sourceId,
+        slug: sourceId,
         title: feed.name,
         publisher: feed.name,
         sourceType,
@@ -213,7 +231,7 @@ export class RuntimeEngine {
 
       // Build CollectorConfig from feed data
       const config: CollectorConfig = {
-        sourceId: feed.id,
+        sourceId,
         label: feed.name,
         sourceType,
         enabled: true,
@@ -242,12 +260,9 @@ export class RuntimeEngine {
       // Persist run and update feed health
       await recordRun(feedId, sourceType, result);
 
-      // If successful, process items through the downstream pipeline
-      if (result.success) {
-        // Note: items that were stored are accessible via the SupabaseStore.
-        // For now we just record success — the pipeline processes items
-        // as they're stored by SupabaseStore.save().
-      }
+      // Items are persisted to evidence_items by SupabaseStore.save() during
+      // collection. Downstream processing (AI → review → publish) is deferred
+      // to the runtime pipeline — enable via config.enableAIPipeline.
 
       return result;
     } catch (err) {
@@ -266,7 +281,20 @@ export class RuntimeEngine {
         this.lastErrors = this.lastErrors.slice(-50);
       }
 
-      return null;
+      // Return a failed result so the UI can show what happened
+      return {
+        runId: `error-${Date.now()}`,
+        sourceId: feedId,
+        startedAt: new Date().toISOString(),
+        completedAt: new Date().toISOString(),
+        itemsFetched: 0,
+        itemsValidated: 0,
+        itemsNormalized: 0,
+        itemsDeduplicated: 0,
+        itemsStored: 0,
+        stageDurations: { fetch: 0, validate: 0, normalize: 0, deduplicate: 0, store: 0 },
+        success: false,
+      } as CollectResult;
     }
   }
 

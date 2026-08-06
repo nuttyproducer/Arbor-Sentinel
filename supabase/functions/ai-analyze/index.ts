@@ -2,8 +2,6 @@
 // Uses DeepSeek API to classify, summarize, and extract entities from content.
 // API key is stored as a Supabase secret: DEEPSEEK_API_KEY
 
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-
 const DEEPSEEK_API_URL = "https://api.deepseek.com/v1/chat/completions";
 
 // ── Types ──────────────────────────────────────────────────────────────────
@@ -125,7 +123,7 @@ async function callDeepSeek(
 
 // ── Main Handler ────────────────────────────────────────────────────────────
 
-serve(async (req: Request) => {
+Deno.serve(async (req: Request) => {
   const headers = {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
@@ -150,7 +148,7 @@ serve(async (req: Request) => {
       JSON.stringify({
         success: false,
         error: "DEEPSEEK_API_KEY not configured. Run: supabase secrets set DEEPSEEK_API_KEY",
-      } satisfies AnalyzeResponse),
+      }),
       { headers, status: 500 },
     );
   }
@@ -163,7 +161,7 @@ serve(async (req: Request) => {
         JSON.stringify({
           success: false,
           error: "Missing required fields: task, title, body",
-        } satisfies AnalyzeResponse),
+        }),
         { headers, status: 400 },
       );
     }
@@ -174,7 +172,7 @@ serve(async (req: Request) => {
         JSON.stringify({
           success: false,
           error: `Unknown task: ${body.task}. Valid tasks: ${Object.keys(PROMPTS).join(", ")}`,
-        } satisfies AnalyzeResponse),
+        }),
         { headers, status: 400 },
       );
     }
@@ -188,7 +186,7 @@ serve(async (req: Request) => {
         task: body.task,
         result,
         model: "deepseek-chat",
-      } satisfies AnalyzeResponse),
+      }),
       { headers },
     );
   } catch (error) {
@@ -196,7 +194,7 @@ serve(async (req: Request) => {
       JSON.stringify({
         success: false,
         error: error instanceof Error ? error.message : "Unknown error",
-      } satisfies AnalyzeResponse),
+      }),
       { headers, status: 500 },
     );
   }
