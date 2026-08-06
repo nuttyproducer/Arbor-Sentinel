@@ -13,12 +13,7 @@ import {
   LEGAL_STATUS_LABELS,
 } from "../../types/content";
 
-/** Resolve the accent colour for a given evidence category. */
-export function categoryAccent(category: string): "clay" | "blue" | "amber" {
-  if (category === "court record" || category === "human-rights report") return "clay";
-  if (category === "official UN document" || category === "parliamentary document") return "blue";
-  return "amber";
-}
+import { categoryAccent } from "./categoryAccent";
 
 interface EvidenceItemCardProps {
   item: EvidenceItem;
@@ -27,9 +22,9 @@ interface EvidenceItemCardProps {
 export function EvidenceItemCard({ item }: EvidenceItemCardProps) {
   const [expanded, setExpanded] = useState(false);
 
-  const itemSources = item.sourceIds
+  const itemSources: SourceRecord[] = item.sourceIds
     .map((sid) => sources.find((s) => s.id === sid))
-    .filter(Boolean);
+    .filter((s): s is SourceRecord => s !== undefined);
 
   const hasDetail =
     item.legalStatuses ||
@@ -176,16 +171,16 @@ export function EvidenceItemCard({ item }: EvidenceItemCardProps) {
                   </p>
                   <ul className="space-y-2">
                     {itemSources.map((src) => (
-                      <li key={src!.id} className="text-sm">
-                        <ExternalLink href={src!.url} showIcon>
-                          {src!.title.length > 100
-                            ? src!.title.slice(0, 100) + "…"
-                            : src!.title}
+                      <li key={src.id} className="text-sm">
+                        <ExternalLink href={src.url} showIcon>
+                          {src.title.length > 100
+                            ? src.title.slice(0, 100) + "…"
+                            : src.title}
                         </ExternalLink>
                         <span className="block font-mono text-[11px] text-charcoal/40 mt-0.5">
-                          {src!.publisher}
-                          {src!.publicationDate ? ` — ${src!.publicationDate}` : ""}
-                          {src!.accessedAt ? ` (accessed ${src!.accessedAt})` : ""}
+                          {src.publisher}
+                          {src.publicationDate ? ` — ${src.publicationDate}` : ""}
+                          {src.accessedAt ? ` (accessed ${src.accessedAt})` : ""}
                         </span>
                       </li>
                     ))}

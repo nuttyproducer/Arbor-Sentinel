@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { categoryAccent } from "../EvidenceItemCard";
+import { categoryAccent } from "../categoryAccent";
 
 describe("categoryAccent", () => {
   it('returns "clay" for court record', () => {
