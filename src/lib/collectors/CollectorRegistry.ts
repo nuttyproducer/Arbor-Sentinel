@@ -62,7 +62,7 @@ export class CollectorRegistry {
     for (const sourceType of sourceTypes) {
       const existing = this.classes.get(sourceType) ?? [];
       if (existing.length > 0) {
-        console.debug(
+        console.warn(
           `CollectorRegistry: Appending collector for source type "${sourceType}" ` +
             `(existing: ${existing.map((c) => c.name).join(", ")}, adding: "${name}")`,
         );
