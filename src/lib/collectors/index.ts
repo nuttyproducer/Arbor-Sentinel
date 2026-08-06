@@ -5,6 +5,10 @@ export { RateLimiter } from "./rateLimiter";
 export { Scheduler } from "./scheduler";
 export { DevMemoryStore } from "./store";
 export { SupabaseStore } from "./SupabaseStore";
+export { setupRegistry, createConfiguredRegistry, getCoveredSourceTypes, ALL_COLLECTORS } from "./registrySetup";
+export type { CollectorEntry } from "./registrySetup";
+export { getFeeds, getFeed, listEnabled, getFeedsBySourceType, updateFeedHealth, syncFromConfig, getStaticFeedConfig } from "./feedRegistry";
+export type { FeedRow } from "./feedRegistry";
 export { withRetry, computeBackoff, isRetryableStatus } from "./retry";
 export type { RetryResult } from "./retry";
 export {

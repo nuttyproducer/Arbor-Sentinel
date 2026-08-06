@@ -7,8 +7,7 @@ import { Container } from "../../components/ui/Container";
 import { PageIntro } from "../../components/pages/PageIntro";
 import { FeedTable, type FeedRow } from "../../components/admin/FeedTable";
 import { FeedForm, type FeedFormData } from "../../components/admin/FeedForm";
-import { SupabaseStore } from "../../lib/collectors/SupabaseStore";
-import type { TrustLevel } from "../../types/content";
+import { getRuntimeEngine } from "../../lib/runtime/RuntimeEngine";
 
 type View = "list" | "add" | "edit";
 
@@ -20,13 +19,16 @@ export function FeedManager() {
   const [editingFeed, setEditingFeed] = useState<FeedRow | null>(null);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
-  const store = new SupabaseStore();
-
   const loadFeeds = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await store.getFeeds();
-      setFeeds(data as unknown as FeedRow[]);
+      const { supabase } = await import("../../lib/db/client");
+      const { data, error } = await supabase
+        .from("feeds")
+        .select("*")
+        .order("name", { ascending: true });
+      if (error) throw error;
+      setFeeds((data as FeedRow[]) ?? []);
     } catch {
       setMessage({ type: "error", text: "Failed to load feeds." });
     } finally {
@@ -39,13 +41,18 @@ export function FeedManager() {
   }, [loadFeeds]);
 
   async function handleToggle(feedId: string, enabled: boolean) {
-    const success = await store.toggleFeed(feedId, enabled);
-    if (success) {
+    try {
+      const { supabase } = await import("../../lib/db/client");
+      const { error } = await supabase
+        .from("feeds")
+        .update({ enabled, updated_at: new Date().toISOString() })
+        .eq("id", feedId);
+      if (error) throw error;
       setFeeds((prev) =>
         prev.map((f) => (f.id === feedId ? { ...f, enabled } : f)),
       );
       setMessage({ type: "success", text: `Feed ${enabled ? "enabled" : "disabled"}.` });
-    } else {
+    } catch {
       setMessage({ type: "error", text: "Failed to toggle feed." });
     }
   }
@@ -54,152 +61,40 @@ export function FeedManager() {
     const feed = feeds.find((f) => f.id === feedId);
     if (!feed) return;
 
-    // Import the scheduler and run a manual sync
     try {
-      const { CollectorRegistry } = await import("../../lib/collectors/CollectorRegistry");
-      const { RateLimiter } = await import("../../lib/collectors/rateLimiter");
-      const { DEFAULT_RATE_LIMIT, DEFAULT_RETRY_CONFIG, DEFAULT_FETCH_TIMEOUT_MS } =
-        await import("../../lib/collectors/types");
-
-      const registry = new CollectorRegistry(store, new RateLimiter());
-
-      // Try to find and register a collector for this feed's source type
-      const sourceType = feed.source_type as
-        | "journalism"
-        | "ngo"
-        | "academic"
-        | "un"
-        | "government"
-        | "court";
-
-      // Dynamically import the appropriate collector
-      let CollectorClass: Parameters<typeof registry.register>[0] | null = null;
-      try {
-        switch (sourceType) {
-          case "journalism":
-          case "ngo":
-          case "academic": {
-            const mod = await import("../../lib/collectors/media/JournalismCollector");
-            CollectorClass = mod.JournalismCollector as unknown as Parameters<
-              typeof registry.register
-            >[0];
-            break;
-          }
-          case "un": {
-            const mod = await import("../../lib/collectors/un/OCHACollector");
-            CollectorClass = mod.OCHACollector as unknown as Parameters<
-              typeof registry.register
-            >[0];
-            break;
-          }
-          case "government": {
-            const mod = await import("../../lib/collectors/eu/EUCollector");
-            CollectorClass = mod.EUCollector as unknown as Parameters<
-              typeof registry.register
-            >[0];
-            break;
-          }
-          case "court": {
-            const mod = await import("../../lib/collectors/courts/ICJCollector");
-            CollectorClass = mod.ICJCollector as unknown as Parameters<
-              typeof registry.register
-            >[0];
-            break;
-          }
-          default:
-            break;
-        }
-      } catch {
-        setMessage({
-          type: "error",
-          text: `No collector found for source type "${sourceType}".`,
-        });
-        return;
-      }
-
-      if (!CollectorClass) {
-        setMessage({
-          type: "error",
-          text: `Could not load collector for "${sourceType}".`,
-        });
-        return;
-      }
-
-      registry.register(CollectorClass, [sourceType], `Collector for ${feed.name}`);
-
-      const config = {
-        sourceId: feed.id,
-        label: feed.name,
-        sourceType,
-        enabled: true,
-        trigger: { type: "manual" as const },
-        rateLimit: DEFAULT_RATE_LIMIT,
-        retry: DEFAULT_RETRY_CONFIG,
-        fetchTimeoutMs: DEFAULT_FETCH_TIMEOUT_MS,
-        maxContentAgeMs: 24 * 60 * 60 * 1000,
-        storeRawResponse: false,
-        metadata: { url: feed.url, feedId: feed.id },
-      };
-
-      const sourceRecord = {
-        id: feed.id,
-        slug: feed.id,
-        title: feed.name,
-        publisher: feed.name,
-        sourceType,
-        url: feed.url,
-        accessedAt: new Date().toISOString(),
-        status: "active" as const,
-        version: 1,
-        trustLevel: feed.trust_level as TrustLevel,
-        healthStatus: feed.health_status as
-          | "unknown"
-          | "active"
-          | "degraded"
-          | "failed",
-        automationStatus: "scheduled" as const,
-        failureCount: feed.failure_count,
-        monitoringEnabled: true,
-        correctionUrl: "",
-      };
-
-      const collector = registry.createInstance(sourceRecord, config);
-      const result = await collector.collect();
-
-      // Update feed health
-      await store.updateFeedHealth(feed.id, {
-        healthStatus: result.success ? "active" : "degraded",
-        lastFetchedAt: new Date().toISOString(),
-        lastSuccessAt: result.success ? new Date().toISOString() : undefined,
-        failureCount: result.success ? 0 : feed.failure_count + 1,
-      });
-
-      // Persist run to DB
-      await store.persistRun({
-        sourceId: feed.id,
-        collectorType: sourceType,
-        status: result.success ? "completed" : "failed",
-        itemsFetched: result.itemsFetched,
-        itemsValidated: result.itemsValidated,
-        itemsStored: result.itemsStored,
-        stageDurations: result.stageDurations as unknown as Record<string, number>,
-        errors: [],
-        startedAt: result.startedAt,
-        completedAt: result.completedAt,
-      });
-
+      const runtime = getRuntimeEngine();
+      const result = await runtime.runOnce(feedId);
       setMessage({
-        type: result.success ? "success" : "error",
-        text: result.success
+        type: result?.success ? "success" : "error",
+        text: result?.success
           ? `Sync complete: ${result.itemsStored} new items stored.`
-          : `Sync completed with errors.`,
+          : `Sync completed with errors. Check diagnostics for details.`,
       });
-
       await loadFeeds();
     } catch (err) {
       setMessage({
         type: "error",
         text: `Sync failed: ${err instanceof Error ? err.message : String(err)}`,
+      });
+    }
+  }
+
+  async function handleRunAll() {
+    try {
+      setMessage({ type: "success", text: "Running all enabled feeds…" });
+      const runtime = getRuntimeEngine();
+      const result = await runtime.runOnce();
+      setMessage({
+        type: result?.success ? "success" : "error",
+        text: result?.success
+          ? `Run All complete.`
+          : `Run All completed with some errors. Check diagnostics.`,
+      });
+      await loadFeeds();
+    } catch (err) {
+      setMessage({
+        type: "error",
+        text: `Run All failed: ${err instanceof Error ? err.message : String(err)}`,
       });
     }
   }
@@ -278,11 +173,13 @@ export function FeedManager() {
   }
 
   async function handleDelete(feedId: string) {
-    const success = await store.deleteFeed(feedId);
-    if (success) {
+    try {
+      const { supabase } = await import("../../lib/db/client");
+      const { error } = await supabase.from("feeds").delete().eq("id", feedId);
+      if (error) throw error;
       setFeeds((prev) => prev.filter((f) => f.id !== feedId));
       setMessage({ type: "success", text: "Feed deleted." });
-    } else {
+    } catch {
       setMessage({ type: "error", text: "Failed to delete feed." });
     }
   }
@@ -334,6 +231,12 @@ export function FeedManager() {
                 className="px-3 py-2 border border-charcoal/20 rounded font-mono text-sm text-charcoal/60 hover:bg-charcoal/5 transition-colors"
               >
                 Refresh
+              </button>
+              <button
+                onClick={handleRunAll}
+                className="px-3 py-2 bg-trust/10 border border-trust/30 rounded font-mono text-sm text-trust hover:bg-trust/20 transition-colors"
+              >
+                ▶ Run All
               </button>
               <button
                 onClick={() => setView("add")}

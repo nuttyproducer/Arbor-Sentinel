@@ -135,6 +135,18 @@ export async function signUp(params: SignUpParams): Promise<SignInResult> {
  * Get the current authentication state including role and 2FA status.
  */
 export async function getAuthState(): Promise<AuthState> {
+  // Dev bypass — set VITE_DEV_AUTH_BYPASS=true in .env to skip login
+  if (import.meta.env.VITE_DEV_AUTH_BYPASS === 'true') {
+    return {
+      isAuthenticated: true,
+      isLoading: false,
+      userId: 'dev-user',
+      email: 'dev@arborsentinel.local',
+      role: 'admin',
+      is2FAVerified: true,
+    };
+  }
+
   const { data } = await supabase.auth.getSession();
   const session = data.session;
 

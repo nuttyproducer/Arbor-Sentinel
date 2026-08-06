@@ -10,7 +10,8 @@ import type { RetryConfig } from "./types";
 import { RateLimiter } from "./rateLimiter";
 import { withRetry } from "./retry";
 import { TimeoutError } from "./errors";
-import type { SourceRecord } from "../../types/content";
+import type { SourceRecord, HealthStatus } from "../../types/content";
+import type { CollectorHealthSnapshot } from "./monitoring/types";
 
 /** Unique run ID counter. */
 let runCounter = 0;
@@ -39,6 +40,8 @@ export abstract class BaseCollector {
   protected readonly storage: StorageInterface;
   /** Shared rate limiter instance. */
   protected readonly rateLimiter: RateLimiter;
+  /** The most recent collection result, set after each collect() call. */
+  protected lastResult: CollectResult | null = null;
 
   constructor(
     source: SourceRecord,
@@ -121,7 +124,7 @@ export abstract class BaseCollector {
       }
       durations.store = Date.now() - storeStart;
 
-      return {
+      const result: CollectResult = {
         runId,
         sourceId: this.source.id,
         startedAt,
@@ -134,8 +137,10 @@ export abstract class BaseCollector {
         stageDurations: durations,
         success: true,
       };
+      this.lastResult = result;
+      return result;
     } catch {
-      return {
+      const result: CollectResult = {
         runId,
         sourceId: this.source.id,
         startedAt,
@@ -148,7 +153,61 @@ export abstract class BaseCollector {
         stageDurations: durations,
         success: false,
       };
+      this.lastResult = result;
+      return result;
     }
+  }
+
+  /**
+   * Build a health snapshot from the most recent collection result.
+   * Subclasses may override to add collector-specific health signals.
+   */
+  health(): CollectorHealthSnapshot {
+    const last = this.lastResult;
+    const totalFetches = last ? last.itemsFetched : 0;
+    const failedFetches = last && !last.success ? 1 : 0;
+    return {
+      collectorName: this.constructor.name,
+      sourceType: this.config.sourceType,
+      status: this.computeHealthStatus(),
+      lastFetchAt: last?.startedAt,
+      lastSuccessAt: last?.success ? last.completedAt : undefined,
+      totalFetches,
+      successfulFetches: last?.success ? 1 : 0,
+      failedFetches,
+      consecutiveFailures: last && !last.success ? 1 : 0,
+      avgResponseTimeMs: last ? last.stageDurations.fetch : 0,
+      errorRate: totalFetches > 0 ? failedFetches / totalFetches : 0,
+      enabled: this.config.enabled,
+      isStale: !last || (Date.now() - new Date(last.completedAt).getTime()) > 24 * 60 * 60 * 1000,
+    };
+  }
+
+  /**
+   * Return detailed diagnostics about this collector instance.
+   * Subclasses may override to add collector-specific state.
+   */
+  diagnostics(): Record<string, unknown> {
+    return {
+      collectorName: this.constructor.name,
+      sourceType: this.config.sourceType,
+      sourceId: this.source.id,
+      sourceUrl: this.source.url,
+      enabled: this.config.enabled,
+      trigger: this.config.trigger,
+      rateLimitConfig: this.config.rateLimit,
+      retryConfig: this.config.retry,
+      fetchTimeoutMs: this.config.fetchTimeoutMs,
+      lastResult: this.lastResult,
+      health: this.health(),
+    };
+  }
+
+  /** Derive HealthStatus from the last result and config. */
+  protected computeHealthStatus(): HealthStatus {
+    if (!this.lastResult) return "unknown";
+    if (!this.lastResult.success) return "degraded";
+    return "active";
   }
 
   // ── Pipeline Stage Methods ────────────────────────────────────────────

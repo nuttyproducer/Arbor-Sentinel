@@ -88,16 +88,19 @@ describe("CollectorRegistry", () => {
       expect(registry.getCollectorForType("journalism")).toBe(MockCollectorB);
     });
 
-    it("warns when overwriting a source type", () => {
+    it("warns when appending to an existing source type", () => {
       const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
 
       registry.register(MockCollectorA, ["court"], "First");
       registry.register(MockCollectorB, ["court"], "Second");
 
       expect(warnSpy).toHaveBeenCalledWith(
-        expect.stringContaining("Overwriting collector for source type"),
+        expect.stringContaining("Appending collector for source type"),
       );
+      // Last registered collector is the default for createInstance
       expect(registry.getCollectorForType("court")).toBe(MockCollectorB);
+      // Both collectors are available
+      expect(registry.getCollectorsForType("court")).toHaveLength(2);
 
       warnSpy.mockRestore();
     });

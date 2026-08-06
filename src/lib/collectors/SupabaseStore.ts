@@ -71,24 +71,33 @@ export class SupabaseStore implements StorageInterface {
   }
 
   async exists(fingerprint: string): Promise<boolean> {
-    // Check local cache first
+    // Check local cache first — this covers dedup within the current session.
     if (this.fingerprintCache.has(fingerprint)) {
       return true;
     }
 
-    // Then check the database for previously stored fingerprints
+    // Cross-session dedup: check evidence_items for a matching slug fragment.
+    // The fingerprint hash is embedded in the slug as `slugify(title)-shortHash(fp)`.
+    // We extract the short hash from the fingerprint and search for it.
     try {
+      const hashPart = fingerprint.split(":")[1] ?? fingerprint;
       const { data, error } = await supabase
-        .from("collector_runs")
-        .select("errors")
-        .contains("errors", [{ fingerprint }]);
+        .from("evidence_items")
+        .select("id")
+        .ilike("slug", `%-${hashPart}`);
 
       if (error) {
         console.warn("[SupabaseStore] Fingerprint lookup failed:", error.message);
         return false;
       }
 
-      return (data?.length ?? 0) > 0;
+      if ((data?.length ?? 0) > 0) {
+        // Seed the cache so we don't hit the DB again for this fingerprint
+        this.fingerprintCache.add(fingerprint);
+        return true;
+      }
+
+      return false;
     } catch {
       return false;
     }

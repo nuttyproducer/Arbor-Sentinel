@@ -6,6 +6,7 @@ import type { AIProvider, AIOperationResult } from "../types";
 import { emptyResult } from "../types";
 import { StructuredOutputHandler } from "../StructuredOutputHandler";
 import type { TopicClassification } from "./types";
+import { EVIDENCE_CATEGORIES } from "../../taxonomy";
 
 const classificationSchema = z.object({
   classifications: z.array(z.object({
@@ -15,14 +16,6 @@ const classificationSchema = z.object({
     alternativesConsidered: z.array(z.string()),
   })),
 });
-
-const EVIDENCE_CATEGORIES = [
-  "civilian_casualties", "infrastructure_damage", "journalists_media_workers",
-  "medical_workers_healthcare", "aid_obstruction", "food_water_sanitation",
-  "forced_displacement", "housing_cultural_destruction", "detention_mistreatment",
-  "torture_allegations", "mass_graves", "public_incitement",
-  "arms_transfers", "humanitarian_access_restrictions", "ceasefire_violations",
-];
 
 const PROMPT = {
   system: `You are a topic classification expert. Classify content into evidence categories. Never force a classification — "uncategorized" is valid. Return JSON only.`,

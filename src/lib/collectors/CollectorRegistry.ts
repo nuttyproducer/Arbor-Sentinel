@@ -23,7 +23,7 @@ export type CollectorConstructor = new (
  * instantiates it, and returns the configured instance.
  */
 export class CollectorRegistry {
-  private readonly classes = new Map<SourceType, CollectorConstructor>();
+  private readonly classes = new Map<SourceType, CollectorConstructor[]>();
   private readonly instances = new Map<string, BaseCollector>();
   private readonly registrations = new Map<string, CollectorRegistration>();
   private readonly storage: StorageInterface;
@@ -60,13 +60,15 @@ export class CollectorRegistry {
     this.registrations.set(name, registration);
 
     for (const sourceType of sourceTypes) {
-      if (this.classes.has(sourceType)) {
+      const existing = this.classes.get(sourceType) ?? [];
+      if (existing.length > 0) {
         console.warn(
-          `CollectorRegistry: Overwriting collector for source type "${sourceType}" ` +
-            `(was "${this.classes.get(sourceType)?.name}", now "${name}")`,
+          `CollectorRegistry: Appending collector for source type "${sourceType}" ` +
+            `(existing: ${existing.map((c) => c.name).join(", ")}, adding: "${name}")`,
         );
       }
-      this.classes.set(sourceType, constructor);
+      existing.push(constructor);
+      this.classes.set(sourceType, existing);
     }
   }
 
@@ -78,8 +80,14 @@ export class CollectorRegistry {
     if (!reg) return;
 
     for (const sourceType of reg.supportedSourceTypes) {
-      if (this.classes.get(sourceType)?.name === name) {
-        this.classes.delete(sourceType);
+      const existing = this.classes.get(sourceType);
+      if (existing) {
+        const filtered = existing.filter((c) => c.name !== name);
+        if (filtered.length === 0) {
+          this.classes.delete(sourceType);
+        } else {
+          this.classes.set(sourceType, filtered);
+        }
       }
     }
     this.registrations.delete(name);
@@ -92,14 +100,26 @@ export class CollectorRegistry {
    * @returns The constructor, or undefined if no collector is registered.
    */
   getCollectorForType(sourceType: SourceType): CollectorConstructor | undefined {
-    return this.classes.get(sourceType);
+    const list = this.classes.get(sourceType);
+    if (!list || list.length === 0) return undefined;
+    // Return the last registered (most specific) collector for this type.
+    // Callers that need a specific collector should use getCollectorsForType().
+    return list[list.length - 1];
+  }
+
+  /**
+   * Get all collector constructors registered for a given source type.
+   */
+  getCollectorsForType(sourceType: SourceType): CollectorConstructor[] {
+    return this.classes.get(sourceType) ?? [];
   }
 
   /**
    * Check whether a collector is registered for a given source type.
    */
   hasCollectorForType(sourceType: SourceType): boolean {
-    return this.classes.has(sourceType);
+    const list = this.classes.get(sourceType);
+    return (list?.length ?? 0) > 0;
   }
 
   /**
@@ -145,14 +165,16 @@ export class CollectorRegistry {
     const cached = this.instances.get(cacheKey);
     if (cached) return cached;
 
-    const Constructor = this.classes.get(source.sourceType);
-    if (!Constructor) {
+    const list = this.classes.get(source.sourceType);
+    if (!list || list.length === 0) {
       throw new Error(
         `No collector registered for source type "${source.sourceType}". ` +
           `Registered types: ${this.getCoveredSourceTypes().join(", ") || "none"}`,
       );
     }
 
+    // Use the last registered (most specific) constructor
+    const Constructor = list[list.length - 1];
     const instance = new Constructor(source, config, this.storage, this.rateLimiter);
     this.instances.set(cacheKey, instance);
     return instance;
