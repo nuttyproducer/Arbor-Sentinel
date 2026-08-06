@@ -16,6 +16,7 @@ interface AnalyzeRequest {
   context?: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface AnalyzeResponse {
   success: boolean;
   task: AnalysisTask;
