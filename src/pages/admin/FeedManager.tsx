@@ -33,8 +33,10 @@ export function FeedManager() {
         .order("name", { ascending: true });
       if (error) throw error;
       setFeeds((data as FeedRow[]) ?? []);
+      return data as FeedRow[];
     } catch {
       setMessage({ type: "error", text: "Failed to load feeds." });
+      return [];
     } finally {
       setLoading(false);
     }
@@ -256,7 +258,12 @@ export function FeedManager() {
           {view === "list" && (
             <>
               <button
-                onClick={loadFeeds}
+                onClick={async () => {
+                  const data = await loadFeeds();
+                  if (data) {
+                    setMessage({ type: "success", text: `Loaded ${data.length} feed${data.length !== 1 ? "s" : ""}.` });
+                  }
+                }}
                 className="px-3 py-2 border border-charcoal/20 rounded font-mono text-sm text-charcoal/60 hover:bg-charcoal/5 transition-colors"
               >
                 Refresh
