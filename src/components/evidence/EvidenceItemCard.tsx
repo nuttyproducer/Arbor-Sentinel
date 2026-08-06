@@ -11,8 +11,8 @@ import {
   VERIFICATION_LEVEL_LABELS,
   SOURCE_TYPE_LABELS,
   LEGAL_STATUS_LABELS,
-  type SourceRecord,
 } from "../../types/content";
+import type { SourceRecord } from "../../types/content";
 
 import { categoryAccent } from "./categoryAccent";
 
