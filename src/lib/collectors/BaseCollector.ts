@@ -120,7 +120,7 @@ export abstract class BaseCollector {
 
       // ── Stage 5: Filter ──────────────────────────────────────────
       const filterStart = Date.now();
-      let filteredCount = 0;
+      filteredCount = 0;
       if (deduplicatedItems.length > 0) {
         try {
           const { applyFilters, DEFAULT_FILTER_CONTEXT } = await import("./filters/RelevanceFilter");
