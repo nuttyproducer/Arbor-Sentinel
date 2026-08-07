@@ -1,6 +1,6 @@
 import { BaseCollector } from "../BaseCollector";
 import { NGONormalizer, type RawNgoDocument, type NgoReportType } from "./NGONormalizer";
-import { ParseError, ValidationError } from "../errors";
+import { ValidationError } from "../errors";
 import type { NormalizedContent } from "../types";
 
 /**
@@ -89,15 +89,7 @@ export class BtselemCollector extends BaseCollector {
   }
 
   private async fetchHtml(url: string): Promise<string> {
-    const res = await fetch(url);
-    if (!res.ok) {
-      throw new ParseError(`B'Tselem fetch ${res.status}: ${url}`, {
-        sourceId: this.source.id,
-        url,
-        attempt: 1,
-      });
-    }
-    return res.text();
+    return this.httpFetch(url).then((r) => r.text());
   }
 
   private async extractLinks(url: string): Promise<string[]> {

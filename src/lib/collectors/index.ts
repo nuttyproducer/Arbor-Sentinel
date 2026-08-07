@@ -2,7 +2,7 @@ export { BaseCollector } from "./BaseCollector";
 export { CollectorRegistry } from "./CollectorRegistry";
 export type { CollectorConstructor } from "./CollectorRegistry";
 export { RateLimiter } from "./rateLimiter";
-export { Scheduler } from "./scheduler";
+// Legacy scheduler removed — use lib/scheduler/Scheduler instead.
 export { DevMemoryStore } from "./store";
 export { SupabaseStore } from "./SupabaseStore";
 export { setupRegistry, createConfiguredRegistry, getCoveredSourceTypes, ALL_COLLECTORS } from "./registrySetup";

@@ -209,7 +209,7 @@ export async function fetchPipelineData(range: DashboardTimeRange): Promise<{
   // Map collector_runs → CollectResult[]
   const runs: CollectResult[] = runsData.map((row) => {
     const sourceType = sourceTypeMap.get(row.source_id) ?? row.collector_type ?? "unknown";
-    const defaultDurations: PipelineStageDurations = { fetch: 0, validate: 0, normalize: 0, deduplicate: 0, store: 0 };
+    const defaultDurations: PipelineStageDurations = { fetch: 0, validate: 0, normalize: 0, deduplicate: 0, filter: 0, store: 0 };
     return {
       runId: row.id,
       sourceId: `${sourceType}-${row.source_id}`,
@@ -219,6 +219,7 @@ export async function fetchPipelineData(range: DashboardTimeRange): Promise<{
       itemsValidated: row.items_validated ?? 0,
       itemsNormalized: row.items_stored ?? 0,
       itemsDeduplicated: row.items_stored ?? 0,
+      itemsFiltered: 0,
       itemsStored: row.items_stored ?? 0,
       stageDurations: row.stage_durations ?? defaultDurations,
       success: row.status === "completed",

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { feedConfig, getFeedsBySourceType, getEnabledFeeds } from "../feedConfig";
+import { feedConfig } from "../feedConfig";
 
 describe("feedConfig", () => {
   it("all feeds have valid URLs", () => {
@@ -35,20 +35,18 @@ describe("feedConfig", () => {
     }
   });
 
-  it("getFeedsBySourceType filters correctly", () => {
-    const journalismFeeds = getFeedsBySourceType("journalism");
-    for (const feed of journalismFeeds) {
+  it("filtering by source type returns correct feeds", () => {
+    const byType = (type: string) => feedConfig.filter((f) => f.sourceType === type);
+    for (const feed of byType("journalism")) {
       expect(feed.sourceType).toBe("journalism");
     }
-
-    const academicFeeds = getFeedsBySourceType("academic");
-    for (const feed of academicFeeds) {
+    for (const feed of byType("academic")) {
       expect(feed.sourceType).toBe("academic");
     }
   });
 
-  it("getEnabledFeeds returns only enabled feeds", () => {
-    const enabled = getEnabledFeeds();
+  it("enabled feeds can be filtered", () => {
+    const enabled = feedConfig.filter((f) => f.enabled);
     for (const feed of enabled) {
       expect(feed.enabled).toBe(true);
     }

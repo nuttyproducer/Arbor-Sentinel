@@ -96,12 +96,16 @@ export interface CollectResult {
   itemsNormalized: number;
   /** Number of duplicate items removed. */
   itemsDeduplicated: number;
+  /** Number of items filtered out by the relevance filter. */
+  itemsFiltered: number;
   /** Number of new items stored. */
   itemsStored: number;
   /** Pipeline stage durations in ms, for observability. */
   stageDurations: PipelineStageDurations;
   /** Whether the run completed without errors. */
   success: boolean;
+  /** Human-readable error message when success is false. */
+  error?: string;
 }
 
 /** Millisecond durations for each pipeline stage. */
@@ -110,6 +114,7 @@ export interface PipelineStageDurations {
   validate: number;
   normalize: number;
   deduplicate: number;
+  filter: number;
   store: number;
 }
 

@@ -83,7 +83,11 @@ export interface FactExtraction {
 
 // ── Entity Extraction (M4.2-04) ────────────────────────────────────────────
 
-export type EntityType = "person" | "organization" | "location" | "date" | "event" | "legal_case";
+import type { EntityType, ClaimType, EntityRelationshipType, ContradictionType, MatchLevel, HallucinationFlagType } from "../../taxonomy";
+export type { EntityType, ClaimType, EntityRelationshipType, ContradictionType, MatchLevel, HallucinationFlagType };
+
+// Re-export under the name AI stages expect (RelationshipType = EntityRelationshipType)
+export type RelationshipType = EntityRelationshipType;
 
 export interface ExtractedEntity {
   /** Unique ID for this entity mention. */
@@ -132,8 +136,6 @@ export interface EntityLink {
 }
 
 // ── Claim Extraction (M4.2-05) ────────────────────────────────────────────
-
-export type ClaimType = "legal" | "humanitarian" | "political" | "factual" | "allegation";
 
 export type ClaimVerificationStatus = "unverified" | "verified" | "contradicted";
 
@@ -237,14 +239,6 @@ export interface GeoJSONFeature {
 
 // ── Relationship Detection (M4.2-08) ──────────────────────────────────────
 
-export type RelationshipType =
-  | "affiliation"
-  | "association"
-  | "location"
-  | "temporal"
-  | "causal"
-  | "documentary";
-
 export type RelationshipDirection = "directed" | "undirected";
 
 export type RelationshipStrength = "strong" | "weak" | "inferred";
@@ -291,8 +285,6 @@ export interface TopicClassification {
 
 // ── Duplicate Detection (M4.2-10) ─────────────────────────────────────────
 
-export type MatchLevel = "exact_duplicate" | "near_duplicate" | "related" | "new";
-
 export interface DuplicateGroup {
   /** Primary record (the one to keep). */
   primaryRecordId: string;
@@ -324,13 +316,6 @@ export interface MergeProposal {
 }
 
 // ── Contradiction Detection (M4.2-11) ─────────────────────────────────────
-
-export type ContradictionType =
-  | "numerical"
-  | "factual"
-  | "temporal"
-  | "source_source"
-  | "source_quality";
 
 export type ContradictionSeverity = "critical" | "major" | "minor" | "informational";
 
@@ -388,13 +373,6 @@ export interface ConfidenceReport {
 }
 
 export type HallucinationSeverity = "critical" | "major" | "minor" | "informational";
-
-export type HallucinationFlagType =
-  | "unsupported_claim"
-  | "numerical_mismatch"
-  | "entity_hallucination"
-  | "relationship_hallucination"
-  | "temporal_hallucination";
 
 export interface HallucinationFlag {
   /** Unique flag ID. */

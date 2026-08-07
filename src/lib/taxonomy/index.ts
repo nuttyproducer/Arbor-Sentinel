@@ -113,6 +113,7 @@ export const ENTITY_TYPES = [
   "event",
   "country",
   "institution",
+  "legal_case",   // needed by AI EntityExtractor stage
 ] as const;
 
 export type EntityType = (typeof ENTITY_TYPES)[number];
@@ -138,6 +139,89 @@ export const GEO_SCOPES = [
 ] as const;
 
 export type GeoScope = (typeof GEO_SCOPES)[number];
+
+// ── Claim types ───────────────────────────────────────────────────────────────
+// Authoritative list used by ClaimExtractor AI stage and knowledge graph.
+
+export const CLAIM_TYPES = [
+  "legal",
+  "humanitarian",
+  "political",
+  "factual",
+  "allegation",
+] as const;
+
+export type ClaimType = (typeof CLAIM_TYPES)[number];
+
+// ── Graph edge types ──────────────────────────────────────────────────────────
+// Structural edge types for the knowledge graph. These describe how nodes
+// connect — distinct from EntityRelationship types (affiliation, causal, etc.)
+// which describe real-world relationships between entities.
+
+export const GRAPH_EDGE_TYPES = [
+  "mentions",
+  "occurs_at",
+  "involves",
+  "supports",
+  "contradicts",
+  "related_to",
+  "authored_by",
+  "published_by",
+  "located_in",
+  "part_of",
+] as const;
+
+export type GraphEdgeType = (typeof GRAPH_EDGE_TYPES)[number];
+
+// ── Entity relationship types ─────────────────────────────────────────────────
+// Real-world relationship categories between extracted entities.
+// Used by the RelationshipDetector AI stage.
+
+export const ENTITY_RELATIONSHIP_TYPES = [
+  "affiliation",
+  "association",
+  "location",
+  "temporal",
+  "causal",
+  "documentary",
+] as const;
+
+export type EntityRelationshipType = (typeof ENTITY_RELATIONSHIP_TYPES)[number];
+
+// ── Contradiction types ───────────────────────────────────────────────────────
+
+export const CONTRADICTION_TYPES = [
+  "numerical",
+  "factual",
+  "temporal",
+  "source_source",
+  "source_quality",
+] as const;
+
+export type ContradictionType = (typeof CONTRADICTION_TYPES)[number];
+
+// ── Match levels (for deduplication) ──────────────────────────────────────────
+
+export const MATCH_LEVELS = [
+  "exact_duplicate",
+  "near_duplicate",
+  "related",
+  "new",
+] as const;
+
+export type MatchLevel = (typeof MATCH_LEVELS)[number];
+
+// ── Hallucination flag types ──────────────────────────────────────────────────
+
+export const HALLUCINATION_FLAG_TYPES = [
+  "unsupported_claim",
+  "numerical_mismatch",
+  "entity_hallucination",
+  "relationship_hallucination",
+  "temporal_hallucination",
+] as const;
+
+export type HallucinationFlagType = (typeof HALLUCINATION_FLAG_TYPES)[number];
 
 // ── Content types ────────────────────────────────────────────────────────────
 

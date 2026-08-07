@@ -1,6 +1,13 @@
 import { ParseError } from "../errors";
 
-/** A parsed item from an RSS 2.0 or Atom 1.0 feed. */
+/** A parsed enclosure / media attachment. */
+export interface ParsedEnclosure {
+  url: string;
+  type?: string;
+  length?: number;
+}
+
+/** A parsed item from an RSS 2.0, Atom 1.0, or RDF/RSS 1.0 feed. */
 export interface ParsedFeedItem {
   title: string;
   url: string;
@@ -13,6 +20,7 @@ export interface ParsedFeedItem {
   guid?: string;
   feedTitle: string;
   language?: string;
+  enclosures: ParsedEnclosure[];
 }
 
 /** Metadata about the feed itself (channel or feed element). */
@@ -25,7 +33,7 @@ export interface FeedMeta {
   itemCount: number;
 }
 
-type FeedFormat = "rss2" | "atom1" | "unknown";
+type FeedFormat = "rss2" | "atom1" | "rdf1" | "unknown";
 
 /**
  * Parses RSS 2.0 and Atom 1.0 feeds. Auto-detects format.
@@ -59,7 +67,11 @@ export class FeedParser {
       return this.parseAtom(rawXml);
     }
 
-    throw new ParseError("Unrecognized feed format — expected RSS 2.0 or Atom 1.0", {
+    if (format === "rdf1") {
+      return this.parseRdf(rawXml);
+    }
+
+    throw new ParseError("Unrecognized feed format — expected RSS 2.0, Atom 1.0, or RDF", {
       sourceId: "feed-parser",
       attempt: 1,
     });
@@ -75,6 +87,11 @@ export class FeedParser {
     if (/<feed\b[^>]*xmlns\s*=\s*["']http:\/\/www\.w3\.org\/2005\/Atom["']/i.test(rawXml)) {
       return "atom1";
     }
+    // RDF/RSS 1.0 detection
+    if (/<rdf:RDF\b/i.test(rawXml)) {
+      return "rdf1";
+    }
+
     // Loose detection
     if (/<rss\b/i.test(rawXml)) {
       return "rss2";
@@ -143,6 +160,12 @@ export class FeedParser {
       const guidEl = this.extractElement(itemXml, "guid");
       const guid = guidEl ? this.extractTextFromContent(guidEl) : undefined;
 
+      // Extract enclosures + media attachments
+      const enclosures = this.extractRssEnclosures(itemXml);
+
+      // Full-text content (WordPress content:encoded extension)
+      const contentEncoded = this.extractTextNS(itemXml, "content:encoded");
+
       return {
         title: this.extractTextCdata(itemXml, "title"),
         url: this.extractText(itemXml, "link") || (guidEl && /isPermaLink\s*=\s*["']true["']/i.test(guidEl) ? guid : "") || "",
@@ -150,8 +173,10 @@ export class FeedParser {
         publishedAt: pubDate ? this.rfc2822ToIso(pubDate) : undefined,
         author: author || undefined,
         categories: this.extractAllText(itemXml, "category"),
+        contentHtml: contentEncoded || undefined,
         guid,
         feedTitle,
+        enclosures,
       };
     });
 
@@ -179,6 +204,9 @@ export class FeedParser {
       const updated = this.extractText(entryXml, "updated");
       const contentEl = this.extractElement(entryXml, "content");
 
+      // Extract Atom link enclosures
+      const enclosures = this.extractAtomEnclosures(entryXml);
+
       return {
         title: this.stripHtml(titleRaw),
         url: this.extractAtomLinkHref(entryXml) || "",
@@ -190,10 +218,136 @@ export class FeedParser {
         contentHtml: contentEl ? this.decodeEntities(this.extractTextFromContent(contentEl)) : undefined,
         guid: this.extractText(entryXml, "id") || undefined,
         feedTitle,
+        enclosures,
       };
     });
 
     return { meta, items };
+  }
+
+  // ── RDF / RSS 1.0 ──────────────────────────────────────────────────────
+
+  /**
+   * Parse RDF/RSS 1.0 feeds.
+   * RDF items are at the document root (not inside channel),
+   * referenced by <rdf:Seq><rdf:li rdf:resource="..."/></rdf:Seq>.
+   */
+  private parseRdf(rawXml: string): { meta: FeedMeta; items: ParsedFeedItem[] } {
+    const channel = this.extractElement(rawXml, "channel");
+    const feedTitle = channel ? this.extractText(channel, "title") : this.extractText(rawXml, "title");
+    const feedDesc = channel ? this.extractText(channel, "description") : "";
+    const feedLink = channel ? this.extractText(channel, "link") : "";
+
+    // RDF items are at root level as <item rdf:about="...">
+    const itemSegments = this.extractElements(rawXml, "item");
+
+    const items: ParsedFeedItem[] = itemSegments.map((itemXml) => {
+      const authorRaw = this.extractText(itemXml, "author") || this.extractTextNS(itemXml, "dc:creator");
+      const author = authorRaw ? authorRaw.replace(/^[^@]+@[^\s]+\s*\(?/, "").replace(/\)$/, "").trim() : undefined;
+      const pubDate = this.extractText(itemXml, "dc:date") || this.extractText(itemXml, "pubDate");
+
+      const enclosures = this.extractRssEnclosures(itemXml);
+      const contentEncoded = this.extractTextNS(itemXml, "content:encoded");
+
+      return {
+        title: this.extractTextCdata(itemXml, "title"),
+        url: this.extractText(itemXml, "link") || "",
+        description: this.stripHtml(this.extractTextCdata(itemXml, "description")).slice(0, 280),
+        publishedAt: pubDate ? (pubDate.includes("T") ? pubDate : this.rfc2822ToIso(pubDate)) : undefined,
+        author: author || undefined,
+        categories: this.extractAllText(itemXml, "dc:subject"),
+        contentHtml: contentEncoded || undefined,
+        guid: this.extractAttribute(itemXml, "rdf:about") || undefined,
+        feedTitle,
+        enclosures,
+      };
+    });
+
+    return {
+      meta: {
+        title: feedTitle,
+        description: feedDesc,
+        link: feedLink,
+        itemCount: items.length,
+      },
+      items,
+    };
+  }
+
+  // ── Enclosure extraction ────────────────────────────────────────────────
+
+  /** Extract enclosures and media attachments from RSS 2.0 / RDF items. */
+  private extractRssEnclosures(itemXml: string): ParsedEnclosure[] {
+    const result: ParsedEnclosure[] = [];
+
+    // Standard RSS <enclosure> tags
+    const enclosurePattern = /<enclosure\b[^>]*\/?>/gi;
+    let match;
+    while ((match = enclosurePattern.exec(itemXml)) !== null) {
+      const el = match[0];
+      const url = this.extractAttr(el, "url");
+      if (url) {
+        result.push({
+          url,
+          type: this.extractAttr(el, "type") || undefined,
+          length: parseInt(this.extractAttr(el, "length") || "0", 10) || undefined,
+        });
+      }
+    }
+
+    // <media:content> tags
+    const mediaContentPattern = /<media:content\b[^>]*\/?>/gi;
+    while ((match = mediaContentPattern.exec(itemXml)) !== null) {
+      const el = match[0];
+      const url = this.extractAttr(el, "url");
+      if (url && !result.some((e) => e.url === url)) {
+        result.push({
+          url,
+          type: this.extractAttr(el, "type") || undefined,
+        });
+      }
+    }
+
+    // <media:thumbnail> tags
+    const mediaThumbPattern = /<media:thumbnail\b[^>]*\/?>/gi;
+    while ((match = mediaThumbPattern.exec(itemXml)) !== null) {
+      const el = match[0];
+      const url = this.extractAttr(el, "url");
+      if (url && !result.some((e) => e.url === url)) {
+        result.push({
+          url,
+          type: "image/thumbnail",
+        });
+      }
+    }
+
+    return result;
+  }
+
+  /** Extract Atom <link rel="enclosure"> elements. */
+  private extractAtomEnclosures(entryXml: string): ParsedEnclosure[] {
+    const result: ParsedEnclosure[] = [];
+    const pattern = /<link\b[^>]*rel\s*=\s*["']enclosure["'][^>]*\/?>/gi;
+    let match;
+    while ((match = pattern.exec(entryXml)) !== null) {
+      const el = match[0];
+      const url = this.extractAttr(el, "href");
+      if (url) {
+        result.push({
+          url,
+          type: this.extractAttr(el, "type") || undefined,
+          length: parseInt(this.extractAttr(el, "length") || "0", 10) || undefined,
+        });
+      }
+    }
+    return result;
+  }
+
+  /** Extract a single attribute value from an XML element string. */
+  private extractAttr(el: string, attr: string): string {
+    const pattern = new RegExp(`\\b${attr}\\s*=\\s*["']([^"']*)["']`, "i");
+    const m = el.match(pattern);
+    return m ? m[1] : "";
   }
 
   // ── XML Extraction Helpers ────────────────────────────────────────────

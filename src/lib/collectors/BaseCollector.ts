@@ -9,7 +9,7 @@ import type {
 import type { RetryConfig } from "./types";
 import { RateLimiter } from "./rateLimiter";
 import { withRetry } from "./retry";
-import { TimeoutError } from "./errors";
+import { TimeoutError, FetchError, RateLimitError, ParseError } from "./errors";
 import type { SourceRecord, HealthStatus } from "../../types/content";
 import type { CollectorHealthSnapshot } from "./monitoring/types";
 
@@ -70,6 +70,7 @@ export abstract class BaseCollector {
       validate: 0,
       normalize: 0,
       deduplicate: 0,
+      filter: 0,
       store: 0,
     };
 
@@ -77,6 +78,7 @@ export abstract class BaseCollector {
     let validatedItems: unknown[] = [];
     let collectedItems: CollectedItem[] = [];
     let deduplicatedItems: CollectedItem[] = [];
+    let filteredCount = 0;
     let storedCount = 0;
 
     try {
@@ -116,10 +118,28 @@ export abstract class BaseCollector {
       }
       durations.deduplicate = Date.now() - dedupeStart;
 
-      // ── Stage 5: Store ──────────────────────────────────────────
+      // ── Stage 5: Filter ──────────────────────────────────────────
+      const filterStart = Date.now();
+      let filteredCount = 0;
+      if (deduplicatedItems.length > 0) {
+        try {
+          const { applyFilters, DEFAULT_FILTER_CONTEXT } = await import("./filters/RelevanceFilter");
+          const { accepted, rejected } = await applyFilters(deduplicatedItems, {
+            ...DEFAULT_FILTER_CONTEXT,
+            minTrustLevel: (this.config.metadata?.trust_level as number) ?? 0,
+          });
+          filteredCount = rejected.length;
+          deduplicatedItems = accepted;
+        } catch {
+          // Filter errors are non-fatal — items pass through unfiltered
+        }
+      }
+      durations.filter = Date.now() - filterStart;
+
+      // ── Stage 6: Store ──────────────────────────────────────────
       const storeStart = Date.now();
       for (const item of deduplicatedItems) {
-        await this.storage.save(item);
+        await this.store(item);
         storedCount++;
       }
       durations.store = Date.now() - storeStart;
@@ -132,14 +152,17 @@ export abstract class BaseCollector {
         itemsFetched: rawItems.length,
         itemsValidated: validatedItems.length,
         itemsNormalized: collectedItems.length,
-        itemsDeduplicated: deduplicatedItems.length,
+        itemsDeduplicated: deduplicatedItems.length + filteredCount,
+        itemsFiltered: filteredCount,
         itemsStored: storedCount,
         stageDurations: durations,
         success: true,
       };
       this.lastResult = result;
       return result;
-    } catch {
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : String(err);
+      console.warn(`[${this.constructor.name}] Collection failed for "${this.source.id}":`, errorMessage);
       const result: CollectResult = {
         runId,
         sourceId: this.source.id,
@@ -148,10 +171,12 @@ export abstract class BaseCollector {
         itemsFetched: rawItems.length,
         itemsValidated: validatedItems.length,
         itemsNormalized: collectedItems.length,
-        itemsDeduplicated: deduplicatedItems.length,
+        itemsDeduplicated: deduplicatedItems.length + filteredCount,
+        itemsFiltered: filteredCount,
         itemsStored: storedCount,
         stageDurations: durations,
         success: false,
+        error: errorMessage,
       };
       this.lastResult = result;
       return result;
@@ -275,6 +300,66 @@ export abstract class BaseCollector {
    */
   async store(item: CollectedItem): Promise<void> {
     await this.storage.save(item);
+  }
+
+  // ── Shared HTTP Client ──────────────────────────────────────────────────
+
+  /**
+   * Unified HTTP fetch for all collectors. Sets User-Agent, requests gzip
+   * compression, and maps HTTP status codes to typed, retryable errors so
+   * the base retry wrapper can correctly retry transient failures.
+   *
+   * All collector fetch logic MUST use this helper instead of raw `fetch()`.
+   */
+  protected async httpFetch(url: string, opts?: RequestInit): Promise<Response> {
+    const controller = new AbortController();
+    const timeoutMs = this.config.fetchTimeoutMs;
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+    try {
+      const res = await fetch(url, {
+        ...opts,
+        signal: controller.signal,
+        headers: {
+          "User-Agent": `Arbor-Sentinel/1.0 (${this.constructor.name})`,
+          "Accept-Encoding": "gzip, deflate",
+          ...(opts?.headers as Record<string, string> | undefined),
+        },
+      });
+
+      if (!res.ok) {
+        throw this.statusToError(url, res.status);
+      }
+
+      return res;
+    } catch (err) {
+      if (err instanceof Error && err.name === "AbortError") {
+        throw new TimeoutError(
+          `HTTP fetch timed out after ${timeoutMs}ms for "${url}"`,
+          { sourceId: this.source.id, url, attempt: 1, timeoutMs },
+        );
+      }
+      // Re-throw typed collector errors unchanged; wrap everything else
+      if (err && typeof err === "object" && "code" in err) throw err;
+      throw err;
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  /** Map an HTTP status code to the correct typed error for retry decisions. */
+  private statusToError(url: string, status: number): Error {
+    const ctx = { sourceId: this.source.id, url, attempt: 1 };
+    if (status === 429) {
+      return new RateLimitError(`Rate limited (${status}) for "${url}"`, ctx);
+    }
+    // FetchError is retryable by default (retry.ts checks error type).
+    // 4xx client errors (except 408/429) should NOT be retried — use ParseError for those.
+    if (status >= 500 || status === 408) {
+      return new FetchError(`Server error (${status}) for "${url}"`, ctx);
+    }
+    // 4xx client errors are fatal (bad URL, auth, etc.)
+    return new ParseError(`Client error (${status}) for "${url}"`, ctx);
   }
 
   // ── Protected Helpers ──────────────────────────────────────────────────

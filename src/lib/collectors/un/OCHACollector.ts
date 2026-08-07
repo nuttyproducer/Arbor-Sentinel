@@ -1,4 +1,5 @@
 import { BaseCollector } from "../BaseCollector";
+import { FeedParser, type ParsedFeedItem } from "../feeds/FeedParser";
 import { UNNormalizer } from "./UNNormalizer";
 import { ParseError, ValidationError } from "../errors";
 import type { RawUNDocument, UNDocumentType, NormalizedUNDocument } from "./UNNormalizer";
@@ -14,6 +15,7 @@ import type { RawUNDocument, UNDocumentType, NormalizedUNDocument } from "./UNNo
  */
 export class OCHACollector extends BaseCollector {
   private readonly normalizer = new UNNormalizer();
+  private readonly feedParser = new FeedParser();
   private static readonly BASE = "https://www.ochaopt.org";
   private static readonly UNOCHA = "https://www.unocha.org";
 
@@ -68,32 +70,18 @@ export class OCHACollector extends BaseCollector {
 
   private async fetchRss(url: string): Promise<RawUNDocument[]> {
     const text = await this.fetchHtml(url);
-    const docs: RawUNDocument[] = [];
-    const itemRe = /<item>([\s\S]*?)<\/item>/gi;
-    let itemMatch;
-    while ((itemMatch = itemRe.exec(text)) !== null) {
-      const item = itemMatch[1];
-      const title = (item.match(/<title><!\[CDATA\[([^\]]*)\]\]><\/title>/i)?.[1]) || (item.match(/<title>([^<]+)<\/title>/i)?.[1]) || "";
-      const link = (item.match(/<link>([^<]+)<\/link>/i)?.[1]) || "";
-      const desc = (item.match(/<description><!\[CDATA\[([^\]]*)\]\]><\/description>/i)?.[1]) || (item.match(/<description>([^<]+)<\/description>/i)?.[1]) || "";
-      const pubDate = item.match(/<pubDate>([^<]+)<\/pubDate>/i)?.[1];
-      const date = pubDate ? new Date(pubDate).toISOString().split("T")[0] : undefined;
-
-      if (link) {
-        docs.push({
-          url: link,
-          title: title || "OCHA Update",
-          issuingBody: "OCHA",
-          reportType: "humanitarian_update",
-          geographicScope: this.extractGeographicScope(title + " " + desc),
-          date,
-          bodyText: desc,
-          summaryText: desc.slice(0, 500),
-          language: "en",
-        });
-      }
-    }
-    return docs;
+    const parsed = this.feedParser.parse(text);
+    return parsed.items.map((item: ParsedFeedItem) => ({
+      url: item.url,
+      title: item.title || "OCHA Update",
+      issuingBody: "OCHA",
+      reportType: "humanitarian_update" as UNDocumentType,
+      geographicScope: this.extractGeographicScope(item.title + " " + item.description),
+      date: item.publishedAt?.split("T")[0],
+      bodyText: item.description,
+      summaryText: item.description.slice(0, 500),
+      language: "en",
+    }));
   }
 
   private async fetchDocument(url: string): Promise<RawUNDocument> {

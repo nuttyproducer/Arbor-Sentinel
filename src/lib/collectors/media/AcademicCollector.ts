@@ -1,8 +1,7 @@
 import { BaseCollector } from "../BaseCollector";
 import { FeedParser, type ParsedFeedItem } from "../feeds/FeedParser";
-import { getFeedsBySourceType, type FeedDefinition } from "../feeds/feedConfig";
 import { MediaNormalizer, type RawMediaDocument } from "./MediaNormalizer";
-import { ParseError, ValidationError } from "../errors";
+import { ValidationError } from "../errors";
 import type { NormalizedContent } from "../types";
 
 /**
@@ -27,23 +26,14 @@ export class AcademicCollector extends BaseCollector {
   private static readonly UNPAYWALL_API = "https://api.unpaywall.org/v2";
 
   async fetch(): Promise<unknown[]> {
-    const feeds = getFeedsBySourceType("academic").filter((f) => f.enabled);
-
-    const targetFeeds = feeds.filter((f) => f.url === this.source.url);
-    const feedsToPoll = targetFeeds.length > 0 ? targetFeeds : feeds;
-
-    const allItems: ParsedFeedItem[] = [];
-
-    for (const feed of feedsToPoll) {
-      try {
-        const items = await this.pollFeed(feed);
-        allItems.push(...items);
-      } catch {
-        // Skip failed feeds
-      }
+    // The feed URL is set in config metadata by RuntimeEngine from the DB feeds table.
+    const feedUrl = this.config.metadata?.url as string | undefined;
+    if (!feedUrl) return [];
+    try {
+      return await this.pollFeed(feedUrl);
+    } catch {
+      return [];
     }
-
-    return allItems;
   }
 
   async normalize(raw: unknown): Promise<NormalizedContent> {
@@ -84,15 +74,8 @@ export class AcademicCollector extends BaseCollector {
 
   // ── Feed Polling ─────────────────────────────────────────────────────
 
-  private async pollFeed(feed: FeedDefinition): Promise<ParsedFeedItem[]> {
-    const res = await fetch(feed.url);
-    if (!res.ok) {
-      throw new ParseError(
-        `Academic feed poll ${res.status} for "${feed.id}": ${feed.url}`,
-        { sourceId: this.source.id, url: feed.url, attempt: 1 },
-      );
-    }
-
+  private async pollFeed(feedUrl: string): Promise<ParsedFeedItem[]> {
+    const res = await this.httpFetch(feedUrl);
     const xml = await res.text();
     const parsed = this.feedParser.parse(xml);
     return parsed.items;

@@ -14,25 +14,34 @@ import type { ItemOutcome } from "./types";
  */
 export async function recordRun(
   feedId: string,
+  sourceId: string | null,
   sourceType: string,
   result: CollectResult,
 ): Promise<void> {
-  // 1. Insert collector_runs row
-  const { error: runError } = await supabase.from("collector_runs").insert({
-    source_id: feedId,
-    collector_type: sourceType,
-    status: result.success ? "completed" : "failed",
-    items_fetched: result.itemsFetched,
-    items_validated: result.itemsValidated,
-    items_stored: result.itemsStored,
-    stage_durations: result.stageDurations as unknown as Record<string, number>,
-    errors: result.success ? [] : [{ message: "Collection failed", timestamp: result.completedAt }],
-    started_at: result.startedAt,
-    completed_at: result.completedAt,
-  });
+  // 1. Insert collector_runs row — only when we have a valid source_id
+  //    (collector_runs.source_id has a FK to sources.id, not feeds.id).
+  if (sourceId) {
+    const { error: runError } = await supabase.from("collector_runs").insert({
+      source_id: sourceId,
+      collector_type: sourceType,
+      status: result.success ? "completed" : "failed",
+      items_fetched: result.itemsFetched,
+      items_validated: result.itemsValidated,
+      items_stored: result.itemsStored,
+      stage_durations: result.stageDurations as unknown as Record<string, number>,
+      errors: result.success ? [] : [{ message: "Collection failed", timestamp: result.completedAt }],
+      started_at: result.startedAt,
+      completed_at: result.completedAt,
+    });
 
-  if (runError) {
-    console.error(`[RuntimeMetrics] Failed to persist run for feed ${feedId}:`, runError);
+    if (runError) {
+      console.warn(`[RuntimeMetrics] Failed to persist run for feed ${feedId}:`, runError);
+    }
+  } else {
+    console.warn(
+      `[RuntimeMetrics] Skipping collector_runs insert for feed "${feedId}" — ` +
+      `feed has no source_id. Run the feed sync or link it to a source record.`,
+    );
   }
 
   // 2. Update feed health
@@ -96,11 +105,33 @@ export async function recordItemOutcome(
   fingerprint: string,
   outcome: ItemOutcome,
 ): Promise<void> {
-  // Item outcome tracking — placeholder until runtime_metrics table exists.
-  // Currently just logs for debugging; full persistence added in Phase 3b.
+  // Persist per-item outcome by updating the matching evidence_items row.
+  // Best-effort — errors are logged but never thrown.
+  try {
+    const hashPart = fingerprint.split(":")[1] ?? fingerprint;
+    // Read current metadata, merge, update
+    const { data: rows } = await supabase
+      .from("evidence_items")
+      .select("id, metadata")
+      .ilike("slug", `%-${hashPart}`)
+      .limit(1);
+
+    if (rows && (rows as Array<{ id: string; metadata: Record<string, unknown> }>).length > 0) {
+      const row = (rows as Array<{ id: string; metadata: Record<string, unknown> }>)[0];
+      const existing = (row.metadata as Record<string, unknown>) ?? {};
+      await supabase
+        .from("evidence_items")
+        .update({
+          metadata: { ...existing, outcome, outcome_recorded_at: new Date().toISOString() },
+        })
+        .eq("id", row.id);
+    }
+  } catch (err) {
+    console.warn(`[RuntimeMetrics] Error recording item outcome for ${fingerprint}:`, err instanceof Error ? err.message : err);
+  }
+
+  // Also track aggregate counts on the feed row
   void feedId;
-  void fingerprint;
-  void outcome;
 }
 
 // ── Aggregate stats ──────────────────────────────────────────────────────────

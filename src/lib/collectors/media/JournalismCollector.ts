@@ -1,6 +1,5 @@
 import { BaseCollector } from "../BaseCollector";
-import { type ParsedFeedItem } from "../feeds/FeedParser";
-import { getFeedsBySourceType } from "../feeds/feedConfig";
+import { FeedParser, type ParsedFeedItem } from "../feeds/FeedParser";
 import { MediaNormalizer, type RawMediaDocument, type MediaContentType } from "./MediaNormalizer";
 import { ParseError, ValidationError } from "../errors";
 import type { NormalizedContent, CollectedItem } from "../types";
@@ -34,42 +33,18 @@ const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY a
  */
 export class JournalismCollector extends BaseCollector {
   private readonly normalizer = new MediaNormalizer();
+  private readonly feedParser = new FeedParser();
 
   /**
    * Fetch: poll the feed URL from config metadata (DB-sourced), falling
    * back to static feedConfig entries if no URL is in metadata.
    */
   async fetch(): Promise<unknown[]> {
-    // Primary path: use the URL from config metadata (set by RuntimeEngine from DB)
+    // The feed URL is set in config metadata by RuntimeEngine from the DB feeds table.
+    // The DB is the single source of truth — no static config fallback.
     const feedUrl = this.config.metadata?.url as string | undefined;
-
-    if (feedUrl) {
-      try {
-        const items = await this.pollUrl(feedUrl);
-        return items;
-      } catch {
-        // Fall through to static config fallback
-      }
-    }
-
-    // Fallback: poll from static feedConfig (development/testing)
-    const feeds = getFeedsBySourceType("journalism")
-      .filter((f) => f.enabled)
-      .filter((f) => f.url === this.source.url || this.source.url === "");
-
-    const feedsToPoll = feeds.length > 0 ? feeds : getFeedsBySourceType("journalism").filter((f) => f.enabled);
-
-    const allItems: ParsedFeedItem[] = [];
-    for (const feed of feedsToPoll) {
-      try {
-        const items = await this.pollUrl(feed.url);
-        allItems.push(...items);
-      } catch {
-        // Skip failed feeds, continue with others
-      }
-    }
-
-    return allItems;
+    if (!feedUrl) return [];
+    return this.pollUrl(feedUrl);
   }
 
   /**
@@ -157,11 +132,12 @@ export class JournalismCollector extends BaseCollector {
               guid: item.guid,
               feedTitle: item.feedTitle || "",
               language: undefined,
+              enclosures: [],
             }));
           }
-        } else if (text.includes("<rss") || text.includes("<feed") || text.includes("<channel") || text.includes("<entry")) {
-          // Raw XML returned by CORS proxy — parse it inline
-          return this.parseXmlItems(text);
+        } else if (text.includes("<rss") || text.includes("<feed") || text.includes("<channel") || text.includes("<entry") || text.includes("<rdf:RDF")) {
+          // Raw XML returned by CORS proxy — parse with canonical FeedParser
+          return this.feedParser.parse(text).items;
         }
       } catch {
         // Proxy failed, try next
@@ -176,43 +152,7 @@ export class JournalismCollector extends BaseCollector {
         { sourceId: this.source.id, url: feedUrl, attempt: 1 },
       );
     }
-    return this.parseXmlItems(await res.text());
-  }
-
-  /** Lightweight inline RSS/Atom parser for the fallback path. */
-  private parseXmlItems(xml: string): ParsedFeedItem[] {
-    const itemPattern = /<(item|entry)\b[^>]*>([\s\S]*?)<\/(item|entry)>/gi;
-    const items: ParsedFeedItem[] = [];
-    let match;
-    while ((match = itemPattern.exec(xml)) !== null) {
-      const el = match[2];
-      items.push({
-        title: this.extractXml(el, "title"),
-        url: this.extractXml(el, "link") || this.extractLinkHref(el),
-        description: this.stripHtml(this.extractXml(el, "description") || this.extractXml(el, "summary") || "").slice(0, 280),
-        publishedAt: this.extractXml(el, "pubDate") || this.extractXml(el, "published") || this.extractXml(el, "updated"),
-        author: this.extractXml(el, "author") || this.extractXml(el, "name") || undefined,
-        categories: [],
-        guid: this.extractXml(el, "guid") || this.extractXml(el, "id") || undefined,
-        feedTitle: this.extractXml(xml, "title"),
-        language: undefined,
-      });
-    }
-    return items;
-  }
-
-  private extractXml(xml: string, tag: string): string {
-    const m = xml.match(new RegExp(`<${tag}\\b[^>]*>([\\s\\S]*?)</${tag}>`, "i"));
-    return m ? m[1].replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1").replace(/<[^>]+>/g, " ").trim() : "";
-  }
-
-  private extractLinkHref(xml: string): string {
-    const m = xml.match(/<link\b[^>]*href\s*=\s*["']([^"']+)["'][^>]*\/?>/i);
-    return m ? m[1] : "";
-  }
-
-  private stripHtml(text: string): string {
-    return text.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+    return this.feedParser.parse(await res.text()).items;
   }
 
   // ── Conversion ─────────────────────────────────────────────────────────
@@ -235,13 +175,9 @@ export class JournalismCollector extends BaseCollector {
     };
   }
 
-  /** Whether this source's feed is known to be paywalled (from feedConfig). */
+  /** Whether this source's feed is known to be paywalled (from DB feed metadata). */
   private feedHasPaywall(): boolean {
-    return (
-      getFeedsBySourceType("journalism")
-        .find((f) => f.sourceId === this.source.id || f.url === this.source.url)
-        ?.hasPaywall ?? false
-    );
+    return (this.config.metadata?.has_paywall as boolean) ?? false;
   }
 
   private detectContentType(categories: string[]): MediaContentType {

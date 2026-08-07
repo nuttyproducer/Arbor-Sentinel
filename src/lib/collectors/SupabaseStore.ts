@@ -302,7 +302,10 @@ async function persistEvidenceItem(item: CollectedItem): Promise<string | null> 
 
   const title = normalized.title.trim() || "Untitled";
   const body = normalized.body?.trim() ?? "";
-  const slug = `${slugify(title)}-${shortHash(item.fingerprint)}`;
+  // Use the fingerprint hash part directly so cross-session dedup in exists()
+  // can find this record. exists() searches for `%-${fingerprint.split(":")[1]}`.
+  const fpHash = item.fingerprint.split(":")[1] ?? shortHash(item.fingerprint);
+  const slug = `${slugify(title)}-${fpHash}`;
 
   try {
     const { data, error } = await supabase

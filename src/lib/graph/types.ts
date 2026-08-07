@@ -3,6 +3,10 @@
 // Core graph type definitions for the Arbor Sentinel knowledge graph.
 // Defines node types, edge types, and query structures used by GraphDB,
 // EntityResolver, and graph visualization components.
+//
+// Graph edge type strings are defined in the canonical taxonomy (lib/taxonomy)
+// as GRAPH_EDGE_TYPES. This file defines the structural NodeType enum and
+// edge validation schema (EDGE_TYPE_ALLOWED_PAIRS) on top of those strings.
 
 // ── Node types ───────────────────────────────────────────────────────────────
 

@@ -214,18 +214,6 @@ export const feedConfig: FeedDefinition[] = [
   },
 ];
 
-/**
- * Get feeds filtered by source type.
- */
-export function getFeedsBySourceType(
-  type: "journalism" | "ngo" | "academic",
-): FeedDefinition[] {
-  return feedConfig.filter((f) => f.sourceType === type);
-}
-
-/**
- * Get all enabled feeds.
- */
-export function getEnabledFeeds(): FeedDefinition[] {
-  return feedConfig.filter((f) => f.enabled);
-}
+// Query functions removed — the `feeds` Supabase table is the single source of truth.
+// Use `feedRegistry.listEnabled()` / `feedRegistry.getFeedsBySourceType()` for runtime queries.
+// This file is now seed-only: `feedConfig` is only consumed by `feedRegistry.syncFromConfig()`.

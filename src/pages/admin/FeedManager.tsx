@@ -112,9 +112,24 @@ export function FeedManager() {
     setSaving(true);
     try {
       const { supabase } = await import("../../lib/db/client");
+
+      // Best-effort source lookup: try to link this feed to an existing
+      // source record by matching the feed name against source names.
+      let sourceId: string | null = null;
+      if (data.name) {
+        const { data: sources } = await supabase
+          .from("sources")
+          .select("id, name")
+          .ilike("name", `%${data.name}%`);
+        if (sources && (sources as Array<{ id: string; name: string }>).length > 0) {
+          sourceId = (sources as Array<{ id: string; name: string }>)[0].id;
+        }
+      }
+
       const { error } = await supabase.from("feeds").insert({
         name: data.name,
         url: data.url,
+        source_id: sourceId,
         source_type: data.source_type,
         category: data.category,
         parser: data.parser,

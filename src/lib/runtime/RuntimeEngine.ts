@@ -10,6 +10,7 @@ import { setupRegistry } from "../collectors/registrySetup";
 import { listEnabled, getFeed } from "../collectors/feedRegistry";
 import { DEFAULT_RATE_LIMIT, DEFAULT_RETRY_CONFIG, DEFAULT_FETCH_TIMEOUT_MS } from "../collectors/types";
 import { recordRun, recordFeedError } from "./metrics";
+import { Scheduler } from "../scheduler/Scheduler";
 import type { RuntimeState, RuntimeConfig, RuntimeStats, RuntimeDiagnostics, RunAllSummary, FeedRunResult } from "./types";
 import { DEFAULT_RUNTIME_CONFIG } from "./types";
 import type { CollectorConfig, CollectResult } from "../collectors/types";
@@ -33,10 +34,10 @@ export class RuntimeEngine {
   private registry: CollectorRegistry;
   private store: SupabaseStore;
   private rateLimiter: RateLimiter;
+  private scheduler: Scheduler;
   private config: RuntimeConfig;
   private state: RuntimeState = "idle";
   private startedAt: number = 0;
-  private tickTimer: ReturnType<typeof setInterval> | null = null;
 
   // Stats (in-memory, reset on restart)
   private totalRuns = 0;
@@ -49,6 +50,7 @@ export class RuntimeEngine {
     this.store = new SupabaseStore();
     this.rateLimiter = new RateLimiter();
     this.registry = new CollectorRegistry(this.store, this.rateLimiter);
+    this.scheduler = new Scheduler();
     this.config = { ...DEFAULT_RUNTIME_CONFIG };
 
     // Register all collectors once
@@ -80,25 +82,37 @@ export class RuntimeEngine {
     this.totalItemsStored = 0;
     this.lastErrors = [];
 
-    // Begin the tick loop
-    const intervalMs = this.config.defaultPollIntervalMs;
-    this.tickTimer = setInterval(() => {
-      void this.tick();
-    }, intervalMs);
+    // Schedule all enabled feeds using the real Scheduler
+    const feeds = await listEnabled();
+    for (const feed of feeds) {
+      const intervalMs = (feed.poll_interval_minutes ?? 60) * 60 * 1000;
+      const mode = feed.poll_interval_minutes === 0 ? "manual" as const : "interval" as const;
+      this.scheduler.schedule(
+        feed.id,
+        feed.name,
+        mode,
+        intervalMs,
+        async (feedId: string) => {
+          const f = await getFeed(feedId);
+          if (f) await this.collectFeed(f);
+        },
+      );
+    }
 
+    // Start the scheduler tick loop (replaces the old setInterval)
+    this.scheduler.start();
     this.state = "running";
-
-    // Run the first tick immediately
-    void this.tick();
   }
 
   async stop(): Promise<void> {
     this.state = "stopping";
-    if (this.tickTimer) {
-      clearInterval(this.tickTimer);
-      this.tickTimer = null;
-    }
+    this.scheduler.stop();
     this.state = "stopped";
+  }
+
+  /** Expose scheduler stats for the admin UI. */
+  schedulerStats() {
+    return this.scheduler.stats();
   }
 
   // ── Core loop ──────────────────────────────────────────────────────────
@@ -257,12 +271,24 @@ export class RuntimeEngine {
       }
       this.totalItemsStored += result.itemsStored;
 
-      // Persist run and update feed health
-      await recordRun(feedId, sourceType, result);
+      // Persist run and update feed health.
+      // sourceId is the resolved FK to sources.id (may be null for unlinked feeds).
+      await recordRun(feedId, sourceId, sourceType, result);
 
-      // Items are persisted to evidence_items by SupabaseStore.save() during
-      // collection. Downstream processing (AI → review → publish) is deferred
-      // to the runtime pipeline — enable via config.enableAIPipeline.
+      // Downstream pipeline: process each stored item through AI → review → graph → search.
+      // Gated behind config flags — AI and graph are expensive and default to off.
+      if (this.config.enableAIPipeline || this.config.enableGraphPopulation || this.config.enableSearchIndexing) {
+        const { processItem } = await import("./pipeline");
+        const allItems = await this.store.getBySource(sourceId);
+        for (const item of allItems.slice(-result.itemsStored)) {
+          void processItem(item, sourceId, {
+            enableAI: this.config.enableAIPipeline,
+            enableAutoPublish: this.config.enableAutoPublish,
+            enableGraph: this.config.enableGraphPopulation,
+            enableSearch: this.config.enableSearchIndexing,
+          });
+        }
+      }
 
       return result;
     } catch (err) {
@@ -322,8 +348,8 @@ export class RuntimeEngine {
       stats: snapshot,
       scheduler: {
         active: this.state === "running",
-        jobCount: 0,
-        nextRunAt: this.tickTimer ? new Date(Date.now() + this.config.defaultPollIntervalMs).toISOString() : null,
+        jobCount: this.scheduler.stats().totalJobs,
+        nextRunAt: this.scheduler.stats().nextRunAt,
         paused: this.state !== "running",
       },
       collectors: this.registry.listRegistrations().map((r) => ({

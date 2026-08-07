@@ -133,13 +133,43 @@ export async function syncFromConfig(): Promise<number> {
   const existing = await getFeeds();
   const existingNames = new Set(existing.map((f) => f.name));
 
+  // Pre-fetch all sources for name-based lookup so we can link feeds to
+  // their parent source record when one exists.
+  const { data: allSources } = await supabase
+    .from("sources")
+    .select("id, name");
+
+  const sourceMap = new Map<string, string>();
+  if (allSources) {
+    for (const s of allSources as Array<{ id: string; name: string }>) {
+      sourceMap.set(s.name.toLowerCase(), s.id);
+    }
+  }
+
   let inserted = 0;
   for (const def of feedConfig) {
     if (existingNames.has(def.label)) continue;
 
+    // Best-effort source lookup: try the sourceId slug, then a name match.
+    let sourceId: string | null = null;
+    if (def.sourceId) {
+      // Exact slug match on sources.slug
+      const { data: bySlug } = await supabase
+        .from("sources")
+        .select("id")
+        .eq("slug", def.sourceId)
+        .maybeSingle();
+      if (bySlug) sourceId = (bySlug as { id: string }).id;
+    }
+    if (!sourceId) {
+      // Fallback: case-insensitive name match
+      sourceId = sourceMap.get(def.label.toLowerCase()) ?? null;
+    }
+
     const { error } = await supabase.from("feeds").insert({
       name: def.label,
       url: def.url,
+      source_id: sourceId,
       source_type: def.sourceType,
       parser: "rss",
       language: def.language,

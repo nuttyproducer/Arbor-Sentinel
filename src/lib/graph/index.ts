@@ -46,3 +46,18 @@ export {
   EntityResolver,
   type EntityResolverConfig,
 } from "./EntityResolver";
+
+// Graph persistence (Supabase-backed)
+export { saveGraph, loadGraph, clearSourceGraph } from "./GraphPersistence";
+
+// Graph API queries
+export {
+  getEntitySubgraph,
+  getNodesByType,
+  getEdgesByType,
+  getFullGraph,
+  getGraphStats,
+  type GraphNodeRow,
+  type GraphEdgeRow,
+  type SubgraphResult,
+} from "./GraphAPI";
